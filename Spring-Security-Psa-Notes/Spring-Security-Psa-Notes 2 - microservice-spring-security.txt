@@ -1,0 +1,1245 @@
+Spring-Security-Psa-Notes/microservice-spring-security.txt
+
+
+#############################################
+🔐 Core Features of Spring Security:
+##############################################
+1. Authentication: Verifies who you are (e.g., username & password, JWT etc.).
+
+2. Authorization: Determines what you are allowed to do (e.g., access control for URLs, methods, etc.).
+
+3. Protection Against Common Security Threats
+
+a. CSRF (Cross-Site Request Forgery)
+--------------------------------------
+1. 🛡 CSRF (Cross-Site Request Forgery)
+What it is:
+An attacker tricks a logged-in user into unknowingly sending a request (like transferring money or changing a password) to your application.
+
+Example:
+
+-> You're logged into yourbank.com.
+-> An attacker sends you a malicious link:
+-> <img src="https://yourbank.com/transfer?to=attacker&amount=1000" />
+-> If your session is still active, your browser might execute this without your intent.
+-> Spring Security Protection:
+-> Automatically adds a CSRF token to every form and expects it in requests. 
+-> In a web application that uses Spring Security, the CSRF token is automatically added as a hidden input field inside HTML forms.
+-> Blocks requests without valid tokens.
+
+
+
+2. 🔒 Session Fixation
+------------------------------------
+What it is:
+An attacker sets a known session ID for a user, then waits for the user to log in. If successful, the attacker reuses the same session.
+
+Example:
+-> Attacker sends a link with a fixed session ID:
+-> https://example.com/login;jsessionid=abc123
+-> User logs in; attacker now hijacks the session with abc123.
+-> Spring Security Protection:
+-> Regenerates the session ID after successful login by default (prevents reuse).
+
+To Enable we do this: http.sessionManagement().sessionFixation().migrateSession();  // default behavior
+
+
+3. Clickjacking
+
+-> Here's a simplified explanation of the Clickjacking attack:
+-> Attacker's Page: The attacker creates a webpage that hides a legitimate banking website inside an invisible iframe (like a hidden box).
+-> User's Interaction: The user thinks they are clicking on a button (e.g., "Play Video" or "Download File") on the attacker’s page.
+-> What Happens: In reality, the user is actually clicking on the invisible iframe that contains the banking page. They might unintentionally trigger actions on the banking site, like transferring money or changing their account settings.
+
+4. Brute-Force Attack Example
+-> What It Is: A Brute-Force Attack is when an attacker attempts to guess the correct credentials (like a password) by trying many possible combinations until they find the correct one.
+
+Example:
+-> The Attacker's Goal: The attacker wants to gain unauthorized access to a user's account, for example, the user’s bank account.
+
+-> How It Works:
+-> The attacker knows the username (e.g., "victim123") but not the password.
+-> Using automated tools, the attacker repeatedly tries different passwords for the account, for example:
+-> Password attempt 1: password123
+-> Password attempt 2: 123456
+-> Password attempt 3: victim123
+-> Password attempt 4: qwerty
+
+And so on, until the correct password is found.
+
+-> How It Looks to the User: The attacker might perform hundreds of thousands or even millions of attempts per second, which can eventually crack weak passwords.
+
+-> Attack's Success: Once the attacker guesses the correct password, they can log into the victim’s account and gain access to sensitive information, such as personal data or financial records.
+
+-> How to Prevent Brute-Force Attacks:
+
+a. Rate Limiting:
+Limit the number of failed login attempts within a certain time frame (e.g., 5 attempts per minute). After exceeding this limit, block the IP address or enforce a longer delay before the next attempt.
+
+b. CAPTCHA:
+Use CAPTCHA challenges after a certain number of failed login attempts. This helps to ensure that it's a human attempting the login rather than a bot performing automated attacks.
+
+c. Account Lockout:
+Temporarily lock an account after a set number of failed login attempts. For example, lock the account for 10 minutes after 5 failed login attempts.
+
+d. Multi-Factor Authentication (MFA):
+Use MFA to add an extra layer of security. Even if the attacker manages to guess the password, they will still need access to the second factor (e.g., a phone or hardware token).
+
+e. Strong Passwords:
+Encourage users to use strong, unique passwords (e.g., a combination of uppercase, lowercase letters, numbers, and special characters). Use a password strength checker and enforce password complexity rules.
+
+5. Password Handling: Secure password storage using hashing (e.g., BCrypt).
+
+6. Integration with Spring Boot: Auto-configuration with sensible defaults.
+
+7. JWT (JSON Web Token)
+
+
+
+Example 1:
+---------------
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/welcome")
+public class WelcomeController {
+	
+	
+	@GetMapping("/hello")
+	public String hello() {
+		return "hello";
+	}
+	
+	@GetMapping("/hi")
+	public String hi() {
+		return "hi";
+	}
+
+}
+
+SecuirtyConfigFile - to Permit All request
+------------------------------------------
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+
+	
+	@Bean
+	public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception{
+		http.authorizeHttpRequests(
+				 req->{
+					 req.anyRequest().permitAll();
+				 }
+				);
+		return http.build();
+		
+	}
+}
+
+
+Example 2:
+-----------
+
+Example 1:
+---------------
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/welcome")
+public class WelcomeController {
+	
+	
+	@GetMapping("/hello")
+	public String hello() {
+		return "hello";
+	}
+	
+	@GetMapping("/hi")
+	public String hi() {
+		return "hi";
+	}
+
+}
+
+SecuirtyConfigFile - to Permit All request
+------------------------------------------
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+
+	
+	@Bean
+	public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception{
+		http.authorizeHttpRequests(
+				 req->{
+					req.requestMatchers("/api/v1/welcome/hello").permitAll()
+					.anyRequest().authenticated();
+				 }
+				);
+		return http.build();
+		
+	}
+
+}
+
+Example 3: Create User Registration Implementation
+-----------------------------------------------------
+Step 1: Create Entity Class with Name User.java
+-------------------------------------------------
+package com.authservice.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="user")
+public class User {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
+	@Column(name="name", nullable = false)
+	private String name;
+	
+	@Column(name="username", nullable = false, unique = true)
+	private String username;
+	
+	@Column(name="email", nullable = false, unique = true)
+	private String email;
+	
+	@Column(name = "password")
+	private String password;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+	
+
+}
+
+---------------------------------------------------------------------------------------------------------------
+Step 2: Create Repository - UserRepository.java
+----------------------------------------------------------------------------------------------------------------
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.authservice.entity.User;
+
+public interface UserRepository extends JpaRepository<User, Long>{
+	
+	
+	User findByUsername(String username);
+	User findByEmail(String email);
+	boolean existsByUsername(String username);
+	boolean existsByEmail(String email);
+}
+
+------------------------------------------------------------------------------------------------------------------
+Step 3: Create UserDto.java
+------------------------------------------------------------------------------------------------------------------
+public class UserDto {
+	
+	private long id;
+	
+	private String name;
+	
+	private String username;
+	
+	private String email;
+	
+	private String password;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+}
+-------------------------------------------------------------------------------------------------------------------------
+Step 4: Create APIResponse class to send common response for API response, which will make front end integration common
+-------------------------------------------------------------------------------------------------------------------------
+public class APIResponse<T> {
+	
+	private String message;
+	private int status;
+	private T data;
+	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public T getData() {
+		return data;
+	}
+	public void setData(T data) {
+		this.data = data;
+	}
+	
+	
+	
+	
+
+}
+--------------------------------------------------------------------------------------------
+Step 5 - Create AuthService - Implement Logic for creating user
+---------------------------------------------------------------------------------------------
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.authservice.dto.APIResponse;
+import com.authservice.dto.UserDto;
+import com.authservice.entity.User;
+import com.authservice.repository.UserRepository;
+
+
+@Service
+public class AuthService {
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	
+	public APIResponse<String> register(UserDto dto) {
+		
+		if(userRepository.existsByUsername(dto.getUsername())) {
+			APIResponse<String> response = new APIResponse<>();
+			response.setMessage("Registration Failed");
+			response.setStatus(500);
+			response.setData("User with username exists");
+			return response;
+		}
+		if(userRepository.existsByEmail(dto.getEmail())) {
+			APIResponse<String> response = new APIResponse<>();
+			response.setMessage("Registration Failed");
+			response.setStatus(500);
+			response.setData("User with Email Id exists");
+			return response;
+		}
+		
+		User user = new User();
+		BeanUtils.copyProperties(dto, user);
+		user.setPassword(passwordEncoder.encode(dto.getPassword()));
+		
+		userRepository.save(user);
+		
+		APIResponse<String> response = new APIResponse<>();
+		response.setMessage("Registration Done");
+		response.setStatus(201);
+		response.setData("User is registered");
+		
+		return response;
+		
+		
+	}
+
+}
+-------------------------------------------------------------------------------------------------
+Step 6: Disable csrf in config file to access api end point from different client like postman/swagger
+-----------------------------------------------------------------------------------------------------
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+	
+	@Bean
+	public PasswordEncoder getEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	
+	@Bean
+	public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception {
+	    http
+	        .csrf(csrf -> csrf.disable())  // Disable CSRF
+	        .authorizeHttpRequests(auth -> 
+	            auth.requestMatchers(
+	            		"/api/v1/auth/register/", 
+	            		"/v3/api-docs/**",
+	                    "/swagger-ui/**",
+	                    "/swagger-ui.html",
+	                    "/swagger-resources/**",
+	                    "/webjars/**").permitAll()
+	            .anyRequest().authenticated()
+	        );
+
+	    return http.build();
+	}
+
+    return http.build();
+}
+
+}
+------------------------------------------------------------------------------------------------------
+Step 7: Add Swagger dependency for generating API documentation
+------------------------------------------------------------------------------------------------------
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.5.0</version>
+</dependency>
+
+To Access Swagger - Run the Project
+
+http://localhost:8080/swagger-ui.html
+
+Or (sometimes):
+
+http://localhost:8080/swagger-ui/index.html
+-----------------------------------------------------------------------------------------------------------------------------
+
+###############################################
+Implementing Login Module
+################################################
+
+LoginDto.java
+------------------
+public class LoginDto {
+	
+	private String username;
+	private String password;
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	
+
+}
+------------------------------------------------------------
+
+AuthController.java
+-----------------------
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+
+import com.authservice.dto.APIResponse;
+import com.authservice.dto.LoginDto;
+import com.authservice.dto.UpdatePasswordDto;
+import com.authservice.dto.UserDto;
+import com.authservice.service.AuthService;
+
+@RestController
+@RequestMapping("/api/v1/auth/")
+public class AuthController {
+	
+	@Autowired
+	private AuthService authService;
+	
+	@Autowired
+	private AuthenticationManager authManager;
+	
+	 @PostMapping("/register")
+	    public ResponseEntity<APIResponse<String>> register(@RequestBody UserDto dto) {
+	        APIResponse<String> response = authService.register(dto);
+	        return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+	    }
+	 
+
+ 
+	 
+	 @PostMapping("/login")
+	 public ResponseEntity<APIResponse<String>> loginCheck(@RequestBody LoginDto loginDto){
+		 
+		 APIResponse<String> response = new APIResponse<>();
+		 
+		 UsernamePasswordAuthenticationToken token = 
+				 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+		 
+		try {
+			 Authentication authenticate = authManager.authenticate(token);
+			 
+			 if(authenticate.isAuthenticated()) {
+				 response.setMessage("Login Sucessful");
+				 response.setStatus(200);
+				 response.setData("User has logged");
+				 return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		 response.setMessage("Failed");
+		 response.setStatus(401);
+		 response.setData("Un-Authorized Access");
+		 return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+	 }
+
+}
+
+--------------------------------------------------------------
+
+CustomerUserDetailsService.java
+-----------------------------------------
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.authservice.entity.User;
+import com.authservice.repository.UserRepository;
+
+@Service
+public class CustomerUserDetailsService implements UserDetailsService{
+	
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+		
+		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),Collections.emptyList());
+	}
+
+}
+
+--------------------------------------------------------------------------------
+
+AppSecurityConfig.java
+-----------------------
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.authservice.service.CustomerUserDetailsService;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+	
+	@Autowired
+	private CustomerUserDetailsService customerUserDetailsService;
+
+    String[] publicEndpoints = {
+        "/api/v1/auth/register",
+        "/api/v1/auth/login",
+        "/api/v1/auth/update-password",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-resources/**",
+        "/webjars/**"
+    };
+
+    @Bean
+    public PasswordEncoder getEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+	public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+    
+    @Bean
+	public AuthenticationProvider authProvider() {
+
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+		authProvider.setUserDetailsService(customerUserDetailsService);
+		authProvider.setPasswordEncoder(getEncoder());
+
+		return authProvider;
+	}
+
+    @Bean
+	public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception{
+		
+		http.authorizeHttpRequests( req -> {
+			req.requestMatchers("/api/v1/auth/register", "/api/v1/auth/login")
+			   .permitAll()
+			   .anyRequest()
+			   .authenticated();			
+		});
+		
+		return http.csrf().disable().build();
+	}
+
+
+}
+-----------------------------------------------------------------------------
+
+
+#################################################################################
+How to perform Authorization - Role Based Access in your project
+#################################################################################
+
+Modify UserDto.java
+--------------------
+
+package com.authservice.dto;
+
+
+public class UserDto {
+	
+	private long id;
+	
+	private String name;
+	
+	private String username;
+	
+	private String email;
+	
+	private String password;
+	
+	private String role; //This one is added
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+}
+
+Modify User.java
+----------------
+package com.authservice.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="user")
+public class User {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
+	@Column(name="name", nullable = false)
+	private String name;
+	
+	@Column(name="username", nullable = false, unique = true)
+	private String username;
+	
+	@Column(name="email", nullable = false, unique = true)
+	private String email;
+	
+	@Column(name = "password")
+	private String password;
+	
+	@Column(name = "role")
+	private String role;//This is added
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	
+	
+
+}
+
+Modify AppSecurityConfig.java
+---------------------------------
+package com.authservice;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import com.authservice.service.CustomerUserDetailsService;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+	
+	@Autowired
+	private CustomerUserDetailsService customerUserDetailsService;
+
+    String[] publicEndpoints = {
+        "/api/v1/auth/register",
+        "/api/v1/auth/login",
+        "/api/v1/auth/update-password",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-resources/**",
+        "/webjars/**"
+    };
+
+    @Bean
+    public PasswordEncoder getEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+	public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+    
+    @Bean
+	public AuthenticationProvider authProvider() {
+
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+		authProvider.setUserDetailsService(customerUserDetailsService);
+		authProvider.setPasswordEncoder(getEncoder());
+
+		return authProvider;
+	}
+
+    @Bean
+	public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception{
+		
+		http.authorizeHttpRequests( req -> {
+			req.requestMatchers(publicEndpoints)
+			   .permitAll()
+			   .requestMatchers("/api/v1/admin/welcome").hasRole("ADMIN")
+			   .anyRequest()
+			   .authenticated();			
+		}).httpBasic();
+		
+		return http.csrf().disable().build();
+	}
+
+
+}
+
+Modify CustomerUserDetailsService.java
+---------------------------------------
+package com.authservice.service;
+
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.authservice.entity.User;
+import com.authservice.repository.UserRepository;
+
+@Service
+public class CustomerUserDetailsService implements UserDetailsService{
+	
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+		
+		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),Collections.singleton(new SimpleGrantedAuthority(user.getRole())));//This should be modified
+	}
+
+}
+
+---------------------------
+
+✅ 3. Test Using Postman or curl
+🔹 Test with Postman
+Choose GET and enter:
+http://localhost:8080/api/v1/admin/welcome
+
+Go to Authorization tab
+Type: Basic Auth
+Username: admin
+Password: admin (assuming that's the encoded password in DB)
+
+Click Send.
+
+You should get a 200 OK and the "Welcome, Admin!" message if the role is correctly configured.
+----------------------------------------------------------------------------------------------------------------------
+
+Imnport Notes
+############################
+Stateless: User details are not stored at the server side. Hence every every request we have to perform authention
+
+Statefull: User details are  stored at the server side. Once the use perform login, Server will generate SessionId, One Copy of session will be kept at server side & another copy is given to the client, so that for subsequent request we can authenticate the user by sending seesionId with the request to server. When session Id matches you will get the respsone
+
+---------------------------------------------------------------------------------
+
+Advantages of JWT Token
+#########################
+-> Stateless Communication
+-> This performs Authentication of subsequent request made post login was successful
+-> Highly Secured
+-> Set Expiry time for token
+-> Securing All Microservice can be made easy with JWT Token
+
+Architecture of JWT Token
+###############################
+Header.PayLoad.Signature
+
+Explanation of The Architecture
+
+What is header?
+Answer: ALGORITHM & TOKEN TYPE
+
+Example:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+What is PayLoad?
+Answer:
+-> For which user token is generated (User Details)
+-> Who has generated this token (Issuer)
+-> Expiry Time Of Token?
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "iat": 1516239022
+}
+
+What is Signature?
+Answer: Secret key 
+
+####################################################
+Implementing JWT Token
+####################################################
+
+Download the dependency
+------------------------
+<dependency>
+    <groupId>com.auth0</groupId>
+    <artifactId>java-jwt</artifactId>
+    <version>4.4.0</version>
+</dependency>
+
+
+Create JWTService class
+---------------------------
+package com.authservice.jwt;
+
+import java.util.Date;
+import org.springframework.stereotype.Service;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
+@Service
+public class JwtService {
+
+    private static final String SECRET_KEY = "my-super-secret-key";
+    private static final long EXPIRATION_TIME = 86400000; // 1 day
+
+    public String generateToken(String username, String role) {
+        return JWT.create()
+            .withSubject(username)
+            .withClaim("role", role)
+            .withIssuedAt(new Date())
+            .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+            .sign(Algorithm.HMAC256(SECRET_KEY));
+    }
+
+    public String validateTokenAndRetrieveSubject(String token) {
+        return JWT.require(Algorithm.HMAC256(SECRET_KEY))
+            .build()
+            .verify(token)
+            .getSubject();
+    }
+}
+
+Modify AuthController  Class
+--------------------------------
+
+@Autowired
+private JwtService jwtService;
+
+@PostMapping("/login")
+public ResponseEntity<APIResponse<String>> loginCheck(@RequestBody LoginDto loginDto) {
+    APIResponse<String> response = new APIResponse<>();
+
+    UsernamePasswordAuthenticationToken token = 
+        new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+
+    try {
+        Authentication authenticate = authManager.authenticate(token);
+        if (authenticate.isAuthenticated()) {
+            String jwtToken = jwtService.generateToken(loginDto.getUsername(),
+                authenticate.getAuthorities().iterator().next().getAuthority());
+
+            response.setMessage("Login Successful");
+            response.setStatus(200);
+            response.setData(jwtToken);  // return JWT
+            return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    response.setMessage("Failed");
+    response.setStatus(401);
+    response.setData("Unauthorized");
+    return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+}
+
+Develop JWTFilter Class
+-----------------------------
+
+package com.authservice.jwt;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.authservice.service.CustomerUserDetailsService;
+
+import java.io.IOException;
+
+@Component
+public class JwtFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private CustomerUserDetailsService userDetailsService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwt = authHeader.substring(7);
+            String username = jwtService.validateTokenAndRetrieveSubject(jwt);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                var userDetails = userDetailsService.loadUserByUsername(username);
+                var authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}
+
+Modify Secuirty Config
+---------------------------
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.authservice.service.CustomerUserDetailsService;
+import com.authservice.service.JwtFilter;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+	
+	@Autowired
+	private CustomerUserDetailsService customerUserDetailsService;
+	
+	@Autowired
+	private JwtFilter filter;
+
+    String[] publicEndpoints = {
+        "/api/v1/auth/register",
+        "/api/v1/auth/login",
+        "/api/v1/auth/update-password",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-resources/**",
+        "/webjars/**"
+    };
+
+    @Bean
+    public PasswordEncoder getEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+	public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+    
+    @Bean
+	public AuthenticationProvider authProvider() {
+
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+		authProvider.setUserDetailsService(customerUserDetailsService);
+		authProvider.setPasswordEncoder(getEncoder());
+
+		return authProvider;
+	}
+
+    @Bean
+	public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception{
+		
+		http.authorizeHttpRequests( req -> {
+			req.requestMatchers(publicEndpoints)
+			   .permitAll()
+			   .requestMatchers("/api/v1/admin/welcome").hasRole("ADMIN")
+			   .anyRequest()
+			   .authenticated();			
+		}) .authenticationProvider(authProvider())
+        .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+		
+		return http.csrf().disable().build();
+	}
+
+
+}
+

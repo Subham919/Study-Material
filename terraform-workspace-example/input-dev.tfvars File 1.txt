@@ -1,0 +1,9 @@
+terraform-workspace-example/input-dev.tfvars
+_____________________________________________
+
+
+
+instance_type = "t2.micro"
+
+---------------------------------------------
+

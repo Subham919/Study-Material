@@ -1,0 +1,87 @@
+kafka-notes/kafaka notes.txt
+____________________________
+
+
+Apache Kafka
+___________
+
+-> It acts as mediator to exchange messages (Message Broker)
+-> Kafka is very useful for real time data exchange
+-> Publisher will publish the message and subscriber will consume the message
+
+Example of Kafka:
+
+Scenario: 10 Customers Place Orders at Udupi Hotel
+Step 1: Customers Place Orders
+✅ Customer App (Producer) → Publishes each order to Kafka (order_topic).
+✅ Udupi Hotel (Consumer) → Subscribes to order_topic and consumes the orders in real-time.
+
+🔄 Kafka Flow:
+
+10 Customers ---> [Kafka: order_topic] ---> Udupi Hotel App
+
+Step 2: Udupi Hotel Accepts the Orders
+✅ Udupi Hotel (Producer) → Publishes an "Order Accepted" event to order_status_topic.
+✅ Customer App (Consumer) → Subscribes to order_status_topic and receives notifications.
+
+🔄 Kafka Flow:
+
+Udupi Hotel ---> [Kafka: order_status_topic] ---> 10 Customers
+🔹 Summary of the Pub/Sub Model
+Step	Producer	Kafka Topic	Consumer	Purpose
+Customer places order	Customer App	order_topic	Udupi Hotel App	Order received at restaurant
+Udupi Hotel accepts order	Udupi Hotel App	order_status_topic	Customer App	Order confirmation notification
+
+🔹 When to Store in Database?
+✔️ YES – When the customer places an order → Store in DB (orders table).
+✔️ YES – When the order is completed → Update order status in DB.
+❌ NO – For real-time updates (use Kafka instead).
+
+
+Kafka Architecture:
+
+1. Zookeeper  - This provides environment to run kafka server
+2. Kafka Server  - This acts as message broker
+3. Kafka Topic - It is used to store and queue messages
+4. Publisher - This will push messages to kafkatopic
+5. Subscriber - This will fetch the message that is pushed to kafka by publisher
+
+
+Steps to setup kafka in windows:
+
+
+Step-1 : Download Zookeeper:
+
+   URL : https://dlcdn.apache.org/zookeeper/zookeeper-3.9.2/apache-zookeeper-3.9.2-bin.tar.gz
+   URL : https://dlcdn.apache.org/zookeeper/zookeeper-3.8.4/apache-zookeeper-3.8.4-bin.tar.gz
+
+Step-2 : Download Apache Kafka:
+
+	URL : https://downloads.apache.org/kafka/3.8.0/kafka_2.12-3.8.0.tgz
+
+Step-3 : Set Path of ZOOKEEPER in Environment variables upto bin folder.
+
+Step 4: Copy "zookeeper.properties" and "server.properties" files from "kafka/config" folder to "kafka/bin/windows" folder.
+
+Step-5 : Start Zookeeper server from "kafka/bin/windows" root folder
+
+    Command : zookeeper-server-start.bat zookeeper.properties
+
+Step-6: Start Kafka Server using below command from "kafka/bin/windows" folder
+
+    Command : kafka-server-start.bat server.properties
+
+Note: If kafka server is stopped, delete kafka logs from temp folder and try again to start kafka server
+
+Step-7 : Create Kakfa Topic from "kafka/bin/windows" root folder
+
+Command : kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic order_topic_1
+
+Step-8 : View created Topics using below command
+
+   Command : kafka-topics.bat --list --bootstrap-server localhost:9092
+
+
+Kafka Bootstrap Server URL : http://localhost:9092/ or http://192.30.43.2:9092/ for linux server created in cloud
+
+_________________________________________________________________________________________________________________________________________

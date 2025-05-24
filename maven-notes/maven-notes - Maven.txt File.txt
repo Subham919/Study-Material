@@ -1,0 +1,139 @@
+maven-notes/Maven.txt
+______________________
+
+
+What is maven?
+
+- Build Management: Maven handles compiling, testing, packaging, and deploying code. It automates the build process
+- Dependency Management: Maven automatically manages external libraries or dependencies that a project needs
+- Project Structure: Maven enforces a standard directory structure for projects, making it easier for developers to understand how a project is organized, regardless of who wrote the code
+- Repositories: Maven uses repositories
+  1. Central / Remote Repostiories
+  2. Local Repository
+- Plugins: Maven supports plugins to perform various tasks like compiling code, running tests, generating reports, and more
+- pom.xml (Project Object Model): The pom.xml file is at the heart of a Maven project. It contains configuration information like dependencies, build settings, and plugin definitions.
+
+How to set up maven in local system ?
+
+Step 1:  Download and install Required version of JDK
+
+Step 2:  Setup JAVA_HOME(Excluding bin folder) and Java Path (Including bin folder path)
+	
+	JAVA_HOME=C:\Program Files\Java\jdk-17
+	path=C:\Program Files\Java\jdk-17\bin
+
+Step 4:  Download Maven and unzip the files
+
+4) Setup MAVEN_HOME(Excluding bin folder) and Maven Path (Including bin folder path)
+
+	MAVEN_HOME = C:\apache-maven-3.9.9
+	path=C:\apache-maven-3.9.9\bin
+	
+5)  Verify Maven setup by using following command in command prompt	
+
+	  $ mvn -version
+
+Important Note About Maven:
+
+What is Archetype?
+- An archetype in Maven represents a template for generating a project. It’s a way to create a project with a predefined structure. Some common archetypes include:
+
+- quick-start: This is a basic template for a simple console application. It usually includes a simple structure with one class to get you started.
+web-app: This archetype is used to create a web application project. It sets up the necessary files and structure for a web-based project, often including directories for WEB-INF, and configurations for servlets, JSPs, etc.
+
+What is groupId? 
+- The groupId is a unique identifier for the group or organization that is creating the project. It typically represents the domain name of the company or the organization in reverse. This helps in distinguishing projects between different organizations.
+
+Examples:
+com.cisco
+in.amazon
+com.hcl
+
+what is artifact ?
+In Maven, an artifact refers to a file, typically a JAR, WAR, or other types of compiled code, that is produced by a Maven project. It is the primary output of a build process
+
+1. Artifact ID: A unique identifier for the artifact
+2. Group ID: A unique identifier for the group or organization that is responsible for the artifact.
+Version:
+The version refers to the version of your project or artifact. This can indicate the maturity and stability of the project:
+
+SNAPSHOT: This indicates that the project is still under development and is not yet finalized. It’s a work-in-progress version.
+RELEASE: This version has been finalized and is ready for production or delivery to clients. It’s stable and no longer changing.
+
+Note: Artifacts are stored in repositories (like Maven Central or private repositories(NEXUS / JFROG)) and can be dependencies for other project
+
+What are the types of Repositories?
+
+
+There are three types of repositories:
+
+1. Central Repository (Public): This is the default public repository provided by Maven, containing a huge collection of popular libraries and frameworks. When you declare a dependency in your pom.xml, Maven looks here first.
+
+2. Remote Repository (Private): Companies or teams might set up their own private repositories (e.g., using tools like Nexus or JFrog) to store internal libraries, proprietary software, or to maintain versions of their own code.
+
+3. Local Repository (.m2 directory): This is your personal local repository on your machine. When Maven downloads dependencies, they are cached here to avoid downloading them repeatedly. The default location for this local repository is typically ~/.m2/repository.
+
+What are Maven Goals?
+Maven defines specific tasks (called goals) that you can run to execute the build lifecycle of your project. Common goals are used to build, test, package, and clean your project. They can be executed manually or as part of the build process.
+
+1. clean: Deletes the target directory and any compiled .class files from previous builds. This ensures that you start with a fresh build.
+
+2. compile: Converts all the Java source files (.java) in your project into bytecode (.class) files that can be executed by the JVM.
+
+3. test: Runs unit tests using a testing framework like JUnit to ensure your code works correctly.
+
+4. package: Packages the compiled code into an artifact, usually a .jar (Java Archive) or .war (Web Archive) file, which can be deployed or shared. This is typically the step before deployment to an environment (QA, UAT, DEV, PROD).
+
+
+
+To skip the test during packaging we can use the following command
+ - mvn clean package -DskipTests=true
+
+What is Dependency Exclusion?
+
+- Dependency Exclusion in Maven is a mechanism that allows you to remove unwanted transitive dependencies that are being pulled into your project. These transitive dependencies are usually automatically included when you add a library (dependency) to your project. However, sometimes you might not need all of them.
+
+- By excluding unnecessary dependencies, you can reduce the size of your project and avoid conflicts with other dependencies.
+
+Breakdown:
+The Parent Dependency:
+
+-spring-context is added as a direct dependency in your project.
+- When you add this dependency, Maven automatically resolves its transitive dependencies like spring-core, spring-beans, spring-aop, spring-expression, and spring-jcl.
+Transitive Dependencies:
+- These are transitive dependencies because they are required by spring-context, and Maven resolves them automatically.
+Excluding a Transitive Dependency (spring-aop):
+- Sometimes, you might not need all of these transitive dependencies. In this case, you might not want to include spring-aop in your project.
+- The <exclusions> tag is used to exclude spring-aop.
+- This ensures that when you include spring-context, Maven will not include the spring-aop dependency in your project, even though it's a transitive dependency of spring-context.
+
+Advantage
+- Reduced Project Size
+- Improved Build time
+
+Without exclusion
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>6.2.0</version>
+</dependency>
+
+With exclusion
+
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>6.2.0</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+
+
+Note:
+These Spring Boot starter dependencies are a special type of dependency provided by Spring Boot that bundle several related dependencies together for convenience.
+__________________________________________________________________________________________________________________________________________________________________

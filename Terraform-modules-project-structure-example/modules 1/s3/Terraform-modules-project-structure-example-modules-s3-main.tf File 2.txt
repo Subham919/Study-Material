@@ -1,0 +1,11 @@
+Terraform-modules-project-structure-example/modules/s3/main.tf
+_______________________________________________________________
+
+main.tf
+-------
+
+resource "aws_s3_bucket" "s3_bucket" {
+  bucket = var.bucket_name
+  acl    = "private"
+}
+-----------------------------------------------------------------

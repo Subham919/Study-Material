@@ -1,0 +1,317 @@
+ansible-psa-notes/ansible-psa-notes.txt
+_______________________________________
+
+
+What is Ansible?
+#############################
+-> Configuration As a code (CAAC)
+
+-> Ansible is an open-source automation tool used for 
+a. configuration management
+b. application deployment
+c. copy file from one machine to another
+
+-> Examples of configuration management tools
+  a. chef
+  b. Puppet
+  c. Ansible
+
+Basic Ansible Architecture
+##############################
+
+a. Control Node: The machine where Ansible is installed and commands are run.
+b. Managed Nodes: The target machines that Ansible configures.
+c. Inventory: A file listing target machines, grouped by categories.
+d. Playbooks: YAML/yml files containing automation instructions.
+
+
+
+How to Configure Ansible?
+########################################################################################################################
+
+Step-1: Create 3 instance s of t2.micro Amazon Linux VMs in AWS. 
+a. 1 for - Control Node
+b. 2 for - Managed Nodes
+
+Note: Connect to all 3 VMs using MobaXterm
+
+Step-1: Do the following setup in all 3 machines
+a) Create user: 
+	sudo useradd ansible
+	sudo passwd ansible
+
+b) Configure user in sudoers file
+	sudo visudo
+	ansible ALL=(ALL) NOPASSWD: ALL
+
+c) Update sshd config file
+	sudo vi /etc/ssh/sshd_config
+
+-> change PasswordAuthentication "no" and  PermitEmptyPasswords "yes"
+
+d) Restart the server
+	sudo service sshd restart
+_____________________________________________________________________________________________
+
+Step-2: Install Ansible in Control Node
+a) Switch to Ansible user
+	sudo su ansible
+	cd ~
+b) Install Python because ansible is developed using python & to run ansible we require python software
+  	sudo yum install python3 -y
+
+c) cross Check python is installed?
+	python3 --version
+
+d) Install PIP (package manager) for downloading softwares and intalling it
+	sudo yum -y install python3-pip
+
+e) Install Ansible using Python PIP
+	pip3 install ansible --user
+
+f) Verify ansible version
+	ansible --version
+g) Create ansible folder under /etc
+	sudo mkdir /etc/ansible 
+________________________________________________________________________________________________
+Step-3: Generate SSH Key In your Control Node and Copy that SSH key into Managed Nodes
+
+a) Switch to ansible user
+	sudo su ansible
+
+b) Generate ssh key using below command
+	ssh-keygen
+
+c) Copy it to Managed Nodes as ansible user
+	ssh-copy-id ansible@<ManagedNode-Private-IP-address>
+
+
+Note: Repeat above command by updating HOST IP for all the managed Servers.
+____________________________________________________________________________________________________
+Step-4: Update Host Inventory in Ansible Server to add managed node servers details
+
+	sudo vi /etc/ansible/hosts
+	[webservers]
+	192.31.0.247
+	[dbservers]
+	192.31.0.17
+______________________________________________________________________________________________________
+
+Step-5: Test Connectivity
+	ansible all -m ping
+############################################################################################################
+
+Ansible ad-hoc commands allow us to run one-time commands on remote machines without writing a playbook. These commands use modules to perform tasks like checking connectivity, executing shell commands, installing packages, and managing services.
+#############################################################################################################
+
+1️⃣ Basic Syntax
+_____________________________________________________________
+ansible [all/group-name/host] -m <module> -a "<arguments>"
+_____________________________________________________________
+
+all → Runs the command on all configured hosts.
+
+group-name → Runs the command on a specific group of hosts.
+
+private-ip → Targets a specific host by its IP.
+
+-m → Specifies the Ansible module to use.
+
+-a → Passes arguments to the module.
+
+#########################################################################################
+1. Test Connectivity (ping module)
+ansible all -m ping
+✅ Effect: Pings all hosts in the inventory to verify connectivity.
+
+ansible webservers -m ping
+✅ Effect: Pings only the webservers group.
+
+uptime
+✅ From what time server is running in control node.
+
+########################################################################################
+
+2. Run Shell Commands (shell module)
+
+ansible all -m shell -a "date"
+✅ Effect: Runs the date command on all remote machines.
+
+ansible dbservers -m shell -a "df -h"
+✅ Effect: Checks disk space on all dbservers.
+###############################################################################################
+3. Install Packages (yum / apt modules)
+For RHEL/CentOS (Using yum)
+ansible all -m yum -a "name=git state=present" -b
+✅ Effect: Installs git on all managed hosts.
+
+ansible webservers -m yum -a "name=httpd state=latest" -b
+✅ Effect: Installs or updates Apache (httpd) on all webservers.
+
+For Ubuntu/Debian (Using apt)
+ansible all -m apt -a "name=nginx state=latest update_cache=yes"
+✅ Effect: Installs or updates nginx and refreshes package cache.
+##################################################################################################
+4. Start/Stop Services (service module)
+ansible webservers -m service -a "name=httpd state=started"
+✅ Effect: Starts Apache (httpd) on webservers.
+
+ansible dbservers -m service -a "name=mysql state=stopped"
+✅ Effect: Stops MySQL on dbservers.
+################################################################################################
+5. Copy Files to Remote Hosts (copy module)
+
+ansible all -m copy -a "src=/home/user/local.conf dest=/etc/config.conf mode=0644"
+✅ Effect: Copies local.conf to /etc/config.conf on all managed hosts.
+###############################################################################################
+
+Ansible Playbooks
+############################################################################################
+
+Ansible playbooks are written in YAML/yml format.
+
+A playbook consists of one or more tasks that define actions to be performed.
+
+Playbooks specify what tasks to execute and where to execute them.
+
+The playbook is executed on the Ansible control node, which manages remote managed nodes.
+
+Note: To write Ansible playbooks effectively, you should first learn YAML.
+
+###############################################################################################
+YAML (YML)
+
+YAML stands for "YAML Ain't Markup Language".
+
+It is a human-readable data format that is also easily parsed by machines.
+
+YAML files use the extensions .yml or .yaml.
+
+YAML is commonly used for configuration files, data serialization, and automation tools.
+
+🔗 Official Website: yaml.org
+#############################################################################################
+
+Sample yml file:
+______________________________________________
+
+indentation is very important
+
+name: satish
+age: 23
+courses:
+     - java
+     - testing
+     - python
+
+2nd Example of yml
+___________________________________________________
+---
+employee:
+   id: 100
+   name: satish
+   department: It
+   address:
+    city: bengaluru
+    state: karnataka
+    country: india
+   skills:
+       - java
+       - microservices
+       - aws
+...
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Website To validate YML syntax : https://www.yamllint.com/
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+#########################################
+How to create playbook
+####################################
+
+Structure of an Ansible Playbook - A playbook in Ansible consists of three main sections:
+
+a. Host Section
+
+b. Variable Section
+
+c. Task Section
+
+1. Host Section: Defines the target machines on which the tasks will be executed.
+
+2. Variable Section
+-> Declares variables that can be used throughout the playbook.
+-> Helps in avoiding hardcoding values.
+
+3. Task Section - Defines the operations to be performed using Ansible.
+
+Example to run playbook:  $ ansible-playbook webserver-setup.yml
+
+______________________________________________________________________________
+
+####################################
+Playbook to ping managed nodes
+#######################################
+
+---
+- hosts: all
+  tasks:
+  - name: ping all managed nodes
+    ping:
+...
+
+# It will check the syntax of a playbook
+$ ansible-playbook <playbook-yml-file> --syntax-check
+
+# It will display which hosts would be effected by a playbook before run
+$ ansible-playbook <playbook-yml-file> --list-hosts
+
+# Run the playbook Using below command
+$ ansible-playbook <playbook-yml-file>
+
+# It execute one-step-at-a-time, confirm each task before running with (N)o/(y)es/(c)ontinue
+$ ansible-playbook <playbook-yml-file> --step
+
+# Run the playbook in verbose mode
+$ ansible-playbook <playbook-yml-file> -vvv
+
+Example 2:
+__________________
+
+---
+- hosts: all
+  tasks:
+  - name: create a file
+    file: 
+     path: /home/ansible/t1.txt
+     state: touch
+...
+
+Example 3:
+---
+- hosts: all
+  tasks: 
+  - name: copy content to file
+    copy: content="Hello world\n" dest="/home/ansible/t1.txt"
+...
+
+Example 4:
+
+---
+- hosts: webservers
+  become: true #use it if you need sudo priviliges
+  tasks:
+  - name: install httpd package
+    yum:
+     name: httpd
+     state: latest
+  - name: copy index.html file
+    copy:
+     src: index.html
+     dest: /var/www/html/index.html
+  - name: start httpd service
+    service: 
+     name: httpd
+     state: started
+...
+____________________________________________________________________________________________
+

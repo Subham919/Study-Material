@@ -1,0 +1,164 @@
+kafka-notes/Producer-Code-Kafka.txt
+____________________________________
+
+
+_________________________________________________________________________________
+Step 1: Create  Constants class to store constants like URL of Kafka & kafka topic
+_________________________________________________________________________________
+
+package com.kafkalectures.constants;
+
+public class AppConstants {
+
+	public static final String TOPIC = "order_topic";
+	public static final String KAFKA_HOST = "localhost:9092";
+
+}
+___________________________________________
+Step 2: Create a entity/model class
+___________________________________________
+
+package com.kafkalectures.entity;
+
+public class Order {
+
+	private String id;
+    private String name;
+	private Double price;
+	private String email;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", name=" + name + ", price=" + price + ", email=" + email + "]";
+	}
+	
+	
+
+}
+
+__________________________________________________________________
+Step 3: Create Kafka config clas for producer/publishing messages
+__________________________________________________________________
+
+package com.kafkalectures.config;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
+
+
+@Configuration
+public class KafkaProduceConfiguration {
+
+	@Bean
+	public ProducerFactory<String, Order> producerFactory() {
+
+		Map<String, Object> kafkaProps = new HashMap<>();
+
+		kafkaProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, AppConstants.KAFKA_HOST);
+		kafkaProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		kafkaProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+		return new DefaultKafkaProducerFactory<>(kafkaProps);
+	}
+
+	@Bean
+	public KafkaTemplate<String, Order> kafkaTemplate() {
+		return new KafkaTemplate<>(producerFactory());
+	}
+
+}
+
+Note: JsonSerializer converts a Java object (like your Order object) into a JSON string, and then into bytes before sending it to Kafka.
+
+
+____________________________________________
+Step 4: Create Service Class
+____________________________________________
+
+package com.kafkalectures.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+
+@Service
+public class OrderService {
+
+	@Autowired
+	private KafkaTemplate<String, Order> kafkaTemplate;
+
+	public String addMsg(Order order) {
+
+		// sends msg to kafka topic
+		kafkaTemplate.send(AppConstants.TOPIC, order);
+
+		return "Msg Published To Kafka Topic";
+	}
+}
+
+_____________________________________
+Step 5: Create Rest Controller Class
+_____________________________________
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/order")
+public class OrderRestController {
+
+	@Autowired
+	private OrderService service;
+
+	@PostMapping("/create")
+	public String createOrder(@RequestBody Order order) {
+		String response = service.addMsg(order);
+		return response;
+	}
+
+}
+______________________________________________________________________________________

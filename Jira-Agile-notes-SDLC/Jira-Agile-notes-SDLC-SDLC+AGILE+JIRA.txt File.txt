@@ -1,0 +1,216 @@
+Jira-Agile-notes-SDLC/SDLC+AGILE+JIRA.txt
+_________________________________________
+
+
+
+########################################
+What is SDLC : Software development lifecycle
+########################################
+
+
+-> SDLC Represents Phases involved in software project execution
+
+-> We have several phases in SDLC 
+
+	1) Requirements Gathering / Requirement Collection
+	
+	2) Analysis Of Requirement
+	
+	3) Design
+	
+	4) Development
+	
+	5) Testing
+	
+	6) Deployment
+	
+	7) Support
+
+###################################
+Important Terminologies in Agile
+###################################
+
+==================
+Agile Terminology
+==================
+
+1) **Backlog**  
+2) **Backlog Grooming (Refinement)/Backlog Planning**
+2) **user Story**  
+3) **Story Points**  
+4) **Sprint Planning**  
+5) **Sprint**  
+6) **Scrum call** / **Standup meeting**/** Daily Status Call **
+7) **Retrospective**  
+
+##**Backlog Grooming (Refinement)/Backlog Planning**##
+
+Purpose: To refine and estimate user stories before sprint planning.
+🔹 Who Attends? Product Owner, Scrum Master, Developers, Testers.
+🔹 Activities:
+✅ Discuss user stories in detail.
+✅ Break down large stories into smaller ones.
+✅ Assign story points using techniques like planning poker.
+✅ Ensure stories have clear acceptance criteria.
+✅ unnecessary backlog items.
+
+
+### **Backlog**  
+Backlog contains all pending stories and bug fixes.  
+
+Examples:
+
+#################################
+User Story for Login Feature
+#################################
+
+Issue Type: User Story
+Summary: User should be able to log in to the application
+Priority: High
+Status: Backlog
+Sprint: Not Assigned
+Assignee: Developer A
+Description:
+As a registered user, I want to log in using my email and password so that I can access my account and personalized features.
+
+Acceptance Criteria:
+✅ The login page should have fields for email and password.
+✅ Users should be able to enter their credentials and click the Login button.
+✅ The system should validate the credentials against the database.
+✅ If credentials are correct, the user is redirected to the dashboard/homepage.
+✅ If credentials are incorrect, an error message should be displayed.
+✅ The "Forgot Password" option should allow users to reset their password.
+✅ Login should work on both desktop and mobile devices.
+
+Technical Details:
+Use JWT Authentication for security.
+Implement login API (POST /api/login).
+Ensure compatibility with OAuth (Google, Facebook login) if required.
+Logging and monitoring of failed login attempts.
+Labels: Authentication, Login, Security
+Attachments:
+(Screenshots, API documentation, or mockups can be attached)
+
+
+
+
+##########################
+Example Of Bug Template
+##########################
+
+Bug Details for JIRA Backlog
+Issue Key: BUG-101
+Issue Type: Bug
+Summary: Login button not working on mobile
+Priority: High
+Status: Backlog
+Sprint: Not Assigned
+Assignee: Developer A
+Description:
+Steps to Reproduce:
+
+Open the application on a mobile device (Android/iOS).
+Navigate to the login screen.
+Tap the "Login" button after entering credentials.
+Expected Result:
+
+The user should be logged in successfully.
+Actual Result:
+
+The login button is unresponsive and does not trigger the authentication process.
+Attachments:
+(Screenshots, logs, or recordings can be added here)
+
+Labels: UI, Mobile, Login-Issue
+___________________________________________________________________________________________________
+### **Story**  
+For task, a **user story** is created in JIRA to track the work that needs to be completed.  
+
+### **Story Points**  
+Story points are used to estimate the **effort and time required** to complete a story.  "Template of User Story is As a user, I want, So that"
+
+This below example for points duration will vary
+
+        - 1 day of work  → 3 points  
+        - 2 days of work → 6 points  
+        - 3 days of work → 9 points  
+
+**Note:** Every team member has access to JIRA to create and manage stories in the backlog.  
+
+### **Sprint Planning**  
+Sprint Planning is the process of selecting **stories** from the backlog to work on during the next sprint and time duration required to complete that.  
+
+### **Sprint**  
+A sprint is a **fixed time period (2 weeks to 4 weeks)** in which a team works on a set of selected user stories to **develop, test, and deliver** the features.  
+
+#### **Status call / Standup meeting / Daily Standups (Scrum Calls) etc**
+What they worked on yesterday
+What they plan to do today
+Any blockers or challenges
+
+
+### **Retrospective meeting** is used to discuss about sprints feedback.
+
+		- what went well
+		- what went wrong
+		- lessons learnt
+		- new ideas to improvise next sprint
+
+
+###################
+Jira
+###################
+
+- JIRA is a **task and project management software** designed for tracking work progress efficiently.  
+- It also serves as a **bug tracking system** to log and manage software defects.  
+- Developed by **Atlassian**, it is widely used in Agile development.  
+- JIRA is a **paid tool**, but a free trial version is available for learning and practice.  
+
+################Git Repository Creation Request########################
+
+**Subject:** MMT Project | Request for Git Repository Creation  
+
+**To:** mmt.devops@fnf.com  
+**CC:** mmt.development@fnf.com  
+
+**Body:**  
+
+Hi Team,  
+
+Hope you’re doing well.  
+
+As part of the mmt project development, we need a Git repository for source code integration. Kindly create the repository and share the repository URL with us at your earliest convenience.  
+
+@mike - Please review and approve this request.  
+
+Looking forward to your confirmation.  
+
+Best Regards,  
+Pankaj  
+
+
+###########################Scrum Call Update ############################### 
+
+**Subject:** Pankaj | Scrum Call Update  
+
+**To:** mike.k@fnf.com  
+**CC:** mmt.development@fnf.com  
+
+**Body:**  
+
+Hi mike,  
+
+Hope you're doing well.  
+
+I won’t be able to attend today’s Scrum call due to a personal emergency. Below is my current work status:  
+
+  - **Story-5:** Jenkins Pipeline setup (**In Progress**)  
+  - Expected to be completed by 3rd march 2025  
+  - No blockers/challenges at the moment  
+
+Please let me know if any further details are required.  
+
+Best Regards,  
+Pankaj  
+	
+_____________________________________________________________________________________________________________

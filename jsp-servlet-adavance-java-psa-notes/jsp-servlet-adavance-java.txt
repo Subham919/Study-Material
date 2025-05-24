@@ -1,0 +1,1729 @@
+jsp-servlet-adavance-java-psa-notes/Advance java - Outdated Syllabus.txt
+
+_________________________________________________________________________________
+
+
+#########################
+1. HTML
+2. Servlets(Core Java)
+3. JDBC(Core Java)
+
+Using Above we will learn how to perform CRUD Operations
+
+Requirement
+-> Core java
+-> Eclipse for java ee
+-------------------------------------------------------------
+Step 1: Install Tomcat
+-> Tomcat is a application server
+-> Application server is responsible to run Servlet, JSP etc
+
+a. Go to Official Website of Tomcat: https://tomcat.apache.org/download-90.cgi
+b. Click on tomcat 10 link
+c. Under Binary Distribution>>Download Zip file: https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.40/bin/apache-tomcat-10.1.40.zip
+d. Copy the download the ZIP file and paste that into newly created folder tomcat-10 (G: or D:)
+e. Open eclipse and go to server tab>>Click on the link no servers are available>>Go to Apache >> Click on tomcat 10.1>.Click on next button>>Browse and select tomcat path till you see bin(Exclude bin folder)
+Example: G:\tomcat - 10\apache-tomcat-10.1.40
+f. Under JRE Select 21
+g. Click on finish
+
+Steps to Delete Tomcat
+#######################
+Step 1: Stop tomcat from server tab
+Step 2: Right click on tomcat entry in server tab and select delete option
+Step 3: After Deleting again click on No Servers are available link present inside server tab
+Step 4: Go to server tab>>Click on the link no servers are available>>Go to Apache >> Click on tomcat 10.1
+Step 5: Click on Configure run time environments
+Step 6: Select tomcat entry and click on remove button
+Step 7: Click on apply and close
+Step 8: Click on cancel button
+
+##############################
+Create First HTML page
+##############################
+Step 1 : Create Dynamic web project
+Go to File>>New >> Other>> type dynamic web project>>Click on next button
+Step 2: Give your project a name: web_app_1
+Step 3: Select dynamic web module version(5 or 6 or 4) depending on your laptop OS + Hardware
+Step 4: Click on finish
+Step 5: go to web_app_1>>src>>webapp or webcontent>>create index.html page>>Click on finish
+
+Explanation:
+a. <!DOCTYPE html>: Declares the document type and version of HTML being used. <!DOCTYPE html> indicates that this is an HTML5 document.
+b. <html>.....</html>: The root element of the HTML document. All content must be inside this tag.
+c. 
+<head>
+<meta charset="UTF-8">
+<title>registration</title>----> Here we give page title
+</head>
+d. 
+<body>......</body>---> The <body> element contains all the content that is visible on the web page, such as text, images, links, etc. Currently, it's empty.
+
+Example:
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	
+	<body>
+	
+	</body>
+</html>
+--------------------------------
+index.html
+
+Example 2:
+---------
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Registration</title>
+	</head>
+	
+	<body>
+		<h2>Registration Page</h2>
+		<table>
+			<tr>
+				<td>Name</td>
+				<td><input type="text" /></td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td><input type="text" /></td>
+			</tr>
+			<tr>
+				<td>Mobile</td>
+				<td><input type="text" /></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="save" /></td>
+			</tr>
+		</table>
+	</body>
+</html>
+
+index.html
+---------------------------------------------------------------------------
+Example 3: Make html page interact with backend java code
+
+What are servlets?
+--------------------
+-> These are java class that extends HttpServlet
+-> Servlets can read data from fronent technologies like html, jsp etc
+-> Servlet can write data back to html, jsp etc
+
+index.html
+----------
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Registration</title>
+	</head>
+	
+	<body>
+		<h2>Registration Page</h2>
+		<form	action="saveReg" method="post">
+			<table>
+				<tr>
+					<td>Name</td>
+					<td><input type="text" /></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="text" /></td>
+				</tr>
+				<tr>
+					<td>Mobile</td>
+					<td><input type="text" /></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="save" /></td>
+				</tr>
+			</table>
+		
+		</form>
+		
+	</body>
+	
+		
+</html>
+
+RegistrationServlet.java
+-------------------------
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/saveReg")
+public class RegistrationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+   
+    public RegistrationServlet() {
+        super();
+    }
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("get");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("post");
+	}
+
+}
+---------------------------------------------------------------------
+
+
+Example 4: Servlet should read form data
+-----------------------------------------
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Registration</title>
+	</head>
+	
+	<body>
+		<h2>Registration Page</h2>
+		<form	action="saveReg" method="post">
+			<table>
+				<tr>
+					<td>Name</td>
+					<td><input type="text" name="name"/></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="text" name="emailId"/></td>
+				</tr>
+				<tr>
+					<td>Mobile</td>
+					<td><input type="text" name="mobile"/></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="save" /></td>
+				</tr>
+			</table>
+		
+		</form>
+		
+	</body>
+	
+		
+</html>
+index.html
+----------------------------------------------------------
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/saveReg")
+public class RegistrationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+   
+    public RegistrationServlet() {
+        super();
+    }
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("get");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("name");
+		String email = request.getParameter("emailId");
+		String mobile = request.getParameter("mobile");
+		System.out.println(name);
+		System.out.println(email);
+		System.out.println(mobile);
+	}
+
+}
+
+RegistrationServlet.java
+--------------------------------------------------------------------------------
+
+Example 5: Save Data into database using servlets after reading form data
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Registration</title>
+	</head>
+	
+	<body>
+		<h2>Registration Page</h2>
+		<form	action="saveReg" method="post">
+			<table>
+				<tr>
+					<td>Name</td>
+					<td><input type="text" name="name"/></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="text" name="emailId"/></td>
+				</tr>
+				<tr>
+					<td>Mobile</td>
+					<td><input type="text" name="mobile"/></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="save" /></td>
+				</tr>
+			</table>
+		
+		</form>
+		
+	</body>
+	
+		
+</html>
+index.html
+-------------------------------------------------------------
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+@WebServlet("/saveReg")
+public class RegistrationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+   
+    public RegistrationServlet() {
+        super();
+    }
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("get");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("name");
+		String email = request.getParameter("emailId");
+		String mobile = request.getParameter("mobile");
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psadb","root","test");
+			
+			Statement stmnt = con.createStatement();
+			stmnt.executeUpdate("insert into student values('"+name+"','"+email+"','"+mobile+"')");
+		
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+RegistrationServlet.java
+---------------------------------------------------------------------------------------------------
+
+Example 6 - Delete Data from Database
+########################################
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Delete Registration</title>
+	</head>
+	
+	<body>
+		<h2>Delete Registration Page</h2>
+		<form	action="deleteReg" method="post">
+			<table>
+				<tr>
+					<td>Email</td>
+					<td><input type="text" name="emailId"/></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="delete" /></td>
+				</tr>
+			</table>
+		
+		</form>
+		
+	</body>
+	
+		
+</html>
+delete_registration.html
+-------------------------------------------------------------------------
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+@WebServlet("/deleteReg")
+public class DeleteRegistrationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+   
+    public DeleteRegistrationServlet() {
+        super();
+    }
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("get");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String email = request.getParameter("emailId");
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psadb","root","test");
+			
+			Statement stmnt = con.createStatement();
+			stmnt.executeUpdate("Delete From student where email='"+email+"'");
+		
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+DeleteRegistration.java
+---------------------------------------------------------------------------
+
+Example 7- Update Record
+------------------------
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>update Registration</title>
+	</head>
+	
+	<body>
+		<h2>Update Registration Page</h2>
+		<form	action="updateReg" method="post">
+			<table>
+				<tr>
+					<td>Email</td>
+					<td><input type="text" name="emailId"/></td>
+				</tr>
+				<tr>
+					<td>Mobile</td>
+					<td><input type="text" name="mobile"/></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="update" /></td>
+				</tr>
+			</table>
+		
+		</form>
+		
+	</body>
+	
+		
+</html>
+update_registration.html
+---------------------------------------------------------------------------------
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+@WebServlet("/updateReg")
+public class UpdateRegistrationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+   
+    public UpdateRegistrationServlet() {
+        super();
+    }
+    
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("get");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String email = request.getParameter("emailId");
+		String mobile = request.getParameter("mobile");
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psadb","root","test");
+			
+			Statement stmnt = con.createStatement();
+			stmnt.executeUpdate("update student set mobile='"+mobile+"' where email='"+email+"'");
+		
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+UpdateRegistrationServlet.java
+-------------------------------------------------------------------------------------------------
+
+Example 8:Running directly servlet
+------------------------------------------------
+
+Note: When we run a servlet , get method of servlet will get executed
+--------------------------------------------------------------------
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/readReg")
+public class ReadRegistration extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public ReadRegistration() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Get");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("post");
+	}
+
+}
+Output: Get
+
+Example 9:Write data from servlet to html
+-----------------------------------------
+
+Note: 
+-> use repsonse.getWriter() for writing data to html
+PrintWriter out = repsonse.getWriter(); //------> Will give out reference using which we can write content to html
+
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+@WebServlet("/readReg")
+public class ReadRegistration extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public ReadRegistration() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+		out.println("hello");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("post");
+	}
+
+}
+
+Example 9: Read data from database and display that as a table in html
+------------------------------------------------------------------------------------
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+@WebServlet("/readReg")
+public class ReadRegistration extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public ReadRegistration() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+		response.setContentType("text/html");
+		out.println("<table border=1>");
+		out.println("<tr>");
+		out.println("<th>");
+		out.println("Name");
+		out.println("</th>");
+		out.println("<th>");
+		out.println("Email Id");
+		out.println("</th>");
+		out.println("<th>");
+		out.println("Mobile");
+		out.println("</th>");
+		out.println("</tr>");
+		
+		//JDBC Code to read data from database
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/psadb","root","test");
+			
+			Statement stmnt = con.createStatement();
+			ResultSet result = stmnt.executeQuery("Select * from student");
+			
+			while(result.next()) {
+				out.println("<tr>");
+				out.println("<td>");
+				out.println(result.getString(1));
+				out.println("</td>");
+				out.println("<td>");
+				out.println(result.getString(2));
+				out.println("</td>");
+				out.println("<td>");
+				out.println(result.getString(3));
+				out.println("</td>");
+				out.println("</tr>");
+			}
+		
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		out.println("</table>");
+		
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("post");
+	}
+
+}
+
+#########################
+JSP - Java Server Pages
+#########################
+-> JSP helps us to add partial java code inside html
+-> This will make development easy
+
+JSP Tags
+--------------
+a. scriptlet tag
+-> <%    %> tag is used to add java code insie html
+
+Example 1:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<%
+		for(int i=0;i<5;i++){
+			System.out.println(i);
+		}
+	%>
+</body>
+</html>
+
+registration_page.jsp
+--------------------------------------------------------------------------------------
+-> Scriptlet tag has built in implicit object like out, request, response, session
+
+Example 2:
+----------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<%
+		for(int i=0;i<5;i++){
+			out.println(i);
+		}
+	%>
+</body>
+</html>
+
+registration_page.jsp
+-------------------------------------------------------------------------------------------
+-> We cannot use access specifier inside scriptlet tag
+Example: 3
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<%
+		public int x;//--->Error
+		public void test(){//--->Error
+			
+		}
+	%>
+</body>
+</html>
+
+-----------------------------------------------------------------------------------------
+-> Inside scriptlet tag we cannot create static / non static variables
+-> We cannot create methods inside script let tag
+-> Only loca variable can be created inside scriptlet
+Example 4:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<%
+		int x=10;//------>Local Variable
+		out.println(x);
+		
+	%>
+</body>
+</html>
+
+------------------------------------------------------------------------------------
+Note: We cannot write html code inside scriptlet tag
+
+--------------------------------------------------------------------------------------------
+
+2. Declaration tag
+----------------------------
+-> To create declaration tag we use <%!  %>
+-> To create static/non static vartiable we use declaration tag
+-> To create methods we use declaration tag
+-> We donot have implicit objects inside declaration (out, request, response, session etc)
+-> We cannot wite html code inside declaration tag
+
+
+Example 1:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<%!
+		public static int y=100;
+		public int x=10;//------>Non-satic Variable
+		public String test(){
+			return "hello";
+		}
+		
+	%>
+	
+	<%
+		out.println(y);
+		out.println(x);
+		out.println(test());
+	%>
+	
+</body>
+</html>
+
+c. Expression tag
+-----------------
+-> <%= %>
+-> Evaluates an expression and prints the final output to a webpage
+-> Here we can write only one statement
+-> Do not terminate the statement with semicolon(;)
+
+Example:
+--------
+	<%!
+		public static int y=100;
+		public int x=10;//------>Non-satic Variable
+		public String test(){
+			return "hello";
+		}
+		
+	%>
+	
+	<%=x %>
+	<%=y %>
+	<%=test() %>
+
+d. Directive tag
+--------------------------
+Syntax: <%@  %>
+
+a. Page directive tag
+----------------------
+-> It is used to perform imports
+
+Example 1:
+---------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.util.ArrayList" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	
+	<%=new Date() %>
+	
+	<% 
+	
+	ArrayList arr = new ArrayList(); 
+	
+	%>
+	
+	
+</body>
+</html>
+
+Example 2:
+----------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.Date,java.util.ArrayList,java.util.LinkedList" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<%=new Date() %>
+	
+	<% 
+		ArrayList arr = new ArrayList(); 
+		LinkedList l = new LinkedList();//-->Control + Space bar
+	%>
+</body>
+</html>
+
+
+b. include directive tag
+-----------------------------
+-> Imports content of one file into another
+
+Example 1:
+Create test1.txt in same folder as that of registration_Page.jsp
+-------------------
+Pankaj Sir Academy
+--------------------
+test1.txt
+
+Go to registration_page.jsp and add the following include directive tag
+-----------------------------------------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="test1.txt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+</body>
+</html>
+
+Example 2: Develop menu.html and import its content to registration_page.jsp & list_registration.jsp
+----------------------------------------------------------------------------------
+Step 1: Develop menu.html
+-----------------------------
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<a href="">create registration</a>
+	<a href="">List registration</a>
+	<a href="">logout</a>
+</body>
+</html>
+
+Step 2: Develop and import menu.html content to registration_page.html
+---------------------------------------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="menu.html" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+		<h1> Register </h1>
+</body>
+</html>
+
+Step 3: Develop and import menu.html content to list_registration.html
+---------------------------------------------------------------------
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="menu.html" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1> List Register </h1>
+</body>
+</html>
+
+##################################
+Inter servlet Commuication
+##################################
+
+-> Calling one servlet from another servlet is called as interservlet communication
+-> Using interservlet communication we can also call from a servlet a jsp page
+-> project flow to be built based on business scenario we use ISC
+
+Example 1:
+---------
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/first")
+public class FirstServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public FirstServlet() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Will Point to second Servlet
+		RequestDispatcher rd = request.getRequestDispatcher("second");
+		rd.forward(request, response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+}
+
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/second")
+public class SecondServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public SecondServlet() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Second Servlet get method");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+}
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/second")
+public class SecondServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public SecondServlet() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Second Servlet get method");
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+}
+
+Example 2: Call Post method of second servlet from first servlet
+------------------------------------------------------------------
+.html
+-----
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+		<form action="first" method="post">
+			<input type="submit"/>
+		</form>
+</body>
+</html>
+
+FirstServlet.java
+------------------
+package p1;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/first")
+public class FirstServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public FirstServlet() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Will Point to second Servlet
+		RequestDispatcher rd = request.getRequestDispatcher("second");
+		rd.forward(request, response);
+	}
+
+}
+
+SecondServlet.java
+-------------------
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/second")
+public class SecondServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public SecondServlet() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Second Servlet post method");
+	}
+
+}
+-------------------------------------------------------------------------------------------
+Example 3: Supply data from html form to first servlet and then from first servlet supply data to second servlet using request.setAttribute()
+-----------------------------------------------------
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+		<form action="first" method="post">
+		    Name <input type="text" name="name"/>
+			<input type="submit"/>
+		</form>
+</body>
+</html>
+
+FirstServlet.java
+-------------------
+package p1;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/first")
+public class FirstServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public FirstServlet() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Will Point to second Servlet
+		String name = request.getParameter("name");
+		request.setAttribute("x", name);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("second");
+		rd.forward(request, response);
+	}
+
+}
+
+SecondServlet.java
+--------------------
+package p1;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/second")
+public class SecondServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public SecondServlet() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = (String)request.getAttribute("x");
+		System.out.println(name);
+	}
+
+}
+
+Example 4:Servlet calls jsp page and also servlet supplies data to jsp implicit object request
+---------------------------------------------------------------------------------------
+First.java
+---------
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/first")
+public class First extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public First() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//rd points to jsp page
+		request.setAttribute("x", "mike");
+		
+		
+		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+		rd.forward(request, response);
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+
+}
+
+index.jsp
+----------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>Index page</h2>
+	<%
+		out.println((String)request.getAttribute("x"));
+	%>
+</body>
+</html>
+
+##############################################
+MVC Architecture
+##############################################
+-> MVC Stands for Model, View , Controller
+-> It is a 3 layered architecture used to build application
+-> Using this architecture we divided application into following layers
+a. View - All front end code of your application we will keep that in view
+Example: html, jsp etc
+b. Model - All database operations / business logic we develop in this layer
+c. Controller - It act as mediator between view and model layer. That is it takes data from the view and gives that model and vice versa
+
+Practical Example  - To add two numbers using MVC Architecture
+a. view - add.jsp
+b. Controller - servlets - AddController.java
+c. Model (Service layer) - Java classes with logical implementation - AddService
+
+add.jsp
+--------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Add</title>
+</head>
+<body>
+	<h2>Add Numbers</h2>
+	<form action="add" method="post">
+		Number 1: <input type="text" name="num1"/>
+		Number 2: <input type="text" name="num2"/>
+		<input type="submit" value="add"/>
+	</form>
+	
+	<%
+	
+		if(request.getAttribute("result")!=null){
+			out.println(request.getAttribute("result"));
+		}
+	%>
+</body>
+</html>
+
+AddController.java
+-------------------
+package com.web_app_3.controller;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import com.web_app_3.model.AddService;
+
+@WebServlet("/add")
+public class AddController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public AddController() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int num1 = Integer.parseInt(request.getParameter("num1"));
+		int num2 = Integer.parseInt(request.getParameter("num2"));
+		AddService add = new AddService();
+		int result = add.addNumbers(num1, num2);
+		request.setAttribute("result", result);
+		RequestDispatcher rd = request.getRequestDispatcher("add.jsp");
+		rd.forward(request, response);
+	}
+}
+
+AddService.java
+----------------
+package com.web_app_3.model;
+
+public class AddService {
+	
+	public int addNumbers(int num1, int num2) {
+		return num1+num2;
+	}
+
+}
+
+##################################
+Project - EMS - Iteration 1
+###################################
+
+Write SQL Query to create users
+----------------------------------
+create database emsdb
+
+use emsdb
+
+create table user
+(
+  id int primary key,
+  username varchar(45),
+  name varchar(45),
+  email varchar(128),
+  password varchar(20)
+)
+
+insert into user values(1,"mike","mike","mike@gmail.com","testing")
+insert into user values(2,"adam","adam","adam@gmail.com","testing")
+
+select * from user
+
+##################################################
+Note: If email id and password matches the return a record
+
+select * from user where email='mike@gmail.com' and password='testing'
+############################################################################
+
+Create index.jsp form - to perform login
+--------------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body>
+	<h2> Login here....</h2>
+	<form action="login" method="post">
+		Email <input type="text" name="email"/>
+		Password <input type="password" name="password"/>
+		<input type="submit" value="login"/>
+	</form>
+	<%
+		if(request.getAttribute("error")!=null){
+			out.println(request.getAttribute("error"));
+		}
+	%>	
+</body>
+</html>
+
+LoginController.java
+-----------------------
+package com.ems.controller;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import com.ems.model.DBServiceImpl;
+@WebServlet("/login")
+public class LoginController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public LoginController() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		
+		DBServiceImpl service = new DBServiceImpl();
+		service.connectDB();
+		boolean status = service.verifyLogin(email, password);
+		if(status) {
+			
+		}else {
+			//Error Message
+			request.setAttribute("error", "Invalid email/password");
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+		}
+	}
+
+}
+
+DBService.java
+-----------------
+package com.ems.model;
+
+public interface DBService {
+	public void connectDB();//->Connecting to database
+	public boolean verifyLogin(String email, String password);
+}
+
+DBServiceImpl.java
+------------------
+package com.ems.model;
+import java.sql.*;
+public class DBServiceImpl implements DBService {
+	
+	private Connection con;
+	private Statement stmnt;
+	
+
+	@Override
+	public void connectDB() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/emsdb","root","test");
+			stmnt = con.createStatement();
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public boolean verifyLogin(String email, String password) {
+		try {
+		 ResultSet result = stmnt.executeQuery("select * from user where email='"+email+"' and password='"+password+"'");
+		 return result.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+}
+
+##################################
+Project - EMS - Iteration 2
+###################################
+
+Note: 
+-> If we develop .html/.jsp page inside webapp then they are accessed publicly.
+-> Those pages that are kept inside webapp/WEB-INF can be accessed only by servlets
+-> Session Variable: Once we store data inside a session variable then  that data can be accessed across the application
+Example: user profile, logout etc
+
+Create registration table
+-------------------------
+create database emsdb
+
+use emsdb
+
+create table user
+(
+  id int primary key,
+  username varchar(45),
+  name varchar(45),
+  email varchar(128),
+  password varchar(20),
+ 
+)
+
+insert into user values(2,"mike","mike","mike@gmail.com","testing")
+
+select * from user where email='mike@gmail.com' and password='testing'
+
+create table registration
+(
+id int auto_increment primary key,
+name varchar(45),
+course varchar(60),
+email varchar(145),
+mobile varchar(10),
+ user_id int
+)
+
+
+Create registration.jsp page inside webapp/WEB-INF/views
+-----------------------------------------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body>
+	<h2> Login here....</h2>
+	<form action="login" method="post">
+		Email <input type="text" name="email"/>
+		Password <input type="password" name="password"/>
+		<input type="submit" value="login"/>
+	</form>
+	<%
+		if(request.getAttribute("error")!=null){
+			out.println(request.getAttribute("error"));
+		}
+	%>	
+</body>
+</html>
+
+Modify LogonController.java - Add Session variable concetp and load .jsp page present inside WEB-INF/views
+-------------------------------------------------------------------------------------------
+package com.ems.controller;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+
+import com.ems.model.DBServiceImpl;
+@WebServlet("/login")
+public class LoginController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public LoginController() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		
+		DBServiceImpl service = new DBServiceImpl();
+		service.connectDB();
+		boolean status = service.verifyLogin(email, password);
+		if(status) {
+			HttpSession session = request.getSession(true);
+			session.setAttribute("email",email);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/registration.jsp");
+			rd.forward(request, response);
+		}else {
+			//Error Message
+			request.setAttribute("error", "Invalid email/password");
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+		}
+	}
+
+}
+
+Create RegistrationController.java - Here Access Session variable
+----------------------------------------------------------------------
+package com.ems.controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+
+@WebServlet("/registrationController")
+public class RegistrationController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public RegistrationController() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
+		String email = (String)session.getAttribute("email");
+	}
+
+}
+
+############################
+Project - ems - Iteration 3
+############################
+
+Modify registration.jsp
+--------------------------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>registration</title>
+</head>
+<body>
+	<h2>Register here....</h2>
+	<form action="registrationController" method="post">
+		<pre>
+			Name <input type="text" name="name"/>
+			Course <input type="text" name="course"/>
+			Email <input type="text" name="email"/>
+			Mobile <input type="text" name="mobile"/>
+			<input type="submit" value="register"/>
+		</pre>
+	</form>
+	
+	<%
+		if(request.getAttribute("message")!=null){
+			out.println(request.getAttribute("message"));
+		}
+	%>
+</body>
+</html>
+
+RegistrationController.java
+-------------------------------
+package com.ems.controller;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.sql.ResultSet;
+
+import com.ems.model.DBServiceImpl;
+
+@WebServlet("/registrationController")
+public class RegistrationController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public RegistrationController() {
+        super();
+    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			HttpSession session = request.getSession(false);
+			String email = (String)session.getAttribute("email");
+			
+			DBServiceImpl service = new DBServiceImpl();
+			service.connectDB();
+			ResultSet result = service.getUserByEmail(email);
+			int userId = 0;
+			if(result.next()) {
+				userId = result.getInt(1);
+			}
+			String name = request.getParameter("name");
+			String course = request.getParameter("course");
+			String emailId = request.getParameter("email");
+			String mobile = request.getParameter("mobile");
+			
+			service.createRegistration(name,course,emailId,mobile,userId);
+			
+			request.setAttribute("message", "Registration created");
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/registration.jsp");
+			rd.forward(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+DBService.java
+--------------
+package com.ems.model;
+
+import java.sql.ResultSet;
+
+public interface DBService {
+	public void connectDB();//->Connecting to database
+	public boolean verifyLogin(String email, String password);
+	public ResultSet getUserByEmail(String email);
+	public void createRegistration(String name, String course, String emailId, String mobile, int userId);
+}
+
+DBServiceImpl.java
+------------------
+package com.ems.model;
+import java.sql.*;
+public class DBServiceImpl implements DBService {
+	
+	private Connection con;
+	private Statement stmnt;
+	
+
+	@Override
+	public void connectDB() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/emsdb","root","test");
+			stmnt = con.createStatement();
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public boolean verifyLogin(String email, String password) {
+		try {
+		 ResultSet result = stmnt.executeQuery("select * from user where email='"+email+"' and password='"+password+"'");
+		 return result.next();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public ResultSet getUserByEmail(String email) {
+		try {
+			 ResultSet result = stmnt.executeQuery("select * from user where email='"+email+"'");
+			 
+			 return result;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
+
+	public void createRegistration(String name, String course, String emailId, String mobile, int userId) {
+		try {
+			stmnt.executeUpdate("INSERT INTO registration (name, course, email, mobile, user_id) VALUES ('"+name+"', '"+course+"', '"+emailId+"', '"+mobile+"', '"+userId+"')");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	}
+
+}
+
+
+################################
+Project - ems - Iteration 4
+###############################
+
+
+
+

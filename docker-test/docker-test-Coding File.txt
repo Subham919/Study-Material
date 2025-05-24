@@ -1,0 +1,205 @@
+docker-test Coding
+-------------------
+
+_________________________________________________________________
+
+---------------------------
+pom.xml
+docker-test/pom.xml
+___________________________
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.demo</groupId>
+	<artifactId>demo-app</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>demo-app</name>
+	<description>Demo project for Spring Boot</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+	 <finalName>demo-app</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+----------------------------------------------------------------------------------------------
+
+
+-------------------
+demo-app-v1
+docker-test/Dockerfile
+___________________________________________________________
+
+FROM openjdk:17
+
+COPY target/demo-app.jar  /usr/app/
+
+WORKDIR /usr/app/
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "demo-app.jar"]
+-----------------------------------------------------------------------
+
+--------------------------------
+docker-test/k8s-deploy.yml
+________________________________________________________________________
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: webapp
+spec:
+ replicas: 2
+ strategy: 
+  type: RollingUpdate
+ selector:
+  matchLabels:
+   app: javawebapp
+ template:
+  metadata:
+   name: javawebpod
+   labels:
+    app: javawebapp
+  spec:
+   containers:
+   - name: webappcontainer
+     image: psait/pankajsiracademy:latest
+     ports:
+     - containerPort: 9090
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: websvc
+spec:
+ type: LoadBalancer
+ selector:
+  app: javawebapp
+ ports:
+  - port: 80
+    targetPort: 9090
+...
+--------------------------------------------------------------------------------
+
+--------------------------------
+Package :- resources
+Class   :- application.properties
+___________________________________________________________________________________
+
+
+spring.application.name=demo-app
+
+server.port=8080
+-----------------------------------------------------------------------------------
+
+
+------------------------------
+Package :- com.demo
+------------------------------
+Package :- controller
+Class   :- HelloWorldController.java
+docker-test/src/main/java/com/demo/controller/HelloWorldController.java
+_____________________________________________________________________________
+
+package com.demo.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloWorldController {
+	
+	@GetMapping("/message")
+	public String getMessage() {
+		return "Pankaj Sir Academy - Bengaluru";
+	}
+
+}
+--------------------------------------------------------------------------------
+
+
+---------------------------------------------
+Program Starter File :- DemoAppApplication.java
+docker-test/src/main/java/com/demo/DemoAppApplication.java
+________________________________________________________________________________
+
+package com.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoAppApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoAppApplication.class, args);
+	}
+
+}
+_____________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+test1/test1.txt
+________________
+
+<<<<<<< Updated upstream
+
+###########Error##############]
+Fixed it
+=======
+Feature 1
+//Some login code with OTP
+//100%
+##########This Above Lines will be stored in a hidden git area + temp#####
+
+
+>>>>>>> Stashed changes
+Ooty
+Bengaluru
+Welcome
+
+Hello world
+
+Pankaj Sir Academy
+Pankaj Sir Academy
+
+Pankaj Sir Academy
+Pankaj Sir Academy
+
+
+class B {
+
+class A {
+
+
+
+
+}
+
+//Feature 1
+Class C{
+
+
+}
+100% Code is completed
+
+
+//new feature 2
+class D{
+
+
+}
+
+=======
+80%
+>>>>>>> Stashed changes
+=======
+>>>>>>> 15077912da15d976928f30f0484e7ce3d2b97280

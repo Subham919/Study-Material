@@ -1,0 +1,379 @@
+loggers-elk-psa-notes/loggers-psa-notes.txt
+
+________________________________________________________
+
+###########################
+🧾 What is Logging?
+###########################
+
+-> Logging is the process of recording the application's activity, errors, and other useful information into a file (or console). These records are called log messages.
+
+###################################
+✅ Why is Logging Important?
+###################################
+
+1. Understand Application Behavior
+-> Logs help you know what the application is doing at each step.
+
+Example: “Server started”, “User logged in”, “Order placed”, etc.
+
+2. Find Root Cause of Errors
+-> If your app crashes or throws an error, the logs can show what exactly happened and where.
+
+Example: NullPointerException at line 52 in a log tells you exactly where the code failed.
+
+3. Debugging in Production
+-> You can’t always open a code editor in a live app. But with logs, you can see what’s going wrong without stopping the app.
+
+4. Security & Auditing
+-> You can track who accessed what, which can be useful for security checks or user activity monitoring.
+
+##############################
+💬 Real Life Analogy
+##############################
+
+Imagine you run a delivery business. You keep a diary of:
+
+a. Orders taken
+
+b. Orders packed
+
+c. Orders delivered
+
+d. Complaints
+
+-> Later, if a customer says, “I never got my package,” you check your diary (log) to find what happened. This is exactly how logs work in software.
+
+################################################################
+Logging Architecture one by one in a simple and practical way:
+################################################################
+
+🔧 1) Logger
+👉 What is it?
+-> Logger is the main object used to create log messages. (It is a class)
+-> It provides methods like .info(), .debug(), .error(), etc
+
+🧩 2) Layout
+👉 What is it?
+-> Layout decides how your log message looks.
+-> It defines the format/structure of each log entry.
+
+Example - 
+[DATE] [LEVEL] - [MESSAGE]
+2025-04-03 10:45:12 INFO - Server started successfully
+
+📦 3) Appender
+👉 What is it?
+-> Appender decides where the logs go.
+
+It could be the console, a file, a database, or even remote servers.
+
+✅ Common Types of Appenders:
+a. ConsoleAppender: Logs appear on the terminal/console.
+b. FileAppender: Logs are saved into a file (like app.log). Most widely used approach in projects
+c. RollingFileAppender: Automatically creates new log files when size limit is reached.
+d. SMTPAppender: Sends logs via email.
+
+####################################--Note--###############################
+To Analize logs file we can use tools like putty, ELK, Splunk, WinScp etc
+#############################################################################
+
+########################################
+Flow of Logger how it will work:
+########################################
+
+Your Code (Logger)
+    |
+    v
+[Log Message]
+    |
+    v
+[Formatted by Layout]
+    |
+    v
+[Sent to Appender (Console/File/etc)]
+
+
+####################
+Loggings Frameworks
+####################
+
+Framework	Used By Default in Spring boot?			
+Log4j	           ❌ (older)	             		 
+Log4j2		   ❌ Improved version of Log4j
+Logback		   ✅ Yes				
+Logstash	   ❌
+
+##############################################################
+✅ SLF4J (Simple Logging Facade (fuh·saad pronounce) for Java)
+##############################################################
+
+-> Its an interface and is been implemented in Log4J, Log4j2, Logback, 	Logstash
+→ This helps developers to **easily switch** between different logging implementations (like Log4j, Logback, etc.) without changing application code.	
+
+
+#################################################################################
+To generate log messages in file add the following in application.properties file
+
+logging.file.name=app.log
+
+##################################################################################   
+
+
+Example 1:
+#####################
+
+import lombok.extern.slf4j.Slf4j;  //Perform import from slf4J
+import org.springframework.stereotype.Service;
+
+@Service
+//@Slf4j  // Enables logging without needing explicit LoggerFactory
+public class OrderService {
+
+    private Logger log = LoggerFactory.getLogger(OrderService.class);
+
+    public void processOrder(int orderId) {
+        log.info("Processing order with ID: {}", orderId);
+
+        if (orderId <= 0) {
+          
+            return;
+        }
+
+        log.debug("Checking inventory for order ID: {}", orderId);
+        
+        try {
+            // Simulating some order processing logic
+            Thread.sleep(2000);
+            log.info("Order {} processed successfully!", orderId);
+        } catch (InterruptedException e) {
+           
+        }
+    }
+}	
+
+Example 2:
+###########################
+
+import lombok.extern.slf4j.Slf4j;  //Perform import from slf4J
+import org.springframework.stereotype.Service;
+
+@Service
+//@Slf4j  // Enables logging without needing explicit LoggerFactory
+public class OrderService {
+
+    private Logger log = LoggerFactory.getLogger(OrderService.class);
+
+    public void processOrder(int orderId) {
+        log.info("Processing order with ID: {}", orderId);
+
+        if (orderId <= 0) {
+            log.error("Invalid order ID: {}", orderId);
+            return;
+        }
+
+        log.debug("Checking inventory for order ID: {}", orderId);
+        
+        try {
+            // Simulating some order processing logic
+            Thread.sleep(2000);
+            log.info("Order {} processed successfully!", orderId);
+        } catch (InterruptedException e) {
+            log.error("Error processing order: {}", orderId, e);
+        }
+    }
+}	   		   
+
+###################################
+Log Levels & Their Purpose
+###################################
+
+Each log level serves a different purpose:
+
+Log Level	Purpose
+TRACE		Most detailed logs, used for debugging deep-level issues. Rarely enabled in production.
+DEBUG		Debugging information useful for developers to track program flow.
+INFO		General application information (e.g., "Application Started Successfully"). Default in Spring Boot.
+WARN		Indications of potential issues (e.g., "Disk Space Low").
+ERROR		Severe issues that may cause the application to fail. 
+
+
+############################################
+Example on how to implement logs in projects
+###########################################
+
+
+#####################
+Service Layer
+#####################
+
+package com.example.demo.service;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class UserService {
+
+    public void registerUser(String username) {
+        log.trace("Entering registerUser method with username: {}", username);
+        
+        if (username == null || username.isEmpty()) {
+            log.warn("Username is empty or null!");
+            return;
+        }
+
+        log.debug("Checking if username {} is already taken...", username);
+
+        if ("admin".equalsIgnoreCase(username)) {
+            log.error("Registration failed: Username '{}' is reserved!", username);
+            return;
+        }
+
+        log.info("User '{}' registered successfully!", username);
+        log.trace("Exiting registerUser method...");
+    }
+
+    public void getUserDetails(String username) {
+        log.trace("Entering getUserDetails method for username: {}", username);
+
+        if ("testUser".equalsIgnoreCase(username)) {
+            log.debug("Fetching details for test user.");
+            log.info("User details found for '{}'", username);
+        } else {
+            log.warn("User '{}' not found in the system!", username);
+        }
+
+        log.trace("Exiting getUserDetails method...");
+    }
+}
+
+#############################
+application.properties file
+#############################
+
+logging.level.root=DEBUG
+logging.level.com.example.demo.service=TRACE
+logging.file.name=app.log
+
+
+###################
+Modify Main Class
+###################
+
+package com.example.demo;
+
+import com.example.demo.service.UserService;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class MainApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MainApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner run(ApplicationContext ctx) {
+        return args -> {
+            UserService userService = ctx.getBean(UserService.class);
+            
+            userService.registerUser("john_doe");
+            userService.registerUser("admin");
+            userService.registerUser("");
+            
+            userService.getUserDetails("testUser");
+            userService.getUserDetails("unknownUser");
+        };
+    }
+}
+
+---------------------------------------------------------------------------------------------
+
+Expected Output for debug
+
+TRACE  - Entering registerUser method with username: john_doe
+DEBUG  - Checking if username john_doe is already taken...
+INFO   - User 'john_doe' registered successfully!
+TRACE  - Exiting registerUser method...
+
+TRACE  - Entering registerUser method with username: admin
+DEBUG  - Checking if username admin is already taken...
+ERROR  - Registration failed: Username 'admin' is reserved!
+
+TRACE  - Entering registerUser method with username:
+WARN   - Username is empty or null!
+
+TRACE  - Entering getUserDetails method for username: testUser
+DEBUG  - Fetching details for test user.
+INFO   - User details found for 'testUser'
+TRACE  - Exiting getUserDetails method...
+
+TRACE  - Entering getUserDetails method for username: unknownUser
+WARN   - User 'unknownUser' not found in the system!
+TRACE  - Exiting getUserDetails method...
+
+------------------------------------------------------------------------------------------------------
+
+Explanation of Log Levels Used
+
+✅ TRACE → Used to track method entry and exit points. Helps when debugging method flow.
+✅ DEBUG → Provides additional context, such as checking if a username exists.
+✅ INFO → General information, like confirming a successful user registration.
+✅ WARN → Used when input is missing (empty username) or when the user is not found.
+✅ ERROR → Used for serious issues, like trying to register with a reserved username.
+
+How to Control Log Levels in application.properties
+
+logging.level.root=DEBUG
+logging.file.name=app.log
+
+🔹 Setting TRACE level for this package means all logs (TRACE, DEBUG, INFO, WARN, ERROR) will be printed.
+🔹 If we change it to INFO, only INFO, WARN, and ERROR logs will be recorded.  	
+
+############################################
+ELK (Elasticsearch, Logstash, Kibana)
+############################################
+
+ELK (Elasticsearch, Logstash, Kibana) is a powerful stack used for log analysis, monitoring, and visualization in real-time. It helps in debugging, performance monitoring, and security auditing for applications, including Spring Boot apps.
+
+a. Logstash -  A data processing pipeline that collects, processes, and forwards logs to Elasticsearch.
+
+b. Elasticsearch - A search and analytics engine that stores logs and allows querying. Provides fast retrieval of logs with filtering capabilities.
+
+c. Kibana - A visualization tool for logs stored in Elasticsearch. Helps create dashboards, graphs, and alerts for log monitoring.
+
+###############
+ELK Setup - 
+###############
+
+------------------------------------------
+Setps to setup elastic search on windows
+-----------------------------------------
+
+Step 1: https://www.elastic.co/downloads/elasticsearch
+
+Step 2: Start the service
+
+------------------------
+Steps to download kibana
+------------------------
+
+Step 1: https://www.elastic.co/downloads/kibana
+Step 2: Start the service
+
+---------------------------
+Steps to download logstash
+---------------------------
+
+Step 1: https://www.elastic.co/downloads/logstash
+Step 2: Start the service - Run bin/logstash -f logstash.conf
+
+----------------------------------------------------------------------------------------------------------
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$-----Further notes will be updated soon--------$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$

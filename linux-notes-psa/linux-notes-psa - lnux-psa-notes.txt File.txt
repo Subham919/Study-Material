@@ -1,0 +1,756 @@
+linux-notes-psa/lnux-psa-notes.txt
+__________________________________
+
+
+#####################################################
+Why Should a developer or devops engineer learn linux
+#####################################################
+-> Linux is the backbone of modern IT infrastructure, and learning it provides a competitive edge for developers and DevOps engineers.
+-> Most Servers Run on Linux
+-> Popular DevOps tools like Docker, Kubernetes, Ansible, Terraform, and Jenkins run seamlessly on Linux.
+-> Major cloud providers (AWS, Azure, GCP) extensively use Linux-based VMs and services
+-> Linux Servers are highly Secure
+-> Performance 
+
+############################
+Linux Operating System (OS)
+############################
+
+-> Linux is a community-driven OS, not owned by any single company.
+
+-> Linux is free and open-source, allowing customization and flexibility.
+
+-> Linux is highly secure, eliminating the need for antivirus software.
+
+-> Linux is primarily CLI-based (Command Line Interface), offering powerful control over the system.
+
+-> Linux is widely used in businesses for efficient server management and enterprise solutions.
+
+############################
+Linux History
+############################
+
+-> Linux OS was developed by Linus Torvalds.
+
+-> Linus Torvalds identified several limitations and challenges in the Unix OS.
+
+-> He discovered an OS that aligned with his vision, known as Minix OS.
+
+-> Using Minix OS as a reference, he modified its code and introduced a new operating system—Linux OS.
+
+-> The name Linux comes from: (Li)nus + Mi(nux) = Linux.
+
+#############################
+Linux Distributions
+#############################
+
+​Linus Torvalds made the Linux OS source code freely available to the public. Various companies and communities have since modified this source code to meet their specific requirements, releasing their own versions known as Linux distributions or flavors. As of now, there are over 600 active Linux distributions in the market. ​
+TrueList
+
+Examples include:
+
+a. Amazon Linux​
+b. Ubuntu​
+c. Red Hat​
+d. Debian​
+e. Kali​
+f. Fedora​
+
+Each of these distributions offers unique features and caters to different user needs, contributing to the rich diversity of the Linux ecosystem.
+
+###############################
+How to setup Linux Machine ?
+###############################
+
+Approach 1: Install Linux OS Directly on Your System
+1. Download a Linux distribution (e.g., Ubuntu, Fedora, Debian).
+2. Create a bootable USB drive and install it as the primary OS.
+
+Approach 2: Use VirtualBox to Run Linux as a Virtual Machine
+1. Install Oracle VirtualBox or VMware Workstation on your system.
+2. Create a new virtual machine and install Linux as a guest OS.
+
+Approach 3: Deploy a Free Linux VM on AWS Cloud
+1. Sign up for an AWS Free Tier account.
+Note: Youtube Video to create free AWS Account: https://youtu.be/KBb3-w6hyp0?si=Q3JGWwRKT4rLfeQI
+2. Launch an EC2 instance with a Linux-based AMI (Amazon Machine Image).
+3. Enjoy 750 free hours per month for up to 1 year under the free tier.
+
+
+#######################
+Linux Commands Mastery
+########################
+
+whoami → Displays the currently logged-in username.
+
+pwd → Shows the present working directory.
+
+date → Prints today’s date and time.
+
+cal → Displays the calendar for the current month.
+
+cal 2025 → Shows the calendar for the entire year 2025.
+
+clear → Clears the terminal screen.
+
+mkdir : Create a new directory (folder)  
+        mkdir s3  
+        mkdir dev  
+        mkdir qa  
+
+rmdir : Remove an empty directory  
+        rmdir qa  
+
+rm -rf <dir> : Delete a non-empty directory and its contents  
+        rm -rf devops  
+
+ls : List files and directories in the current working directory  
+
+ls -l : Display files in a detailed (long) format, sorted alphabetically  
+
+ls -lr : Show files in reverse alphabetical order  
+
+ls -lt : List files with the newest files at the top  
+
+ls -ltr : Show files with the oldest files at the top  
+
+ls -la : Display all files, including hidden ones  
+
+touch : Create empty files  
+        touch t1.txt  
+        touch t2.txt t3.txt  
+
+cd : Change directory  
+        cd dir-name  
+        cd ..  
+
+rm : Delete a file or directory  
+        rm t1.txt  
+        rm -rf <dir-name>  
+
+mv : Rename or move a file/directory  
+        mv existing-name new-name  
+        mv current-location new-location
+
+cat : Create a new file, append data, and display file content  
+
+        # Create a new file and add data  
+        cat > t1.txt  
+
+        # Append data to an existing file  
+        cat >> t1.txt  
+
+        # Display file content  
+        cat t1.txt  
+
+        # Display file content with line numbers  
+        cat -n t1.txt  
+
+tac : Display file content in reverse order (bottom to top)
+
+cp : Copy file content from one file to another  
+        cp t1.txt t2.txt  
+
+Note: To merge multiple files, use the cat command  
+        cat t1.txt t2.txt > t3.txt  
+
+head : Display the first 10 lines of a file (default)  
+        head t1.txt  
+        head -n 20 t1.txt  # Show first 20 lines  
+        head -n 50 t1.txt  # Show first 50 lines  
+
+tail : Display the last 10 lines of a file (default)  
+        tail t1.txt  
+        tail -n 25 t1.txt  # Show last 25 lines  
+
+Note: The `tail` command is commonly used to monitor real-time log updates. 
+
+
+grep : Stands for "Global Regular Expression Print"  
+
+Note: The `grep` command is used to search for specific content within a file.  
+
+        # Display lines containing the keyword "teen"  
+        grep 'hello' test.txt  
+
+        # Perform a case-insensitive search  
+        grep -i 'hello' test.txt  
+
+        # Show matching lines along with their line numbers  
+        grep -n 'hello' test.txt  
+
+        # Display lines that do NOT contain the keyword "hello"  
+        grep -v 'hello' test.txt  
+
+        # Search for "hello" in all files within the current directory  
+        grep 'hello' *  
+
+        # Combine `tail` with `grep`  
+        # Search for "hello" within the last 10 lines of a file  
+        tail test.txt | grep 'hello'  
+
+##############################################################################
+wc : Word count command to count lines, words, and characters in a file  
+##############################################################################
+
+        # Display line, word, and character count  
+        wc test.txt 
+
+        # Count only the number of lines  
+        wc -l test.txt 
+
+        # Count only the number of words  
+        wc -w test.txt 
+
+        # Count only the number of bytes  
+        wc -c test.txt
+
+        # Count only the number of characters  
+        wc -m test.txt
+
+
+#########################
+Text Editors in Linux
+#########################
+
+-> **vi (Visual Editor)** is the default text editor in Linux systems.  
+
+-> Using the `vi` command, we can create new files and edit existing ones.  
+
+-> The `vi` editor operates in **three modes**:  
+
+    1) **Command Mode** – Opens a file (default mode).  
+       Example: vi <filename>  
+
+    2) **Insert Mode** – Enables text editing.  
+       - Press **'i'** on the keyboard to enter insert mode.  
+
+    3) **Escape Mode** – Exits insert mode.  
+       - Press **'Esc'** on the keyboard to return to command mode.  
+
+    ## **Save changes and exit** → `:wq`  
+    ## **Exit without saving changes** → `:q!`  
+
+**Note:** If the specified file exists, `vi` will open it. If not, `vi` will create a new file and open it.
+
+#############################  
+File Creation Commands  
+#############################  
+
+touch : Create an empty file  
+cat   : Create a file and add data  
+cp    : Copy content from one file to another (cp t1.txt t2.txt)  
+vi    : Create and open a file for editing (vi t3.txt) 
+
+###########################  
+Reading File Data  
+###########################  
+
+cat   : Display file content from top to bottom  
+tac   : Display file content from bottom to top  
+head  : Show the first 10 lines of a file  
+tail  : Show the last 10 lines of a file  
+vi    : Open a file for viewing or editing  
+
+###############
+SED Command  
+###############  
+
+=> **SED** stands for **Stream Editor**  
+
+=> **SED** is used for text processing (substituting, deleting, printing, inserting).  
+
+=> It allows modifications to a file **without opening it**.  
+
+=> **SED** is a powerful command in Linux.  
+
+# **Substituting Text**  
+- Replace the **first occurrence** of "linux" with "unix"  
+  sed 's/linux/unix/' data.txt  
+
+- Replace the **second occurrence** of "linux" with "unix"  
+  sed 's/linux/unix/2' data.txt  
+
+- Replace the **third occurrence** of "linux" with "unix"  
+  sed 's/linux/unix/3' data.txt  
+
+- Replace **all occurrences** of "linux" with "unix"  
+  sed 's/linux/unix/g' data.txt  
+
+- Substitute and **save changes** in the original file  
+  sed -i 's/linux/unix/g' data.txt  
+
+# **Deleting Lines**  
+- Delete the **first line** of a file  
+  sed -i '1d' data.txt  
+
+- Delete the **fourth line** of a file  
+  sed -i '4d' data.txt  
+
+- Delete the **last line** of a file  
+  sed -i '$d' data.txt  
+
+- Delete data from **nth line to the last line**  
+  sed -i 'n,$d' data.txt  
+  *(Replace `n` with a line number)*  
+
+- Delete data from **5th line to 15th line**  
+  sed -i '5,15d' data.txt  
+
+# **Printing Specific Lines**  
+- Print data from **line number 10 to 20**  
+  sed -n '10,20p' data.txt  
+
+# **Inserting Text**  
+- Insert text at the **2nd line**  
+  sed '2i\I love India' data.txt  
+
+- Insert text at the **last line**  
+  sed '$a\I am from PSAIT' data.txt
+  
+#################  
+User Management  
+#################  
+
+-> **Linux is a multi-user operating system.**  
+
+-> Multiple users can access a single Linux machine and perform multitasking simultaneously.  
+
+**Note:** In Amazon Linux virtual machines (VMs), the default user is **"ec2-user"**, which has **sudo** privileges.  
+
+-> A single Linux machine can have multiple user accounts.  
+
+-> When a user account is created, a home directory is automatically assigned.  
+
+        admin   => /home/admin  
+        mike    => /home/mike  
+        stallin => /home/stallin 
+
+# **Create a new user**  
+  sudo useradd <username>  
+
+# **Set or update a user's password**  
+  sudo passwd <username>  
+
+# **Display all created users**  
+  cat /etc/passwd  
+
+# **Switch to another user account**  
+  su <username>  
+
+# **Navigate to the current user's home directory**  
+  cd ~  
+
+# **Delete a user account**  
+  sudo userdel <username>  
+
+# **Delete a user along with their home directory**  
+  sudo userdel --remove <username>  
+
+# **Change a username**  
+  sudo usermod -l <new-username> <old-username>  
+
+# **Important system files related to users:**  
+- `/etc/passwd` → Stores general user information.  
+- `/etc/shadow` → Stores encrypted passwords and security-related data.  
+
+##################################  
+Managing User Groups in Linux  
+##################################  
+
+-> Groups allow administrators to assign permissions (read, write, execute) to multiple users at once instead of managing permissions for each user individually.
+Example: A development team can be assigned to a "developers" group with access to project files.
+
+-> Instead of modifying each user’s access manually, administrators can add or remove users from a group to grant or revoke access.
+_____________________
+Example Scenario
+____________________
+Imagine a company with multiple departments:
+
+developers → Can access code repositories.
+designers → Can access design assets.
+finance → Can access financial reports.
+
+By assigning users to the right groups, the company can ensure that employees only access the files they need.
+
+
+
+-> When a new user is created in Linux, a **default user group** with the same name is also created.  
+
+# **Display all groups in Linux**  
+  cat /etc/group  
+
+# **Create a new group**  
+  sudo groupadd <group-name>  
+
+# **Add a user to a group**  
+  sudo usermod -aG <group-name> <username>  
+
+# **Remove a user from a group**  
+  sudo gpasswd -d <username> <group-name>  
+
+# **List all users in a specific group**  
+  getent group <group-name>  
+
+# **Check which groups a user belongs to**  
+  id <username>  
+
+# **Delete a group**  
+  sudo groupdel <group-name>  
+
+# **Rename a group**  
+  sudo groupmod -n <new-group-name> <old-group-name>  
+
+####################################################################################################################
+
+Enabling Password-Based Authentication in Linux
+________________________________________________
+
+To enable password-based authentication in a Linux system, we need to modify two important configuration files:
+
+1. sudoers
+2. sshd_config
+
+What is the sudoers file in Linux?
+The sudoers file is a critical configuration file that controls which users can run commands as a superuser (root).
+
+$ sudo cat /etc/sudoers
+Warning: Editing the sudoers file incorrectly can break the system. Always use the visudo command to edit it safely.
+
+$ sudo visudo
+Add the following line at the end of the file:
+
+<username> ALL=(ALL:ALL) ALL
+Press CTRL + X, then Y, and hit Enter.
+
+How to Enable Password-Based Authentication for Users?
+By default, password authentication is disabled in Linux virtual machines (VMs) for security reasons. To enable it:
+
+Open the sshd_config file:
+
+$ sudo vi /etc/ssh/sshd_config
+Modify the following line:
+Find this line:
+
+PasswordAuthentication no
+Change it to:
+
+PasswordAuthentication yes
+Save and exit (ESC → :wq → Enter).
+
+Restart the SSH service for changes to take effect:
+
+$ sudo systemctl restart sshd
+Now, you can connect to the Linux VM using a username and password:
+
+$ ssh username@public-ip
+
+####################################################################################################################
+File Permissions in Linux
+
+File permissions will give restricted access to the users
+####################################################################################################################
+
+Types of Permissions - 
+Linux has three basic types of permissions:
+
+r → Read (View file contents)
+w → Write (Modify or delete file contents)
+x → Execute (Run as a program or script)
+
+Understanding File/Directory Permissions - 
+
+Permissions are represented using 9 characters, as shown below:
+rwxrwxrwx f1.txt
+
+Each section of the permission string corresponds to different user categories:
+1. First 3 characters → Owner/User permissions
+2. Middle 3 characters → Group permissions
+3. Last 3 characters → Others (everyone else) permissions
+
+Examples:
+r--r-xr--  f2.txt
+User (Owner): Read (r--)
+Group: Read + Execute (r-x)
+Others: Read (r--)
+
+r-xrw--w-  f3.txt
+User (Owner): Read + Execute (r-x)
+Group: Read + Write (rw-)
+Others: Write (--w)
+
+Changing File/Directory Permissions Using chmod
+The chmod command allows you to modify file permissions:
+
++ → Add permission
+- → Remove permission
+
+Examples:
+
+# Give execute permission to the user
+chmod u+x f1.txt
+
+# Give write permission to the group
+chmod g+w f1.txt
+
+# Remove execute permission from others
+chmod o-x f1.txt
+
+# Remove all permissions from others
+chmod o-rwx f1.txt
+
+# Grant all permissions to the group
+chmod g+rwx f1.txt
+File Permissions in Numeric Format
+Permissions can also be represented using numbers (0–7), where:
+
+Number	Permissions
+0	No permissions
+1	Execute only
+2	Write only
+3	Write + Execute
+4	Read only
+5	Read + Execute
+6	Read + Write
+7	Read + Write + Execute
+Examples:
+
+# Give execute permission to all (ugo+x)
+chmod 111 f1.txt
+
+# Give write permission to all (ugo+w)
+chmod 222 f1.txt
+
+# User: rwx, Group: rw, Others: rx
+chmod 765 f1.txt
+
+# User: r, Group: rx, Others: rw
+chmod 456 f1.txt
+
+# Give full permissions to everyone
+chmod 777 f1.txt
+
+# Remove all permissions from User & Group, but allow Others full access
+chmod 007 f1.txt
+
+Summary
+Permissions (r, w, x) define access control for files and directories.
+They apply to three user categories: Owner, Group, Others.
+Use chmod to modify permissions either in symbolic (u+x, g-w, etc.) or numeric (755, 644, etc.) format.
+Numeric permissions use a combination of values (0–7) to set access levels efficiently.
+
+############################################################################################
+chown Command in Linux
+The chown command is used to change the ownership of files and directories in Linux. It allows modifying both the owner and the group associated with a file or directory.
+#############################################################################################
+
+1️⃣ Basic Syntax
+
+sudo chown [new-owner] [file/directory]
+or
+sudo chown [new-owner]:[new-group] [file/directory]
+
+2️⃣ Changing File/Directory Ownership
+1. Change the Owner of a File
+sudo chown user1 file.txt
+✅ Effect: file.txt will now belong to user1.
+
+2. Change Only the Group
+sudo chown :group1 file.txt
+✅ Effect: The group of file.txt is now group1, but the owner remains unchanged.
+
+3. Change Both Owner and Group
+sudo chown user1:group1 file.txt
+✅ Effect: file.txt now belongs to user1 and group1.
+
+####################################################################################################
+Finding Files in Linux
+In Linux, the find command is used to search for files and directories based on different criteria such as name, type, size, and modification time.
+#####################################################################################################
+
+1️⃣ Basic Syntax
+
+find [directory] [options] [search criteria]
+[directory] → The location where you want to search (e.g., /home, /var, etc.).
+[options] → Filters such as file name, type, size, date, etc.
+[search criteria] → The specific property you are searching for.
+
+2️⃣ Common Use Cases
+1. Find a File by Name
+
+sudo find /home -name "f1.txt"
+✅ Effect: Searches for f1.txt inside the /home directory.
+
+2. Find Empty Files
+sudo find /home -type f -empty
+✅ Effect: Lists all empty files (-type f) inside /home.
+
+3. Find Empty Directories
+sudo find /home -type d -empty
+✅ Effect: Lists all empty directories (-type d) inside /home.
+
+3️⃣ Finding Files Based on Modification Time
+The -mtime option searches for files based on modification time.
+
+4. Find Files Modified 30 Days Ago
+sudo find /home -mtime 30 -print
+✅ Effect: Displays files inside /home that were last modified 30 days ago.
+
+5. Find Files Modified 1 Day Ago
+sudo find /home -mtime 1 -print
+✅ Effect: Displays files inside /home that were modified 1 day ago.
+
+6. Delete Files Older Than 30 Days
+sudo find /home -mtime +30 -delete
+✅ Effect: Deletes files inside /home that haven’t been modified in the last 30 days.
+
+###################################################
+Working with ZIP Files in Linux
+The zip command in Linux is used to compress files and directories into a .zip archive, while the unzip command is used to extract them.
+###################################################
+
+1️⃣ Creating a ZIP File
+Syntax:
+zip [zip-file-name] [files/directories]
+
+Example: Compressing Multiple Files
+
+# Create empty text files
+touch file1.txt file2.txt file3.txt
+
+# Create a ZIP archive containing all `.txt` files
+zip my_archive.zip *.txt
+✅ Effect: Compresses all .txt files into my_archive.zip.
+
+2️⃣ Extracting a ZIP File
+Syntax:
+unzip [zip-file-name]
+
+Example: Unzipping a File
+unzip my_archive.zip
+✅ Effect: Extracts my_archive.zip into the current directory.
+
+3️⃣ Additional ZIP Options
+1. Create a ZIP Archive of a Directory
+zip -r my_folder.zip my_folder
+✅ Effect: Compresses my_folder and all its contents recursively.
+
+2. List Contents of a ZIP File
+unzip -l my_archive.zip
+✅ Effect: Displays a list of files inside my_archive.zip.
+
+3. Extract ZIP to a Specific Directory
+unzip my_archive.zip -d /path/to/destination
+✅ Effect: Extracts files to /path/to/destination.
+
+4. Delete Files from a ZIP Archive (Without Extracting)
+zip -d my_archive.zip file2.txt
+✅ Effect: Removes file2.txt from my_archive.zip.
+
+5. Password-Protect a ZIP File
+zip -e secure_data.zip secret_file.txt
+✅ Effect: Compresses secret_file.txt into secure_data.zip with password protection.
+
+4️⃣ Summary
+zip [zip-file.zip] [files] → Compress files into a ZIP archive.
+unzip [zip-file.zip] → Extracts a ZIP file.
+zip -r [zip-file.zip] [directory] → Compresses a directory recursively.
+unzip -l [zip-file.zip] → Lists the contents of a ZIP file.
+
+################################################
+Networking Commands
+#################################################
+
+ping : To check connectivityping url/ip address
+
+wget : Used to download files from the internet wget <url>
+
+curl : Used to send HTTP requests to a server curl https://zenquotes.io/api/random
+
+ifconfig : To get the IP address of the machine ifconfig
+
+##########################################################
+Package Managers in Linux
+##########################################################
+
+Package: A package is a software application or tool.Examples: git, maven, java, python, etc.
+
+Package Managers are used to install, update, and manage software packages on Linux machines.They are specific to the Linux distribution:
+
+Amazon Linux / Red Hat Linux / CentOS: yum
+
+Ubuntu / Debian: apt
+
+Common Commands:
+
+Check if Git client is installed:git --version
+
+Install Git client software: sudo yum install git (For Ubuntu/Debian: sudo apt install git)
+
+Check Git installation path:whereis git
+
+To Unstall git:
+sudo yum remove git -y
+
+To Uninstall Maven:
+sudo yum remove maven -y
+
+#####################################
+Linux Architecture Components
+#####################################
+
+The Linux operating system is built on a modular architecture consisting of four main components:
+
+1) Applications / Commands
+
+These are the user-space programs that run on Linux, such as web browsers and linux commands
+
+2) Shell
+
+The shell acts as an interface between users and the system.
+
+It interprets commands and sends them to the kernel for execution.
+
+Examples of Linux shells:
+
+Bash (Bourne Again Shell) - Default shell in most Linux distributions.
+
+Zsh (Z Shell) - Advanced shell with additional features.
+
+Fish - User-friendly, interactive shell.
+
+3) Kernel
+
+The core component of Linux that manages system resources.
+
+Responsibilities include:
+
+Process Management - Allocating CPU time to running programs.
+
+Memory Management - Handling RAM space.
+
+Device Management - Communicating with hardware like hard drives and USB devices.
+
+System Calls - Allowing applications to request services from the operating system.
+
+4) Hardware Components
+
+The physical components of a Linux system, including:
+
+CPU - Executes instructions.
+
+RAM - Stores temporary data for processes.
+
+Storage (HDD/SSD) - Holds files and the operating system.
+
+Network Interfaces - Enables communication between devices.
+
+Peripherals - Includes keyboards, mice, printers, etc.
+
+Each of these components works together to ensure a stable and functional Linux environment.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%END%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

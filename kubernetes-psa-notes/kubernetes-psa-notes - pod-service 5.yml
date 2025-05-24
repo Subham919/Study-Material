@@ -1,0 +1,21 @@
+kubernetes-psa-notes/pod-service.yml
+-------------------------------------
+
+_______________________________________________________________________________________
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: testpod
+  labels:
+    app: demoapp
+spec:
+  containers:
+    - name: test
+      image: psait/pankajsiracademy:latest
+      ports:
+        - containerPort: 9090
+...
+______________________________________________________________________________________

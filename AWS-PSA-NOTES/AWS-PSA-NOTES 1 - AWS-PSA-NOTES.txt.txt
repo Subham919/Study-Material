@@ -1,0 +1,2000 @@
+🔧 What is DevOps?
+##########################################
+DevOps is a combination of two words:
+
+Dev = Development (writing code)
+
+Ops = Operations (managing infrastructure, deployment, and monitoring)
+
+👉 DevOps is a culture, set of practices, and tools that aim to:
+
+Bridge the gap between development and operations teams, so software can be built, tested, and released faster, more reliably, and continuously.
+
+
+🎯 Main Goals of DevOps
+#####################################
+Faster delivery of software
+
+Automation of processes (build, test, deploy)
+
+Improved collaboration between teams
+
+Continuous integration and continuous deployment (CI/CD)
+
+Higher software quality with fewer bugs
+
+Rapid recovery from failures
+
+⚙️ Key DevOps Practices
+#########################
+Practice	                                  Description
+🔄 CI/CD  	                       Automate code integration, testing, and deployment
+📦 Infrastructure as Code (IaC)	       Define and manage infrastructure using code (e.g., Terraform, Ansible)
+🧪 Automated Testing	               Run tests automatically to catch bugs early
+📈 Monitoring & Logging	               Track performance, get alerts, and troubleshoot
+🐳 Containerization	               Use Docker/Kubernetes to package and run apps anywhere
+
+
+#####################################
+🏢 What is IT Infrastructure?
+#####################################
+
+IT Infrastructure refers to the basic physical and virtual resources required to run and manage IT services and software applications.
+
+✅ In simple terms:
+
+It's everything you need to host, run, connect, store, protect, and manage your software and data.
+---------------------------------------------------------------------------------------------------
+
+💻 Components of IT Infrastructure
+################################################
+
+When you're setting up a software company (or any IT service), you need several core resources:
+
+a) 🖥️ Machines (Servers & Computers)
+Physical or virtual servers that run applications
+
+Developer/employee laptops, desktops
+
+b) 🌐 Network
+Routers, switches, firewalls, internet connections
+
+Ensures all systems can communicate securely and efficiently
+
+c) ⚡ Power
+Reliable electricity supply, UPS, generators
+
+Keeps systems running 24/7
+
+d) 💾 Storage
+Hard drives, SSDs
+
+Stores your application code, databases, files, and backups
+
+e) 🛡️ Backup
+Systems to regularly copy and save important data
+
+Protects from data loss due to failure, attacks, or mistakes
+
+f) 🔐 Security
+Firewalls, antivirus, encryption, access controls
+
+Protects systems and data from unauthorized access or cyberattacks
+
+🧠 Summary
+All these components together make up the IT Infrastructure – the foundation needed to build and run software services smoothly and securely.
+---------------------------------------------------------------------------------------------------------
+
+
+🏢 What is On-Prem Infrastructure?
+#################################################
+On-Premises (On-Prem) infrastructure means:
+-> You buy, own, and manage all your IT resources physically at your location (like office or data center).
+
+🔧 You are responsible for:
+a. Buying hardware (servers, routers, storage)
+
+b. Setting up network, power backup
+
+c. Hiring IT staff for maintenance
+
+d. Handling security, repairs, and upgrades
+
+⚠️ Challenges with On-Prem Infrastructure
+################################################
+💰 High Initial Investment – You have to buy everything upfront (costly!)
+
+👨‍🔧 High Manpower – You need skilled IT people to manage it
+
+📈 Scalability is Hard – Difficult to increase/decrease capacity quickly
+
+🔌 Availability – System failures = downtime
+
+🌐 Network Issues – You manage your own connections
+
+🔐 Security Issues – You are responsible for data protection
+---------------------------------------------------------------------------
+
+
+☁️ What is Cloud Computing?
+################################
+Cloud computing is the delivery of IT resources like servers, storage, databases, and software over the internet, on a pay-as-you-go basis.
+
+🔑 Key Idea:
+You rent resources from cloud providers when you need them, instead of buying.
+
+✅ Benefits of Cloud Computing
+Benefit	Description
+--------------------------------------------
+💸 Pay as You Go	Only pay for what you use (no upfront costs)
+📉 Low Cost	No need to buy physical hardware
+📈 Scalability	Easily scale up/down as needed
+🔄 High Availability	Redundant systems ensure minimal downtime
+🔐 Security	Cloud providers offer built-in security features
+♻️ Backup & Recovery	Automatic backups and quick recovery options
+🏢 Cloud Providers
+
+Cloud Providers are companies that offer cloud computing services. They manage the infrastructure and offer you services through the internet.
+
+Top Providers:
+-------------------
+Provider	Company
+☁️ AWS	     	 Amazon Web Services (Most popular)
+☁️ Azure	  	 Microsoft
+☁️ GCP		 Google Cloud Platform
+☁️ Salesforce	 Known for CRM and SaaS
+☁️ Alibaba Cloud	 Popular in Asia
+☁️ DigitalOcean	 Developer-friendly, small-scale cloud
+
+🧠 Summary
+-------------------
+On-Prem Infrastructure 		Cloud Computing
+You own & maintain		Provider maintains
+High upfront cost		Pay as you go
+Fixed capacity			Scalable
+More staff needed		Less staff needed
+Downtime risk			High availability
+Manual backups			Automated backups
+
+
+-------------------------------------------------------------------------------------------------------------
+
+
+☁️ Cloud Service Models
+Cloud providers offer different levels of services depending on how much control and responsibility you want. These models are:
+
+IaaS – Infrastructure as a Service
+
+PaaS – Platform as a Service
+
+SaaS – Software as a Service
+
+
+🧱 What is IaaS (Infrastructure as a Service)?
+####################################################
+-> IaaS is a cloud service model where the cloud provider gives you raw infrastructure, and you build everything on top of it.
+
+🏗️ Think of it like:
+"You rent a fully functional empty building, and it’s your job to furnish it, decorate it, and use it however you want."
+
+✅ What the cloud provider gives you:
+---------------------------------------------
+🖥️ Virtual Machines (VMs)
+
+🌐 Networking (IP, firewall, load balancer)
+
+💾 Storage (hard drives, SSDs)
+
+⚙️ Virtualization, Servers, Data Center
+
+✅ What you (the customer) have to do:
+------------------------------------------------
+Install Operating System (e.g., Ubuntu, Windows)
+
+Install runtime environments (Java, Python, Node.js, etc.)
+
+Set up web servers (Apache, Nginx, Tomcat, etc.)
+
+Deploy and manage your application code
+
+Handle updates, patches, and security
+
+📦 Example Scenario
+----------------------------------
+Let’s say you want to host a Java web application.
+
+Using IaaS:
+------------
+You create a VM on AWS EC2
+
+Install Ubuntu
+
+Install Java, Tomcat, MySQL
+
+Deploy your .war file
+
+Configure your firewall, ports, etc.
+
+🔧 Common IaaS Providers
+Provider		Service Example
+AWS			EC2, EBS, VPC
+Microsoft Azure		Virtual Machines
+Google Cloud		Compute Engine
+Oracle Cloud		OCI Compute
+DigitalOcean		Droplets
+
+------------------------------------------------------------------------------------------------
+
+⚙️ What is PaaS (Platform as a Service)?
+#############################################
+PaaS is a cloud service model where the cloud provider gives you a ready-made platform (runtime, OS, web server, etc.) so that you can directly deploy and run your application — without worrying about setting up servers or infrastructure.
+
+🎯 Key Idea:
+You focus only on developing and deploying your code, and the cloud provider takes care of the platform and infrastructure underneath.
+
+✅ What the cloud provider gives you:
+----------------------------------------
+Pre-installed OS
+
+Runtime environment (like Java, Node.js, Python)
+
+Web server (e.g., Apache, Tomcat)
+
+Auto-scaling, load balancing, and patching
+
+Built-in monitoring and logging
+
+✅ What you (the customer) need to do:
+----------------------------------------
+Write your application code
+
+Upload/deploy your app on the platform
+
+Manage your data, and maybe configure some settings
+
+You don’t need to:
+
+Install OS
+
+Set up web servers
+
+Configure runtime manually
+
+📦 Example Scenario
+------------------------
+Let’s say you want to deploy a Java Spring Boot application.
+
+Using PaaS:
+
+Choose a PaaS provider like Heroku or Google App Engine
+
+Push your code using Git
+
+The platform automatically:
+
+Sets up the Java environment
+
+Deploys your app
+
+Manages scaling and traffic
+
+You just monitor it and update the code when needed.
+
+☁️ Popular PaaS Providers
+Provider				Service Example
+Heroku				Easy app deployment (multi-language)
+Google App Engine		Run apps without managing servers
+AWS Elastic Beanstalk		Deploy web apps in Java, .NET, PHP, etc.
+Microsoft Azure App Service	Deploy and scale web apps easily
+
+-----------------------------------------------------------------------------------------------------
+
+💻 What is SaaS (Software as a Service)?
+####################################################
+SaaS is a cloud service model where the cloud provider gives you ready-to-use software, and you can access it through the internet — no installation, no setup, no servers.
+
+🎯 Key Idea:
+You simply use the software; everything else — like servers, updates, backups, and security — is managed by the cloud provider.
+
+✅ What the cloud provider handles:
+------------------------------------------
+Application software
+
+Servers and infrastructure
+
+Updates and bug fixes
+
+Data storage and backup
+
+Security and availability
+
+✅ What you (the customer) do:
+--------------------------------------------
+Just log in to the app (usually in a browser)
+
+Use it to manage your tasks, documents, communication, etc.
+
+Pay monthly/yearly (subscription)
+
+📌 No need to install, manage, or update anything.
+
+📦 Example SaaS Applications
+App					Purpose
+Zoom				Video meetings and communication
+Google Drive / Docs		File storage, editing, collaboration
+Dropbox	Cloud 			storage
+Microsoft 365 (Teams, Word)	Productivity & collaboration
+Jira				Project management & issue tracking
+Salesforce			Customer relationship management (CRM)
+------------------------------------------------------------------------------------------
+
+
+☁️ What is AWS Cloud?
+##############################
+AWS stands for Amazon Web Services – it’s the world's most popular cloud provider, offering a wide range of cloud computing services to individuals, startups, enterprises, and governments.
+
+🏁 Quick Facts
+------------------------------
+🚀 Launched in 2006
+
+🌍 Used in 190+ countries
+
+💰 Follows Pay-as-you-go pricing model
+(You only pay for what you use – no upfront cost)
+
+🌐 AWS Global Infrastructure
+To deliver fast, reliable, and secure services, AWS has a global infrastructure. Here's how it's structured:
+
+✅ Region
+---------------------------------------------------------------------
+A Region is a geographic area (e.g., US-East, Asia-Pacific, Europe)
+
+Each region contains multiple data centers
+
+Examples: us-east-1 (N. Virginia), ap-south-1 (Mumbai)
+
+🟢 Currently: 33 AWS Regions (and still growing)
+
+✅ Availability Zone (AZ)
+-------------------------------------------------------------------------
+Each region has multiple Availability Zones
+
+An AZ is basically a separate data center with its own power, networking, and cooling
+
+AZs in the same region are connected with high-speed networks
+
+Designed for high availability & fault tolerance
+
+🟢 Currently: 105 Availability Zones
+------------------------------------------------------------------------------
+
+🔧 Why This Global Setup Matters
+--------------------------------------------------
+Feature				Benefit
+
+🌍 Global Reach		Deploy apps close to your users
+🔁 Redundancy		Handle failures without downtime
+⚡ Low Latency		Faster access to apps/data
+🔒 Secure		Isolated zones = better security & control
+--------------------------------------------------------------------------------------
+
+☁️ AWS Services Overview
+##########################################
+AWS offers 200+ services, here are some of the most popular and important ones, grouped by purpose:
+
+🖥️ 1. Compute Services
+Service							Description
+EC2 (Elastic Compute Cloud)			Create virtual machines (hourly billing)
+Elastic Beanstalk				PaaS for managing full web applications (auto-scaling, deployment, etc.)
+Lambda	Serverless computing — 			just upload code, no servers needed
+ECS (Elastic Container Service)			Run and manage Docker containers
+EKS (Elastic Kubernetes Service)		Run Kubernetes clusters on AWS
+
+📦 2. Storage Services
+Service							Description
+S3 (Simple Storage Service)			Object storage for unlimited files (like Google Drive but for apps)
+EFS (Elastic File System)			Shared file system — mountable to multiple EC2s like a network drive
+
+🗄️ 3. Database Services
+Service							Description
+RDS (Relational Database Service)		Managed SQL databases (MySQL, PostgreSQL, etc.)
+DynamoDB					NoSQL managed database (not in your original list, but widely used)
+
+🔒 4. Security & Access
+Service							Description
+IAM (Identity & Access Management)		Manage users, roles, and permissions for AWS resources
+
+🌐 5. Networking
+Service							Description
+VPC (Virtual Private Cloud)			Create a private network within AWS
+Route 53					Domain Name System (DNS) service for domain mapping
+🔔 6. Monitoring & Notifications
+Service							Description
+CloudWatch					Monitor resources, log events, set alarms
+SNS (Simple Notification Service)		Send email, SMS, push notifications automatically
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+☁️ Elastic Compute Cloud (EC2) - AWS Service
+##############################################################
+EC2 is one of the most demanded services in AWS. It allows you to create virtual machines (VMs) in the AWS cloud, which are called EC2 instances.
+
+✅ Key Points about EC2:
+-----------------------------------------
+What is an EC2 Instance?
+-------------------------------------------------
+EC2 Instance = Virtual Machine (VM) or Server (you can think of it as a computer that runs on the cloud).
+
+It’s resizable, meaning you can change the configuration of your EC2 instance (e.g., CPU, RAM) based on the demand (if your workload increases, you can scale up).
+
+Billing:
+--------------------------------------------
+Hourly billing: You pay for the time your EC2 instance runs, by the hour.
+
+Minimum billing period is 1 hour. Even if you use it for less than 1 hour, you'll be billed for a full hour.
+
+Example: If you run your EC2 instance for 15 minutes, you'll still be billed for 1 hour.
+
+Note: AWS offers free tier access for beginners, like the t2.micro/t3.micro instance, which allows 750 hours per month for one year.
+
+Storage:
+--------------------------------------------------
+EBS (Elastic Block Storage) is used to store data for EC2 instances.
+
+Windows EC2 instances come with a default storage of 30 GB.
+
+Linux EC2 instances come with a default storage of 8 GB.
+
+Maximum EBS volume size is 16 TB (16,000 GB).
+
+Networking:
+-----------------------------------------------------------
+VPC (Virtual Private Cloud) service is used to manage the network for EC2 instances.
+
+VPC helps you define private networks and security controls for your EC2 instances.
+
+Creating EC2 Instances:
+-------------------------------------------------------------------
+To create an EC2 instance, you use an AMI (Amazon Machine Image).
+
+AMI is a pre-configured template that contains the operating system and software required for your EC2 instance.
+
+Examples of AMIs:
+
+Windows AMI
+
+Amazon Linux AMI
+
+Ubuntu AMI
+
+Red Hat AMI
+
+Security:
+----------------------------------------------
+To secure your EC2 instance, you use Key-Pairs:
+
+Key Pair is a set of public and private keys used for SSH (Secure Shell) login.
+
+One Key Pair can be used for multiple EC2 instances.
+
+For controlling access to your EC2 instance (allowing or restricting traffic), you use Security Groups.
+
+Security Groups act like firewalls to define which incoming and outgoing traffic is allowed.
+
+One Security Group can be assigned to multiple EC2 instances.
+
+-------------------------------------------------------------------------
+Creating Windows ec2 instance and connecting with it
+###########################################################################
+1) Create Key Pair (.pem file)
+A Key Pair is used for secure login into your EC2 instance.
+
+Public Key: This stays with AWS. It is embedded into the EC2 instance during launch.
+
+Private Key (.pem): You download this. Keep it safe — you’ll need it to access the instance.
+
+🔐 If you lose the .pem file, you cannot connect to your instance unless you've already added another user or created a new key pair and updated it manually.
+
+2) Create Security Group and update Inbound Rules to allow traffic
+A Security Group acts as a virtual firewall for your instance. You must allow necessary traffic by adding inbound rules:
+
+Protocol	Port	Purpose
+RDP	3389	For Windows GUI access
+SSH	22	For Linux terminal access
+HTTP	80	For web traffic
+HTTPS	443	For secure web traffic
+MySQL	3306	For database connections
+🔒 Best practice: Restrict access by IP instead of using 0.0.0.0/0 (which means open to all).
+
+3) Create EC2 Instance
+Steps to launch your instance:
+
+✅ Select AMI: Choose Windows AMI if you want a GUI (e.g., Windows Server 2019).
+
+✅ Select Instance Type: Example — t2.micro (eligible for free tier).
+
+✅ Select Key Pair: Choose the one you created in Step 1.
+
+✅ Select Security Group: Use the one created in Step 2.
+
+✅ Configure Storage: Add/modify EBS Volume (root disk size, additional volumes if needed).
+
+✅ Launch Instance: Review and click Launch.
+
+4) Connect to EC2 instance using RDP client
+Once your Windows instance is running:
+
+➤ Steps to Connect via RDP (Remote Desktop Protocol):
+Go to EC2 Console → Instances → Select your instance.
+
+Click on Connect → RDP Client tab.
+
+Download the Remote Desktop File (.rdp).
+
+Click Get Password → Upload your .pem file to decrypt the password.
+
+Open the .rdp file → Enter the username (usually Administrator) and decrypted password.
+
+Accept the certificate warning → You’ll be logged into your Windows EC2 instance.
+
+Types of IPs in AWS Cloud
+===============================
+✅ We have 3 types of IPs in AWS:
+1) Private IP
+Fixed inside a VPC
+
+Used for internal communication between EC2s
+
+🔹 Example:
+private ip : 172.31.34.139
+
+2) Public IP
+Dynamic, assigned by AWS when instance is launched
+
+Changes when instance is stopped and started
+
+🔹 Example:
+
+pgsql
+Copy
+Edit
+public ip : 13.127.100.70   (before restart)  
+public ip : 13.201.59.162   (after restart)
+3) Elastic IP
+A static public IP allocated to your AWS account
+
+You can associate it with any EC2 instance
+
+Remains unchanged even after restarts
+
+Charged if not associated with a running instance
+
+🔹 Example:
+Elastic IP : 3.6.99.192
+
+###############################
+Practicals on Elastic IP
+##############################
+Step-1: Allocate Elastic IP
+Go to EC2 Console > Network & Security > Elastic IPs
+
+Click Allocate Elastic IP
+
+AWS provides you an Elastic IP:
+✅ Elastic IP: 15.207.12.111
+
+Step-2: Associate Elastic IP with EC2 VM
+Choose your instance → Actions → Associate Elastic IP
+
+Select your new Elastic IP
+
+Associate it with your EC2 instance
+
+Step-3: Restart the EC2 VM
+Stop and Start the EC2 instance
+
+Verify the public IP remains the same:
+✅ Elastic IP: 15.207.12.111 (Still same after restart)
+
+Step-4: De-Associate Elastic IP
+Go to Elastic IPs → Select the IP → Actions → Disassociate
+
+Step-5: Release Elastic IP (to avoid billing)
+After disassociating, go to Elastic IPs
+
+Select the IP → Actions → Release Elastic IP
+
+This frees the IP and prevents unnecessary charges
+#######################################################################
+✅ What is EBS?
+EBS stands for Elastic Block Store.
+
+Think of it like a hard disk or SSD that you attach to your EC2 (Elastic Compute Cloud) instance.
+
+✅ How does EBS work with EC2?
+When you create an EC2 instance, an EBS volume is created automatically – this is usually your Root Volume.
+
+This Root Volume contains the Operating System (OS).
+
+📝 Important Note:
+
+If you remove the EBS Root Volume, the EC2 instance will not work because there's no OS to boot from.
+
+✅ Types of EBS Volumes:
+1. Root Volume:
+
+-> Mandatory for EC2 to run.
+-> Created by default when you launch an EC2 instance.
+-> Stores the OS and essential boot files.
+
+2. Additional Volume:
+-> Optional.
+-> You can add these for extra storage (e.g., for data, backups, applications).
+-> Can be attached or removed as needed.
+
+✅ Default EBS Volume Sizes:
+-> Windows EC2 Instance: 30 GB by default.
+-> Linux EC2 Instance: 8 GB by default.
+
+✅ EBS Volume Size Limits:
+-> Normal EBS Volume: Up to 16 TB.
+-> High-performance io2 (Provisioned IOPS): Up to 65 TB.
+
+✅ Other Key Points:
+-> You can attach multiple EBS volumes to a single EC2 instance.
+-> However, one EBS volume can only be attached to one EC2 instance at a time.
+-> EBS volumes are Availability Zone (AZ) specific, which means:
+-> You can only attach an EBS volume to an EC2 instance in the same AZ.
+
+📍 Example:
+-> If your EC2 instance is in ap-south-1a (Mumbai), you can only attach EBS volumes in ap-south-1a, not in ap-south-1b or ap-south-1c.
+
+#################################################################################################
+Types of EBS volumes, explaining them in simple terms along with their use cases and size limits:
+###################################################################################################
+
+✅ 1) General Purpose SSD (gp3 / gp2)
+Min: 1 GiB
+Max: 16,384 GiB (16 TB)
+Use Case: Best for everyday use, such as running your OS, boot volumes, and general workloads.
+
+💡 Good for:
+Web servers
+Small to medium databases
+Development and testing environments
+
+📌 gp3 is newer and offers better performance at a lower cost compared to gp2.
+
+✅ 2) Provisioned IOPS SSD (io1 / io2)
+io1: Min 4 GiB, Max 16,384 GiB
+io2: Min 4 GiB, Max 65,536 GiB (65 TB)
+Use Case: Best for high-performance databases and applications that need consistent and fast I/O.
+
+💡 Good for:
+Mission-critical databases (like Oracle, SQL Server, PostgreSQL)
+High-performance workloads (financial systems, analytics, etc.)
+
+🔧 You can provision the number of IOPS (input/output operations per second) for predictable performance.
+
+✅ 3) Cold HDD (sc1)
+Min: 125 GiB
+Max: 16,384 GiB
+Use Case: Designed for infrequently accessed data.
+
+💡 Good for:
+Backup storage
+Archival storage
+Large volumes of rarely accessed files
+
+📉 Lowest cost per GB, but also lowest performance.
+
+✅ 4) Throughput Optimized HDD (st1)
+Min: 125 GiB
+Max: 16,384 GiB
+Use Case: Ideal for large, sequential workloads.
+
+💡 Good for:
+Big data
+Data warehouses
+Streaming log data
+Large-scale file systems
+
+📊 Focus is on throughput (MB/s), not IOPS.
+
+✅ 5) Magnetic (Standard) (legacy, rarely used now)
+Min: 1 GiB
+Max: 1,024 GiB (1 TB)
+Use Case: Old-generation storage type. Mostly used in the past for low-cost workloads.
+
+💡 Good for:
+Small, infrequent workloads
+Archival (only if legacy reasons force it)
+
+⚠️ Slow performance, not recommended for modern EC2 setups.
+
+#################
+Practicals on EBS
+######################
+1) Create EC2 VM (VM-1)
+OS: Amazon Linux AMI.
+
+When you create the EC2 instance, it will have an EBS root volume of 8 GB by default.
+
+2) Create Additional EBS Volume (10 GB)
+Go to the EC2 Dashboard.
+Under Elastic Block Store, select Volumes and create a new volume with the following properties:
+Size: 10 GB
+Availability Zone: Ensure you select the same Availability Zone (AZ) as VM-1 (e.g., ap-south-1a).
+
+3) Attach Additional Volume to EC2 VM-1
+After creating the additional EBS volume, right-click on it and select Attach.
+Choose the instance VM-1 and attach the volume to it (typically as /dev/xvdb).
+
+4) Connect with VM-1 and Check Volumes Attached
+SSH into VM-1 using the key pair you created during the EC2 instance launch.
+Once logged in, check the attached volumes with the following command:
+
+$ lsblk
+
+The output should list both the root volume (e.g., /dev/xvda) and the additional volume (e.g., /dev/xvdb).
+
+5) Store Data in Additional Volume by Mounting
+Format the additional volume to use the ext4 file system:
+$ sudo mkfs -t ext4 /dev/xvdb
+
+Create a mount directory for the additional volume:
+$ mkdir psa
+
+Mount the volume to the psa directory:
+$ sudo mount /dev/xvdb psa
+
+Change into the psa directory and create files to store data:
+$ cd psa
+$ sudo touch f1.txt f2.txt
+
+This step creates two text files: f1.txt and f2.txt on the additional volume.
+
+6) Detach Additional Volume from EC2 VM-1
+Go back to the EC2 Dashboard, select Volumes, find the additional volume (/dev/xvdb), and detach it from VM-1.
+
+7) Create a New EC2 VM (VM-2)
+Launch a new EC2 instance (VM-2) with the same Amazon Linux AMI or any other OS.
+Ensure VM-2 is in the same AZ as VM-1 for volume attachment.
+
+8) Attach Additional Volume to EC2 VM-2
+Attach the previously detached additional volume (from VM-1) to VM-2.
+It will show up as /dev/xvdb (or another name, depending on the device name you selected).
+
+9) Check the Data on the Volume
+SSH into VM-2.
+
+Run the following command to check the attached volumes:
+$ lsblk
+
+Mount the additional volume (/dev/xvdb) to a new directory:
+
+$ mkdir demo
+$ sudo mount /dev/xvdb demo
+
+Now, check the files:
+$ ls -l demo
+
+You should see f1.txt and f2.txt in the demo directory, confirming the data was preserved even after detaching and reattaching the volume.
+
+Conclusion:
+You have successfully:
+-> Created and attached an EBS additional volume.
+-> Stored data in the volume.
+-> Detached and reattached the volume to a new EC2 instance.
+-> Verified that the data persisted.
+
+####################################
+📸 What is a Snapshot in AWS?
+####################################
+
+A Snapshot is a backup of an EBS volume.
+
+It captures the entire state (data + configuration) of the volume at the time the snapshot was taken.
+
+Think of it like taking a photo of your hard disk — you can later use that photo to recreate the disk if needed.
+
+✅ Key Characteristics:
+✅ Snapshots are region-specific
+
+Note: You can only create and use snapshots within the same AWS region.
+Note: But! You can copy a snapshot to another region if needed for disaster recovery or migration.
+
+✅ Volumes are Availability Zone (AZ) specific
+
+You can only attach a volume to an EC2 instance in the same AZ.
+
+🔄 Volume ↔ Snapshot Workflow
+▶️ From Volume → Snapshot:
+You can create a snapshot of an existing EBS volume.
+
+This is commonly used for backup, cloning, or restoring volumes.
+
+▶️ From Snapshot → Volume:
+You can create a new EBS volume from the snapshot at any time.
+
+That new volume will have the same data as when the snapshot was taken.
+
+🌀 So the full lifecycle looks like this:
+
+
+NOte: Volume  ➝  Snapshot  ➝  Volume
+
+You can even create multiple volumes from a single snapshot if you need multiple copies.
+
+🚫 Can Snapshots be Attached to EC2?
+❌ No, snapshots cannot be attached directly to EC2 instances.
+
+✅ You must first create a volume from the snapshot, then you can attach that volume to your EC2 instance.
+
+💡 Think of it like this:
+
+A snapshot is just a stored image of a disk. You can't run it or mount it directly. You have to turn it into a usable disk (volume) first.
+
+📝 Use Cases for Snapshots:
+-> Backup and restore EBS volumes
+-> Creating new EC2 instances with preloaded data
+-> Moving data across regions (by copying snapshots)
+-> Creating AMIs (Amazon Machine Images)
+
+✅ Q) How to copy data from 1a zone VM to 1b zone VM?
+########################################################
+▶️ Step-by-Step Explanation:
+🧱 Step 1: Create a snapshot of the volume attached to 1a VM
+A snapshot is like a backup image of your EBS volume. It’s stored in S3 (behind the scenes), and snapshots are region-wide, meaning they can be used in any AZ within the same region.
+
+🧱 Step 2: Create a new volume from that snapshot in the 1b AZ
+Now use that snapshot to create a new EBS volume, but place it in the 1b zone.
+
+🧱 Step 3: Attach the new 1b volume to your 1b VM
+Now that the volume exists in 1b, attach it to the EC2 instance in that zone.
+
+🔄 What is Lifecycle Manager?
+############################################
+Lifecycle Manager helps you:
+
+📸 Automatically take snapshots of EBS volumes (backups)
+🧹 Retain them based on rules (e.g., last 7 daily snapshots)
+🗑️ Delete old ones automatically
+
+It’s useful for data protection, disaster recovery, and backup compliance.
+
+✅ Steps to Create a Lifecycle Policy (Using AWS Console)
+🔹 Step 1: Go to Lifecycle Manager
+Open the EC2 Dashboard
+On the left menu, click "Lifecycle Manager"
+Click “Create lifecycle policy”
+
+🔹 Step 2: Choose Policy Type
+Choose “EBS Snapshot Policy”
+Click Next
+
+🔹 Step 3: Target Resources (Volumes)
+You select which EBS volumes to back up based on tags
+
+Example:
+Tag Key: Backup
+Tag Value: Daily
+
+Only volumes with this tag will be included in the backup.
+
+📌 So make sure your volumes are tagged properly.
+
+🔹 Step 4: Create Schedule
+Define how often you want the snapshots:
+
+
+Field	Example
+Frequency	Daily, Weekly, Monthly
+Start time	2:00 AM UTC
+Retention	Keep last 7 snapshots
+Copy tags	Optional (copies volume tags to snapshot)
+You can also enable Fast Snapshot Restore or Cross-Region Copy (for DR setups).
+
+🔹 Step 5: Tags for the Policy
+Give the policy itself a tag if needed (optional).
+
+🔹 Step 6: Review and Create
+Review all settings
+
+Click Create policy
+
+Done ✅ — AWS will now take snapshots automatically based on your settings!
+
+🧠 Example Use Case
+---------------------------------
+Let's say you want to:
+
+Backup all volumes tagged with Backup=Daily
+Take snapshots every day at 1:00 AM
+Retain the last 5 backups
+Delete older ones automatically
+You just set that up once, and AWS handles it every day. Zero manual work.
+
+✅ 1) What is User Data in EC2?
+#########################################
+💡 Definition:
+User data is a startup script (bash, cloud-init, etc.) you provide when launching an EC2 instance. It runs automatically once when the instance boots for the first time.
+
+🛠️ Example Use Case:
+Install Apache and host a webpage automatically.
+
+#!/bin/bash
+sudo su
+yum install httpd -y
+cd /var/www/html
+echo "<html><h1>Pankaj Sir Academy - 1</h1></html>" > index.html
+service httpd start
+
+✅ Features:
+Runs only once (at first boot)
+Ideal for installing packages, configuring software, setting up environments
+
+💥 What the script does:
+-------------------------------
+sudo su – switches to root
+yum install httpd -y – installs Apache web server
+cd /var/www/html – goes to default website root directory
+echo ... > index.html – creates a basic HTML file
+service httpd start – starts the web server
+
+🌐 To Access the Website:
+-------------------------------
+After the instance starts:
+Go to the Security Group → Inbound Rules
+Allow traffic on port 80 (HTTP) from Anywhere (0.0.0.0/0)
+Open browser and type: http://<your-ec2-public-ip>
+
+🔄 What is a Load Balancer?
+#################################
+A Load Balancer is a system that automatically distributes incoming network or application traffic across multiple servers (or instances) to ensure no single server is overloaded with user request.
+
+❌ The Problem Without Load Balancer (Single Server Issues):
+When you host your application on one server only, you face:
+
+💥 All traffic goes to one place — server overload
+
+🐌 Increased users = slow response
+
+⚠️ If that server crashes, your app goes offline
+
+🛑 This is called a Single Point of Failure
+
+📉 Business impact — users can’t access services
+
+✅ Solution: Load Balancer
+A Load Balancer fixes these problems by:
+
+🧠 Smartly distributing traffic across multiple servers
+
+🔁 Uses Round Robin (or other algorithms) to share requests
+
+🧩 Automatically skips unhealthy servers
+
+✅ Benefits of Load Balancer (You wrote it well — here’s a quick enhancement):
+###############################################################################
+No.	Benefit	Explanation
+1️⃣	App runs on multiple servers -	Redundancy and scalability
+2️⃣	Load is distributed	 - No single server is overwhelmed
+3️⃣	Reduced burden on servers - 	Servers share the work
+4️⃣	Faster performance	 - Better response time for users
+5️⃣	High availability	 - If one server fails, others still serve users
+
+🧪 Load Balancer Lab Task – Step-by-Step Explanation
+#########################################################
+✅ Step-1: Create EC2 VM-1 with User Data
+This instance will act as Server-1 running a simple static webpage.
+
+#!/bin/bash
+sudo su
+yum install httpd -y
+cd /var/www/html
+echo "<html><h1>Pankaj Sir Academy - 1</h1></html>" > index.html
+service httpd start
+
+🛠️ What this does:
+Installs Apache web server
+Writes HTML into /var/www/html/index.html
+Starts the Apache server so it can serve requests on port 80
+
+✅ Step-2: Create EC2 VM-2 with Similar User Data (but different content)
+
+#!/bin/bash
+sudo su
+yum install httpd -y
+cd /var/www/html
+echo "<html><h1>Pankaj Sir Academy - 2</h1></html>" > index.html
+service httpd start
+
+🧠 This makes sure both servers are functionally the same, but you can identify which one responds by looking at the response (Server - 1 or Server - 2).
+
+✅ Step-3: Create a Target Group and Add EC2s
+📌 A Target Group is a collection of EC2 instances that a Load Balancer can forward traffic to.
+
+While creating the Target Group:
+Type: Instance
+Protocol: HTTP
+Port: 80
+VPC: same VPC as EC2s
+Health Check Path: / (default is fine)
+Add both EC2s to the target group and register them
+
+💡 This links your servers to the Load Balancer.
+
+✅ Step-4: Create an Application Load Balancer (ALB)
+Key settings:
+Scheme: Internet-facing (so it’s publicly accessible)
+Listeners: HTTP on port 80
+AZs: Select the subnets where both EC2s are running
+Security Group: Allow inbound HTTP (port 80)
+Forwarding rule: Forward to the Target Group you created
+
+🔗 The Load Balancer will now accept user requests and forward them to either EC2 based on round-robin.
+
+✅ Step-5: Access the Load Balancer DNS Name
+Once the ALB is active:
+Go to the Load Balancer details in AWS Console
+Copy the DNS Name
+Open it in a browser:,http://<your-alb-dns-name>
+
+🎯 You’ll start seeing alternating outputs like:
+
+Pankaj Sir Academy - 1
+
+Pankaj Sir Academy - 2
+
+Because the Load Balancer is sending requests to each server one after another — this is round robin load balancing.
+
+❗ Note: Clean Up After Testing
+✅ To avoid unnecessary charges:
+Delete the Load Balancer
+Delete the Target Group
+Stop or terminate the EC2 instances
+
+✅ Summary:
+Step	Action	Purpose
+1 & 2	Create EC2s with web pages	Acts as backend web servers
+3	Create Target Group	Group servers for ALB to forward requests
+4	Create ALB	Public access point with round-robin load distribution
+5	Test via ALB DNS	Verifies successful load balancing
+Final	Delete resources	Avoid AWS billing
+
+#############################
+Auto Scaling
+#############################
+-> Will adjust the server numbers automatically depending on the user load
+-> Desired Capacity: At any given point of time how many severs should run
+-> Min Capacity: Min servers required
+-> Max desired capacity: max number of servers AWS can scale upto based on load
+
+Note:
+------
+Create a template -> AMI + Server type, to define when auto scaling creates a server on its own which AMI & server type it should use.
+
+
+####################################
+AWS S3 (Simple Storage Service)
+####################################
+✅ What is S3?
+
+It is a storage service provided by Amazon Web Services (AWS) where you can store unlimited data (like files, images, videos, backups, documents, etc.) safely in the cloud.
+
+It can be accessed anytime, from anywhere via the internet.
+
+✅ Key Features:
+
+1. Unlimited Storage: No upper limit on how much you can store.👉 Maximum size for a single file (object) in S3: 5 Terabytes (TB) per object.
+
+2. Object-Based Storage:
+
+Example: Object = File (e.g., PDF, image, video, etc.)
+
+3. Along with the file itself, some metadata (extra information about the file) is stored.
+
+✅ Buckets:
+
+1. A Bucket is like a folder where you group your files (objects).
+
+Important Rules:
+
+a. Every bucket must have a globally unique name (no two buckets anywhere in AWS can have the same name).
+
+b. When you create a bucket, AWS automatically creates an endpoint URL to access that bucket.
+Example:
+https://your-bucket-name.s3.amazonaws.com
+You can create multiple buckets in your AWS account.
+
+What is ACL in AWS S3?
+👉 ACL stands for Access Control List.
+
+✅ Purpose:
+
+It is a permission system in S3.
+
+It controls who can access your buckets and objects and what they can do (read, write, etc.).
+
+############################
+✅ Where ACLs apply:
+############################
+1. Buckets (folders)
+2. Objects (files)
+
+How ACL works:
+-> Each bucket and object has an ACL attached to it.
+-> An ACL is basically a list of grants (permissions) that you assign to:
+
+✅ Examples of permissions you can set with ACLs:
+
+a. READ: Allow someone to view (download) a file.
+b. WRITE: Allow someone to upload or delete a file.
+c. READ_ACP: Allow someone to read the ACL itself.
+d. WRITE_ACP: Allow someone to change the ACL.
+
+Example Use Cases:
+a. You upload a public image and set the object's ACL to public-read → Anyone can view/download it.
+
+✨ Real Example in Short:
+###################################
+
+a. Keep Block Public Access ON	Website inaccessible (Access Denied)
+b. Disable Block Public Access	Website accessible to everyone
+
+
+✅ Objects:
+
+1. After you upload a file (object) into a bucket. That file also gets its own unique URL.
+https://your-bucket-name.s3.amazonaws.com/your-file-name.jpg
+
+✅ Access Control:
+
+1. By default, everything (buckets and objects) is private.
+2. You can choose to make them public if you want others to access your files.
+
+Quick Summary in Simple Terms:
+----------------------------------
+1. Create a Bucket (Folder).
+2. Upload Objects (Files) into the Bucket.
+3. Each bucket and file gets its own URL.
+4. Everything is private unless you make it public.
+
+###############################
+📌 What is S3 Versioning?
+###############################
+S3 Versioning is a feature that allows you to preserve, retrieve, and restore every version of every object (file) stored in an S3 bucket.
+
+==================================================================================
+| Feature             | Description                                               |
+==================================================================================
+| What is Versioning  | Maintains multiple versions of the same object (file).    |
+| Default Status      | Disabled by default in all new S3 buckets.                |
+| Overwrite Behavior  | Without versioning: new upload replaces old file.         |
+| With Versioning     | New upload creates a new version; old versions are kept.  |
+
+#########################################
+⚡ What is S3 Transfer Acceleration?
+##########################################
+a. S3 Transfer Acceleration is an AWS feature that speeds up file uploads and downloads to and from your S3 bucket, especially when:
+b. The user is far from the S3 bucket's region
+c. You are transferring large files over long distances
+
+##################################
+🔐 What is S3 Object Lock?
+##################################
+S3 Object Lock is a feature that lets you prevent objects (files) from being deleted or modified for a fixed period or forever. It's used to protect critical data for compliance, backup, or legal reasons.
+
+==================================================================================
+| Feature                 | Description                                          |
+==================================================================================
+| Purpose                 | Prevents deletion/modification of S3 objects         |
+| Bucket Requirement      | Must be versioning-enabled                           |
+| Modes Supported         | Governance Mode, Compliance Mode                     |
+| Governance Mode         | Only certain users can delete/overwrite (with permission) |
+| Compliance Mode         | No one can delete/modify object (not even root user) |
+| Retention Period        | Fixed duration (e.g., 30 days, 5 years, etc.)        |
+| Legal Hold              | Alternate option to lock object indefinitely         |
+| Use Cases               | Legal documents, audit logs, backups, compliance     |
+| WORM Support            | Yes (Write Once Read Many)                           |
+==================================================================================
+
+
+
+######################
+Note - s3
+######################
+====================================================================
+| Limit Type                    | Default Limit                  |
+======================================================================
+| Number of Buckets per Account| 100 (soft limit, can request increase) |
+| Number of Objects per Bucket | Unlimited                      |
+| Bucket Name Uniqueness       | Must be globally unique        |
+| Object Size (Max per Upload) | 5 TB (single object)           |
+| Upload Limit via Console     | 160 GB                     
+
+
+#########################################
+Static Website Hosting using AWS S3
+#########################################
+✅ What is a Website?
+A website collection of webpages.
+
+✅ Types of Websites:
+a. Static Website
+-> The same content is shown to every user.
+-> Example: A simple portfolio, a company’s information website, or a brochure website.
+b. Dynamic Website
+-> Different content is shown based on user inputs.
+
+
+############################################
+✅ Static Website Hosting with S3:
+#############################################
+Amazon S3 can host static websites easily without needing any servers (like EC2).
+
+Step-by-Step Process:
+Step-1: Create an S3 Bucket
+a. Create a new bucket.
+b. Bucket name must be unique (across all AWS users globally).
+c. Example bucket name: my-portfolio-website-2025
+
+Step-2: Upload Website Files
+a. Upload all your website files (index.html, about.html, contact.html, CSS files, images, etc.) into your bucket.
+
+Important:
+Give public read access while uploading, or update bucket permissions later.
+Otherwise, users cannot view your website files in their browsers.
+
+Step-3: Enable Static Website Hosting
+a. Go to Properties of your bucket.
+b. Find the option "Static website hosting".
+c. Enable it and set:
+d. Index document → index.html (the main page)
+e. Error document → error.html (page to show for broken links or missing pages)
+f. After enabling, AWS will generate a Website Endpoint URL something like:
+
+http://my-portfolio-website-2025.s3-website-us-east-1.amazonaws.com
+
+Step-4: Access the Website
+a. Open the Website Endpoint URL in any browser.
+b. Your static website will now be live and publicly accessible!
+
+Important Notes:
+a. S3 URLs for static hosting are different from the standard object URLs.
+b. S3 does not support server-side code (like PHP, Node.js) — only static files (HTML, CSS, JS).
+c. You can connect a custom domain (like www.yoursite.com) later if needed using Route 53 or other DNS services.
+
+####################################################
+📦 What are S3 Storage Classes?
+#############################################
+S3 offers different storage classes to help you optimize cost and performance depending on:
+
+How frequently you access the data
+
+How long you want to store it
+
+How critical the retrieval speed is
+
+✅ Purpose:
+To let you store data cost-effectively by selecting the right storage class based on usage pattern.
+
+############################
+🎯 When to Use Which?
+############################
+
+============================================================================================================================================
+| Need                                     | Recommended Class           | Storage Cost/GB/Month | Retrieval Cost                          |
+============================================================================================================================================
+| Frequent use, low latency (e.g. app data)| S3 Standard                 | ~$0.023               | Free                                    |
+| Changing access pattern over time        | S3 Intelligent-Tiering      | ~$0.023 + ~$0.0025    | Free (frequent), low for other tiers    |
+| Backups, monthly reports                 | S3 Standard-IA              | ~$0.0125              | ~$0.01 per GB                           |
+| Backups in non-critical regions          | S3 One Zone-IA              | ~$0.01                | ~$0.01 per GB                           |
+| Fast restore from archives               | S3 Glacier Instant Retrieval| ~$0.004               | ~$0.03 per GB                           |
+| Old logs, less frequent restore          | S3 Glacier Flexible Retrieval| ~$0.0036              | ~$0.01–$0.03 per GB (minutes to hours) |
+| Rare restore, long-term archival         | S3 Glacier Deep Archive     | ~$0.00099             | ~$0.02–$0.03 per GB (up to 12 hrs delay)|
+=============================================================================================================================================
+
+##################################################
+✅ IAM (Identity and Access Management)
+##################################################
+Definition:
+IAM is a free AWS service used to securely control access to AWS resources. It helps in managing users, groups, policies, and roles.
+
+🔑 Types of AWS Accounts
+1. Root Account
+The root account is created when you first sign up for AWS.
+
+It has unrestricted access to all AWS services and resources.
+
+It should never be used for daily tasks.
+
+Important Notes:
+
+❌ Do not use the root account for regular operations.
+
+❌ Do not share root credentials.
+
+✅ Always enable MFA (Multi-Factor Authentication) for the root account.
+
+👨‍💻 Companies never give root access to team members.
+
+🔐 Multi-Factor Authentication (MFA)
+Purpose: Adds an extra layer of security to your AWS account.
+
+How it works:
+
+Enable MFA for the root account (or IAM users).
+
+Use a mobile app like Google Authenticator to generate codes.
+
+During login, enter your password + code from the app.
+
+👤 IAM Account (IAM Users)
+Definition:
+IAM users are individual accounts created under the root account for team members or applications.
+
+Steps to use:
+
+Create IAM user.
+
+Assign required permissions via policies (e.g., AmazonS3FullAccess, AmazonRDSFullAccess).
+
+IAM users have no access to services unless permissions are explicitly granted.
+
+👥 IAM User Groups
+Definition: A user group is a collection of IAM users.
+
+Benefits:
+
+Apply policies once to the group, instead of individually to each user.
+
+Easily manage common permissions for multiple users.
+
+Steps:
+
+Create a group.
+
+Attach relevant policies.
+
+Add users to the group.
+
+🛡️ IAM Policies
+Definition: Policies are JSON documents that define permissions.
+
+Types:
+
+AWS Managed Policies – provided by AWS.
+
+Customer Managed Policies – created and maintained by you.
+
+Inline Policies – attached to a single user, group, or role.
+
+Example:
+A policy can allow full access to S3, or read-only access to EC2.
+
+🧑‍🔧 IAM Roles
+Definition: Roles are similar to users but are not associated with a specific person. Instead, they are used by AWS services to perform actions.
+
+Use Case Example:
+
+If an EC2 instance needs to interact with EKS:
+
+Create a role with EKS-related permissions.
+
+Attach the role to the EC2 instance.
+
+Roles are temporary and use short-term credentials.
+
+💻 Console Access vs Programmatic Access
+Console Access:
+User can log in to the AWS web console using a username/password.
+
+Programmatic Access:
+User can access AWS via CLI/SDKs using access key ID and secret access key.
+
+You can choose one or both access types when creating a user.
+
+📋 IAM Summary Checklist
+
+Topic	Description
+1. What is IAM	AWS service for managing access
+2. Root Account	Full control account created at signup
+3. Enable MFA	Adds security using apps like Google Authenticator
+4. IAM Account	User accounts for team/application use
+5. Console vs Programmatic Access	Web UI vs CLI/API access
+6. Users	Individual identities under root
+7. Groups	Collection of users with shared permissions
+8. Policies	Define permissions (read, write, full access, etc.)
+9. Roles	Permissions assigned to AWS services or temporary access
+10. Custom Policies	User-defined permissions in JSON format
+
+##################################
+Relational Database Service
+##################################
+It is a fully managed service provided by AWS that helps you set up, operate, and scale a relational database in the cloud.
+
+Database Setup
+------------------------------
+We can set up a database in two ways:
+
+a. On-Premises Database
+b. Cloud-Based Database
+
+
+
+🔑 Key Features of AWS RDS:
+---------------------------------
+1. Supports multiple database engines: MySQL, PostgreSQL, Oracle, SQL Server, MariaDB, and Amazon Aurora.
+2. Automatic backups and point-in-time recovery.
+3. High availability with Multi-AZ deployments.
+4. Scalability: Easily increase storage and compute power.
+5. Security: Data encryption at rest and in transit.
+6. Monitoring using CloudWatch.
+7. Pay-as-you-go billing model.
+
+🎯 Why use RDS?
+--------------------------
+1. You don’t have to worry about:
+2. Installing database software
+3. Managing hardware
+4. Setting up backups and security
+5. Handling failovers or scaling manually
+
+
+
+Practicals on RDS Creation
+----------------------------
+Step 1: Create a MySQL database using AWS RDS.
+Step 2: Enable MySQL port 3306 in the Security Group (Inbound Rules).
+Step 3: Test the connection using MySQL Workbench (client software).
+Step 4: Run SQL queries to practice (optional).
+Step 5: Delete the RDS instance after practice to avoid charges.
+
+MySQL DB Creation Settings
+-------------------------------
+Creation Method: Standard Create
+Engine Type: MySQL
+Template: Free Tier
+DB Instance Identifier: psa-db-instance
+Public Access: Yes
+Initial Database Name: testdb
+
+Database Connection Details
+--------------------------------------
+You will receive the following:
+
+Endpoint url
+Username:
+Password:
+Port: 3306
+
+🔐 Use these credentials in MySQL Workbench to verify the connection.
+✅ If connection is successful, share the DB details with the development team for project integration.
+
+Example 1: JDBC Connection to RDS database - Create Record
+---------------------------------------------
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			//Connect to database - use psaDB (SQL)
+			
+			Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://testdb.czacsiwa8h6m.ap-south-1.rds.amazonaws.com:3306/psaDB","admin","admin123$");
+		
+			
+			//Write & execute SQl query
+			//
+			
+			Statement stmnt =  con.createStatement();
+			stmnt.executeUpdate("insert into student values('adam','adam@gmail.com','9632629555')");
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Example 2: JDBC Connection to RDS database - Delete Record
+---------------------------------------------
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class B {
+	public static void main(String[] args) {
+		try {
+			//Connect to database - use psaDB (SQL)
+		Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://testdb.czacsiwa8h6m.ap-south-1.rds.amazonaws.com:3306/psaDB","admin","admin123$");
+					
+			//Write & execute SQl query
+			
+			Statement stmnt =  con.createStatement();
+			stmnt.executeUpdate("Delete from student where email='adam@gmail.com'");
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Example 3: JDBC Connection to RDS - Update Record
+------------------------------------------------
+import java.sql.*;
+
+
+public class C {
+	public static void main(String[] args) {
+		try {
+			//Connect to database - use psaDB (SQL)
+			
+			Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://testdb.czacsiwa8h6m.ap-south-1.rds.amazonaws.com:3306/psaDB","admin","admin123$");
+		
+			
+			//Write & execute SQl query
+			//
+			
+			Statement stmnt =  con.createStatement();
+			stmnt.executeUpdate("Update student set mobile='9632882052' where email='mike2gmail.com'");
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Example 4: JDBC Connection to RDS - Read Record
+------------------------------------------------
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class D {
+	public static void main(String[] args) {
+		try {
+			//Connect to database - use psaDB (SQL)
+			
+			Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://testdb.czacsiwa8h6m.ap-south-1.rds.amazonaws.com:3306/psaDB","admin","admin123$");
+		
+			
+			//Write & execute SQl query
+			//
+			
+			Statement stmnt =  con.createStatement();
+			ResultSet result = stmnt.executeQuery("Select * from student");
+			
+			while(result.next()) {
+				System.out.println(result.getString(1));
+				System.out.println(result.getString(2));
+				System.out.println(result.getString(3));
+			}
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+#####################
+✅ What is AWS CLI?
+########################
+AWS CLI is a tool that lets you interact with AWS services directly from the command line (your terminal or shell), using simple commands. It is officially developed by Amazon.
+
+✅ Key Features:
+-----------------------
+a. Manage AWS services like EC2, S3, IAM, Lambda, etc.
+b. Run scripts to automate tasks (like starting/stopping servers).
+c. Access AWS resources without using the AWS Web Console.
+
+🔵 For Windows:
+--------------------------------------
+a. Download the MSI installer: https://awscli.amazonaws.com/AWSCLIV2.msi
+b. Run the installer and follow the setup instructions.
+c. Verify installation: aws --version
+
+
+#################################
+Login to AWS CLI
+#################################
+
+aws configure
+AWS Access Key ID [****************WZEZ]: 
+AWS Secret Access Key [****************GvFv]: 
+Default region name [ap-south-1]: ap-south-1
+Default output format [json]: json
+
+To Verify login run the following command
+
+aws sts get-caller-identity
+
+Response: In Json Format
+{
+    "UserId": "495599735532",
+    "Account": "495599735532",
+    "Arn": "arn:aws:iam::495599735532:root"
+}
+
+#########################################################################################################
+Link to AWS Documention: https://awscli.amazonaws.com/v2/documentation/api/latest/reference/index.html
+##########################################################################################################
+
+#################################
+☁️ CloudWatch – Overview
+#################################
+Amazon CloudWatch is a monitoring and observability service provided by AWS. It helps you collect, access, and analyze metrics, logs, and events from various AWS resources and applications in real time.
+
+✅ Key Uses of CloudWatch:
+Monitor AWS Resources:
+-> CloudWatch allows you to monitor the performance and health of AWS services like:
+-> EC2 Instances: Track CPU utilization, disk reads/writes, network traffic, etc.
+-> EBS volumes: Monitor read/write ops, throughput, and latency.
+-> Elastic Load Balancers (ELB): Monitor latency
+-> RDS (Relational Database Service): Monitor DB connections, CPU usage, storage, IOPS, etc.
+
+
+🔧 How CloudWatch Works:
+-> Data Collection: CloudWatch collects metrics and logs from AWS services or custom sources.
+-> Visualization: Data can be visualized using dashboards or graphs.
+-> Alarms: You can set up CloudWatch Alarms to notify you when a metric exceeds a defined threshold.
+
+Automated Actions: Based on alarms, you can trigger actions like:
+
+-> Auto-scaling
+-> Sending SNS notification
+
+#####################################################
+🧪 CloudWatch & SNS – Practical Guide
+#####################################################
+
+✅ Step 1: Create SNS Topic with Email Notification
+	a. Open AWS Console → Navigate to Amazon SNS.
+
+	b. Click Topics → Click Create topic.
+
+	c. Select Standard type.
+
+	d. Enter:
+
+		Topic name: pankaj
+
+	e. Click Create topic.
+
+✅ Step 2: Configure Email Subscription
+	a. After creating the topic, click on it → Click Create subscription.
+
+	b. Set:
+
+		Protocol: Email
+
+		Endpoint: (Enter your valid email address)
+
+	c. Click Create subscription.
+
+	d. Open your email inbox and confirm the subscription by clicking the link in the email.
+
+✅ Step 3: Launch and Configure EC2 with CloudWatch Alarm
+	a. Launch an EC2 instance (Amazon Linux 2 preferred).
+
+	b. Once running, go to:
+
+		EC2 Dashboard → Instances → Select your instance.
+
+	c. Click:
+
+		Actions → Monitor and troubleshoot → Manage CloudWatch alarms
+
+	
+	d. Under Metric, choose:
+
+		EC2 → Per-Instance Metrics → Select your instance → CPUUtilization
+
+	e. Set conditions:
+
+		Threshold type: Static
+
+		Whenever CPUUtilization is >= 5%
+
+	        5 minutes (or 1 minute if you want faster response)
+
+	f. Configure actions:
+
+		Alarm state trigger: In Alarm
+
+		Notification: Select your SNS topic (pankaj)
+
+		Name the alarm (e.g., HighCPUAlarm) → Click Create alarm
+
+✅ Step 4: SSH into EC2 and Simulate High CPU Load
+	a. Connect to EC2 using your SSH client:
+        b. Install stress tool: sudo yum install stress -y
+	c. Simulate CPU load (run this 3–4 times to trigger alarm): stress --cpu 8 -v --timeout 180s
+
+✅ Step 5: Monitor CloudWatch Alarm and SNS Email Notification
+	a. Navigate to CloudWatch Console → Alarms.
+
+	b. Click your alarm name.
+
+	c. Observe:
+
+	d. State changes: From OK → ALARM
+
+	e. Alarm History: Click on your alarm → Click on History tab to view how many times it was triggered.
+
+	f. Check your email inbox for notifications sent by SNS when alarm was triggered.
+
+############################################
+✅ What is AWS Elastic Beanstalk?
+############################################
+AWS Elastic Beanstalk is a fully managed Platform-as-a-Service (PaaS) that allows you to deploy, manage, and scale web applications quickly — without worrying about infrastructure setup.
+
+🔧 What Does Elastic Beanstalk Do?
+-------------------------------------------
+When you upload your application (Java, Python, Node.js, .NET, PHP, Go, etc.), Elastic Beanstalk handles:
+
+✅ Provisioning: Launches EC2 instances, Load Balancer, Auto Scaling, etc.
+
+✅ Deployment: Automatically deploys your app code.
+
+✅ Monitoring: Integrates with CloudWatch to monitor performance and health.
+
+✅ Scaling: Automatically adjusts capacity using Auto Scaling groups.
+
+✅ Patching: Keeps platform components (like Tomcat, Node.js, etc.) up to date.
+
+
+✅ Elastic Beanstalk Pricing Model (Explained)
+🔹 Elastic Beanstalk itself is free — you are not charged for using the service.
+🔹 However, you pay for the AWS resources that your Beanstalk environment creates and uses, such as:
+
+a. EC2 instances (for compute)
+b. Load Balancers (ALB/ELB)
+c. Auto Scaling Groups
+d. RDS (if configured)
+e. S3 (for deployment artifacts)
+
+⚠️ Important: Be sure to terminate environments when done to avoid unnecessary charges.
+------------------------------------------------------------------------------------
+
+Elastic Beanstalk Service Role (Environment Role):
+------------------------------------------------------------
+a. Purpose: This role is used by Elastic Beanstalk itself to manage the resources required for your application.
+
+b. Scope: It allows Elastic Beanstalk to create and manage AWS resources (like EC2 instances, load balancers, security groups, etc.) on your behalf.
+
+EC2 Instance Profile Role (Compute Role):
+-------------------------------------------------------------
+
+Purpose: This role is assigned to the EC2 instances running in your Elastic Beanstalk environment. It allows those EC2 instances to interact with other a. AWS services that your Spring Boot application may need, like accessing an S3 bucket, reading from an RDS database, or writing logs to CloudWatch.
+
+b. Scope: It is specifically for granting permissions to EC2 instances so they can interact with AWS resources while the Spring Boot application is running.
+
+✅ Practicals: Deploy Spring Boot App on Elastic Beanstalk
+---------------------------------------------------------------------
+🔹 Step 0: Create IAM Role for Beanstalk Service Role (Environment Role)
+
+
+🔹 Step 1: Create IAM Role for Beanstalk Profile Role (Compute Role)
+You need to create an IAM role that Elastic Beanstalk.
+
+🛠️ Steps:
+
+a. Go to IAM → Roles → Create Role
+b. Choose Elastic Beanstalk → Elastic Beanstalk
+c. Attach the following policies:
+
+	1. AWSElasticBeanstalkMulticontainerDocker
+
+	2. AWSElasticBeanstalkWebTier
+
+	3. AWSElasticBeanstalkWorkerTier
+
+d. Name the role:
+	psait_beanstack_role
+
+🔹 Step 2: Create Elastic Beanstalk Application
+🛠️ Steps:
+
+a. Go to AWS Console → Elastic Beanstalk
+b. Click on "Create Application"
+c. Enter:
+	1. Application Name (e.g., springboot-demo)
+	2. Platform: Java
+	3. Platform Branch: Choose appropriate version (e.g., Java 17 Corretto)
+	4. Do NOT upload code yet; you’ll do that in next steps.
+d. Click Create
+
+🔹 Step 3: Create Environment for the Application
+🛠️ Steps:
+
+a. After the application is created, click “Create Environment”
+b. Choose "Web server environment"
+c. Set the environment name (e.g., springboot-env)
+d. Choose the platform again (Java, version-specific)
+e. Select the IAM role: psait_beanstack_role
+f. Proceed with default settings and click Create Environment
+
+✅ Once the environment is created, you’ll receive a public DNS URL like:
+
+http://springboot-env.eba-xxxxxxx.us-east-1.elasticbeanstalk.com
+
+✅ Uploading Spring Boot .jar File
+g. You now deploy your code to the environment.
+
+🔹 Step 4: Prepare the JAR File
+Build your Spring Boot app using:
+
+mvn clean package
+Ensure target/myapp.jar is ready.
+
+🔹 Step 5: Upload and Deploy JAR
+🛠️ Steps:
+
+a. Go to Elastic Beanstalk → Your Environment
+b. Click "Upload and Deploy"
+c. Upload your .jar file
+d. Set version label (e.g., v1.0)
+e. Click Deploy
+
+🔹 Step 6: Set Environment Variable (PORT)
+To ensure the Spring Boot app listens on the correct port:
+
+🛠️ Steps:
+a. Go to Elastic Beanstalk → Your Environment → Configuration
+b. Find "Software → Edit"
+c. Under Environment Properties, add:
+d. SERVER_PORT = 5000
+e. Click Apply Changes
+
+✅ This will restart the environment with the correct port mapping.
+
+🔹 Step 7: Access Your App
+Once environment restarts successfully:
+
+📡 Open the environment URL
+Example:
+
+http://springboot-env.eba-xxxxxxx.us-east-1.elasticbeanstalk.com
+
+🎉 Your Spring Boot app is now live!
+
+###########################################################################
+VPC: In AWS (Amazon Web Services), VPC stands for Virtual Private Cloud.
+-----------------------------------------------------------------------
+a. Amazon VPC is a logically isolated virtual network that you create in the AWS cloud. It is your own private network space in AWS
+b. Your VPC is like your own private data center within AWS.
+c. No other company can see or access your resources — unless you explicitly allow it.
+d. VPC is a free Service in AWS
+
+
+############################################################################
+
+🚫 What happens without a VPC?
+--------------------------------------
+a. Resources like EC2 cannot be launched without being attached to a VPC.
+b. There is no networking layer, so the instance can’t talk to:
+	1. The internet 🌐
+	2. Other services like databases, other EC2s, etc.
+
+---------------------------------------------
+
+###############################
+💡 Key Concepts of VPC:
+###############################
+🌐 What is an IP Address?
+-----------------------------
+An IP Address (Internet Protocol Address) is a unique identifier for a device on a network (like a computer, phone, server, etc.). It's like a postal address — used to send and receive data between devices.
+
+🧩 Types of IP Addresses
+------------------------------
+1. IPv4 (Internet Protocol version 4)
+a. Format: xxx.xxx.xxx.xxx (e.g., 192.168.1.1)
+b. 32-bit address → Around 4.3 billion unique addresses
+c. It is divided inot 4 octets
+
+Note: Most widely used
+
+2. IPv6 (Internet Protocol version 6)
+---------------------------------------------
+a. Format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx(eg.  fe80::c1a2:739b:9d8e:b9e2%14)
+b. 128-bit address → Massive number of addresses
+c. Created due to shortage of IPv4 addresses
+
+Note: Use ipconfig in your cmd to see ip details of your machine
+
+📚 What is CIDR?
+----------------------------
+-> CIDR stands for Classless Inter-Domain Routing.
+-> It’s a method for reserving  IP addresses range for a VPC for future allocation to resource for communication between them
+
+📏 What is VPC Sizing?
+---------------------------------
+VPC sizing means choosing the IP address range (CIDR block) for your VPC that fits your current and future needs for AWS resources (EC2, RDS, etc.) within that network.
+
+🧮 CIDR Calculations Explained
+----------------------------------
+
+Example 1: 10.0.0.0/16------>2^(32-16)-----> 2^16----->65,536
+Example 2: 10.0.0.0/24------>2^(32-24)----->2^8------->256
+
+
+🌐 What is a Subnet?
+--------------------------------
+A subnet (short for subnetwork) is a smaller network segment created by dividing a larger network (like a VPC) into multiple, logically separated pieces.
+
+
+What is Route Table?
+---------------------------
+A route table in a VPC is like the traffic police or traffic controller directing where each packet of data (like a vehicle) should go next:
+
+It looks at the destination (where the data wants to go).
+
+It tells it which “road” or “route” to take (like sending cars to the highway, local streets, or a tunnel).
+
+Without it, the data wouldn’t know how to reach its destination, just like cars without traffic rules would cause chaos.
+
+So yes, the route table manages and controls the flow of network traffic 
+
+Note:
+Each subnet must be associated with a route table. However, traffic within the same subnet does not require routing via the route table—instances communicate directly. Route tables are used to route traffic between subnets within a VPC, between VPCs, and from subnets to outside networks
+
+Public Subnet
+------------------
+A public subnet is a subnet that has a route to the internet via an Internet Gateway (IGW).
+
+Instances (like EC2 servers) in a public subnet can directly communicate with the internet if they have a public IP address.
+
+Typically used for resources that must be accessible from the internet
+
+Private Subnet
+-------------------
+A private subnet is a subnet that does NOT have a direct route to the internet via an Internet Gateway.
+
+Instances in a private subnet cannot be accessed directly from the internet.
+
+Usually used for backend resources — like databases, application servers, or any service you want to keep isolated from direct internet access.
+
+However, instances in private subnets can still access the internet for updates or downloads by routing traffic through a NAT Gateway
+
+🌐 What is an Internet Gateway?
+--------------------------------------
+An Internet Gateway (IGW) is a VPC component that allows communication between your VPC and the internet.
+
+It enables instances in your VPC to:
+
+Send traffic to the internet
+
+Receive traffic from the internet
+
+
+
+🔁 What is a NAT Gateway?
+------------------------------------
+NAT Gateway stands for Network Address Translation Gateway.
+
+It allows instances in a private subnet to access the internet, but prevents the internet from initiating connections back to those instances.

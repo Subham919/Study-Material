@@ -1,0 +1,1706 @@
+java-notes-psa/java.txt
+----------------------------------------
+____________________________
+Advantages of interfaces
+---------------------------
+
+
+1. abstraction: hiding of implementation details. That is we define what needs to be developed and not how it needs to be developed
+2. It imposes contract on a class to implement all methods of an interface
+3. Results in good design
+4. loosely coupled
+
+Can we define incomplete static methods in an interface?
+-------------------------------------------------------
+-> Static memebers in java are not inherited
+-> We cannot define incomplete static methods inside an interface
+
+Java 8 Features
+----------------
+
+1. default keyword:
+-> Using default keyword we can create complete methods inside interface. This was introduced in java version 8
+
+
+2. Functional Interface:
+
+-> A functional interface should consist of exactly one incomplete method inside it
+-> Inside functional interface we can develop any number of complete methods using default keyword
+-> During inheritance/multiple inheritance if more than one method is inherited to Functional Interface then you will get error. As shown in below examples 
+
+Note:
+What are marker interfaces in java?
+-> Empty interfaces in java are called as marker interface
+
+3. lambdas expression - 
+
+-> It was introduced in java 8
+-> Reduces number of lines of code
+-> Works with functional interfaces
+-> We can use lambdas expression in stream
+
+How Lambdas Expression Works
+
+Note: Fuctional Programming defines you say "what you want, not how to do it step-by-step"
+
+-> Its creates Annonymous class behind the scene. A class without any name is called Annonymous .
+-> Then lambdas expression creates an object and load the method by implementing inside object.
+-> Then we use object reference to call that implemented method
+
+
+Abstract class in java
+----------------------------
+-> In an abstract class we can create both static / non static members
+-> We can create both complete / incomplete non static methods
+-> We cannot create static incomplete methods here but we can create complete static methods
+-> We cannot create object of abstract class because abstract class can consist of incomplete methods
+-> We cannot perform multiple inheritance
+
+Exception Handling In Java
+-------------------------------
+
+-> Unexpected events are called exceptions.
+-> Exceptions will hault your program execution.
+-> Exceptions will Occur when bad user input is given
+
+Example:
+
+public class A {
+	public static void main(String[] args) {
+		int x = 10;
+		int y = 0;
+		int z = x/y;//---->will stop here
+		System.out.println("Welcome");
+	}
+}
+
+-> We handle exception in java using a try & catch block
+-> When exception occurs try block will create Exception object & that Object address it will give it to catch block
+-> Catch block will handle the exception so that further code will continue to execute
+
+Example:
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			int x = 10;
+			int y = 0;
+			int z = x/y;//---->will stop here
+		} catch (Exception e) {
+			
+		}
+		System.out.println("Welcome");
+	}
+}
+
+Example:
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			int x = 10;
+			int y = 0;
+			int z = x/y;//---->will stop here
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+
+Types of Exception in java
+##########################
+
+There are two types of exception in java
+
+a. Compiletime / Checked Exception - These Exception will occur when .java file is compile to .class file. That is during compilation we will get this exception
+
+b. Runtime / Unchecked Exception - These Exception will occur when we run .class file. That is during runtime
+
+###############################
+Runtime / unchecked Exceptions
+###############################
+
+1. ArithmeticException: This exception will occur when invalid mathematical operations are performed
+
+Example: /ZERO
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			int x = 10;
+			int y = 0;
+			int z = x/y;
+			System.out.println(z);
+		} catch (ArithmeticException a) {
+			a.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+
+Example: %ZERO
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			int x = 11;
+			int y = 0;
+			int z = x%y;
+			System.out.println(z);
+		} catch (ArithmeticException a) {
+			a.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+
+
+2. Null PointerException: This exception will occur when with null reference variable we try to access non static members of the class
+
+Example:
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		try {
+			A a1 = null;
+			System.out.println(a1.x);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+
+Note: You won't get this exception if you try to access a static member using a null reference:
+
+Example:
+public class A {
+	static int x = 10;
+	public static void main(String[] args) {
+		
+			A a1 = null;
+			System.out.println(a1.x);//A.x
+		
+	}
+}
+
+Output: 10
+
+3. NumberFormatException: This exception will occur when invalid conversion to a number is performed
+
+Note:
+
+Primitive    bWrapper Class
+byte		Byte
+short		Short
+int		Integer
+long		Long
+float		Float
+double		Double
+char		Character
+
+Example 1: I want to convert String to Integer
+
+public class A {
+	public static void main(String[] args) {
+		String x = "100";
+		int  y = Integer.parseInt(x);
+		System.out.println(y);
+	}
+}
+
+Example 2:I want to convert String to Float
+
+public class A {
+	public static void main(String[] args) {
+		String x = "10.3";
+		float  y = Float.parseFloat(x);
+		System.out.println(y);
+	}
+}
+
+Example 3:I want to convert String to Double
+
+public class A {
+	public static void main(String[] args) {
+		String x = "10.3";
+		double  y = Double.parseDouble(x);
+		System.out.println(y);
+		
+	}
+}
+
+Example: 4
+----------
+public class A {
+	public static void main(String[] args) {
+		try {
+			String x = "10.3dasdsd";
+			double  y = Double.parseDouble(x);
+			System.out.println(y);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+		
+	}
+}
+
+
+
+What is class upcasting?
+
+-> Here we store child class object address into parent class reference variable, so that reference vle becomes re-usable
+
+Example: Reusing reference variable
+
+public class A {
+	
+}
+
+public class B extends A{
+
+}
+
+public class C extends A{
+	public static void main(String[] args) {
+				
+		A a1 = new B();
+		System.out.println(a1);
+		a1 = new C();
+		System.out.println(a1);
+	}
+}
+
+Example 2: How we can implement polymorphism for multiple child classes by using same reference variable
+
+public class A {
+	void display() {
+        System.out.println("Inside class A");
+    }
+}
+
+public class B extends A{
+	 @Override
+	    void display() {
+	        System.out.println("Inside class B");
+	    }
+}
+
+public class C extends A{
+	  @Override
+	    void display() {
+	        System.out.println("Inside class C");
+	    }
+	public static void main(String[] args) {
+				
+		A a1 = new B();
+		a1.display();    // Calls B's version => "Inside class B"
+		a1 = new C();
+		a1.display();    // Calls C's version => "Inside class C"
+	}
+}
+
+Note:
+
+🧠 Why do we do it?
+1. To reuse the parent class reference for multiple child class objects.
+2. To enable polymorphism on mulitple child classes.
+3. To write generic, flexible code that works with different subclasses.
+
+
+
+Note:
+instanceof - It will check which class object address is present inside the reference variable
+
+Example:
+
+public class A {
+	
+}
+
+public class B extends A{
+	
+}
+
+public class C extends A{
+	 
+	public static void main(String[] args) {
+				
+	  A a1 = new C();
+	  System.out.println(a1 instanceof B);
+	}
+}
+
+What is class downcasting?
+##########################
+-> Here we store parent class object address into child class reference variable
+-> To perform downcasting, firstly do upcasting and then perform downcasting
+Example:
+---------
+public class A {
+	
+}
+public class B extends A{
+	
+}
+public class C extends A{
+	 
+	public static void main(String[] args) {
+		
+		A a1 = new B();
+		if(a1 instanceof B) {
+			B b1 = (B)a1;
+			System.out.println("Downcasting successful!");
+		}
+	}
+}
+
+Example:
+--------
+public class A {
+	public void display() {
+		System.out.println("Inside class A");
+	}
+}
+public class B extends A{
+	public void showB() {
+        System.out.println("Inside class B");
+        }
+}
+public class C extends A {
+	public void showC() {
+		System.out.println("Inside class C");
+	}
+}
+public class MainClass {
+	public static void processObject(A obj) {
+        if (obj instanceof B) {
+            B b = (B) obj;  // Downcasting to B
+            b.showB();
+        } else if (obj instanceof C) {
+            C c = (C) obj;  // Downcasting to C
+            c.showC();
+        } else {
+            obj.display();
+        }
+    }
+    public static void main(String[] args) {
+    	processObject(new B());
+	}
+}
+
+Note:
+-Using upcasting we can access only parent class members, you cannot access child class members
+-After upcating to access child class members we have to perform downcasting
+
+Example:
+public class A {
+	public void displayA() {
+		System.out.println("From A");
+	}
+}
+public class B extends A{
+	public void displayB() {
+		System.out.println("From B");
+	}
+	
+	 public static void main(String[] args) {
+	        A obj = new B();  // Upcasting B to A
+
+	        obj.displayA();   // Allowed: method from A
+	        //obj.displayB(); // ❌ Not allowed: method from B not visible
+
+	        // To call displayB, you'd need to downcast:
+	      ((B)obj).displayB(); // ✅ Now displayB() is accessible
+	    }
+}
+
+Arrays in java:
+###############
+-> In java arrays holds collection of value
+-> Anything that holds colection of values is called as a data struture
+-> Array in java is treated as an object
+-> Arrays starts with index zero
+-> To store and read values we use this formula in arrays - start_address + index*memory_size
+-> Memory allocation happens to be in sequence(Continuous).
+
+Example:
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[4];
+		age[0] = 10;
+		age[1] = 20;
+		age[2] = 30;
+		age[3] = 40;
+		
+		System.out.println(age[0]);
+		System.out.println(age[1]);
+		System.out.println(age[2]);
+		System.out.println(age[3]);
+		
+		
+	}
+}
+
+-> To find size of an array dynamically we will use  public final field "length". When array is created this variable will get initiliazed
+Example : age.length
+
+Loops:
+
+a. for loop:
+
+Example 1:
+----------
+for(int i=0;i<5;i++) {//i=0 to 4
+   System.out.println(i);
+}
+
+
+Example 2:
+----------
+
+for(int i=0;i<=5;i++) {//i=0 to 5
+  System.out.println(i);
+}
+
+Example 3: loops with arrays
+---------------------------
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[4];
+		age[0] = 10;
+		age[1] = 20;
+		age[2] = 30;
+		age[3] = 40;
+		
+		for(int i=0;i<age.length;i++) {//i=0 to 3
+			System.out.println(age[i]);
+		}
+		
+		
+	}
+}
+
+Example 4: How to get only even numbers in an array
+---------------------------------------------------
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[4];
+		age[0] = 10;
+		age[1] = 21;
+		age[2] = 30;
+		age[3] = 43;
+		
+		for(int i=0;i<age.length;i++) {//i=0 to 3
+			if(age[i]%2==0) {
+				System.out.println(age[i]);
+			}
+		}
+		
+		
+	}
+}
+
+Example 5:
+----------
+for(int i=4;i>=0;i--) {//i=4 to 0
+   System.out.println(i);
+}
+
+Example 6:Print array in reverse order
+--------------------------------------
+
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[4];
+		age[0] = 10;
+		age[1] = 21;
+		age[2] = 30;
+		age[3] = 43;
+		
+		for(int i=age.length-1;i>=0;i--) {//i=3 to 0
+			System.out.println(age[i]);
+		}
+		
+		
+	}
+}
+
+Example 7:
+-----------
+-> for each loop is exclusively developed to read values of datastructure
+-> Iterating the loop is dynamic. That is the loop will run until all array values reading is not completed
+
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[5];
+		age[0] = 10;
+		age[1] = 21;
+		age[2] = 30;
+		age[3] = 43;
+		age[4] = 50;
+		
+		//foreach
+		for(int x:age) {
+			System.out.println(x);
+		}
+		
+	}
+}
+
+Example 8: If we donot iitialize array, then depending on data type default value will get stored in it:
+______________
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[5];
+			
+		//foreach
+		for(int x:age) {
+			System.out.println(x);
+		}
+		
+		
+	}
+}
+
+Example 9: An array with size ZERO can be created
+--------------------------------------------------
+public class A {
+	public static void main(String[] args) {
+		int[] age = {};
+		System.out.println(age.length);
+		
+		int[] y = new int[0];
+		System.out.println(y.length);
+		
+	}
+}
+
+Example 10: Dynamic array, size increases or decreases depending on values stored.
+Note: Create dynamic arrays using ArrayList(Will discuss latter)
+------------------------------------------------------------------------------
+public class A {
+	public static void main(String[] args) {
+		int[] age = {10,11,12};
+		System.out.println(age.length);
+		for(int x:age) {
+			System.out.println(x);
+		}
+	
+	}
+}
+
+Example 11: ArrayIndexOutOfBoundsException
+-> When we exceed the size of array while reading / writing values
+--------------------------------------------------------------------
+
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[2];
+		age[0] = 10;
+		age[1] = 20;
+		age[2] = 30;
+		
+	}
+}
+
+Example 12:ArrayIndexOutOfBoundsException
+-----------------------------------------------
+
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[2];
+		age[0] = 10;
+		age[1] = 20;
+		
+		for(int i=0;i<3;i++) {//i=0 to 2
+			System.out.println(age[i]);
+		}
+		
+	}
+}
+
+Example 13: Removing duplicate elements from an array
+-----------------------------------------------------
+-> Array "x" should be sorted
+-> Create an array called "temp" which should be same size of array "x"
+-> Compare i with i+1, if not equal then copy the value to temp at index j from index i & increment j by 1
+-> When you reach last index of array "x" then copy that value as it is to j
+
+public class A {
+	public static void main(String[] args) {
+		//-> Array "x" should be sorted
+		int[] x = {2,2,3,4,5,6,6,7};
+		//-> Create an array called "temp" which should 
+		//be same size of array "x"
+		int[] temp = new int[x.length];
+		//-> Compare i with i+1, 
+		//if not equal then copy the 
+		//value to temp at index j from index i & increment j by 1
+		int j=0;
+		for(int i=0;i<x.length-1;i++) {//i=0 to 5
+			if(x[i]!=x[i+1]) {
+				temp[j] = x[i];
+				j++;
+			}
+		}
+		//-> When you reach last index of array "x" 
+		//then copy that value as it is to j
+		temp[j] = x[x.length-1];
+		
+		for(int t:temp) {
+			System.out.println(t);
+		}
+		
+		
+	}
+}
+
+Example 14: Sorting an array in java
+------------------------------------
+-> We comparing i with i+1, when value at index "i" is greater than "i+1", then swap the element
+-> Repeat the above step for array_size-1 times
+
+How to swap elements in java
+-----------------------------
+public class A {
+	public static void main(String[] args) {
+		int x = 10;
+		int y = 20;
+		int temp = x;
+		x=y;
+		y=temp;
+		System.out.println(x);
+		System.out.println(y);
+	}
+}
+
+How to sort elements in an array?
+--------------------------------------------------
+public class A {
+	public static void main(String[] args) {
+		int[] x = {32,14,24,36,5};
+		int temp;
+		for(int j=0;j<x.length-1;j++) {//i=0 to 4
+			for(int i=0;i<x.length-1;i++) {//i=0 to 4
+				if(x[i]>x[i+1]) {
+					temp=x[i];
+					x[i] = x[i+1];
+					x[i+1] = temp;
+				}
+			}
+		}
+		for(int t:x) {
+			System.out.println(t);
+		}
+	}
+}
+
+Scanner Class in java
+#####################
+-> These classes takes user inputs
+
+a. next() - Reads string input. Reads only one work
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your name:");
+		String name = scan.next();
+		System.out.println(name);
+	}
+}
+b.nextInt() - Reads integer input.
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your age:");
+		int age = scan.nextInt();
+		System.out.println(age);
+	}
+}
+
+c. nextFloat() - Reads float value
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your weight:");
+		float weight = scan.nextFloat();
+		System.out.println(weight);
+	}
+}
+
+d. nextLong() - Reads long value
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your Mobile:");
+		long mobile = scan.nextLong();
+		System.out.println(mobile);
+	}
+}
+e. nextLine() - Reads more than one string value
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your name:");
+		String name = scan.nextLine();
+		System.out.println(name);
+	}
+}
+f. nextBoolean() - Reads boolean value.
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your ans:");
+		Boolean ans = scan.nextBoolean();
+		System.out.println(ans);
+	}
+}
+
+#############
+Loops Concept
+#############
+a. for loop
+b. while loop
+c. do while loop
+
+note: 
+1. To exit for loop we use break keyword
+2. We can use break keyword only inside loops and switch case
+
+a. for loop
+-----------
+-> When number of iterations are fixed use for loop
+
+public class A {
+	public static void main(String[] args) {
+		Scanner scan  = new Scanner(System.in);
+		
+		for (int i = 0; i < 3; i++) {//i=0 to 2--> 3 times
+			System.out.println("Enter the pin number");
+			int pinNumber = scan.nextInt();
+			if(pinNumber==1234) {
+				System.out.println("Welcome");
+				break;
+			}else {
+				System.out.println("Invalid pin number");
+				if(i==2) {
+					System.out.println("Card is blocked");
+				}
+			}
+		}
+		
+	}
+}
+
+b. while loop
+-------------
+-> To be used when number of iterations are not defined
+Example 1: 
+public class A {
+	public static void main(String[] args) {
+		int i=0;
+		while(i<3) {
+			System.out.println(i);
+			i++;
+		}
+		
+	}
+}
+
+Example 2:
+----------
+
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		String cdn="yes";
+		while(cdn.equals("yes")) {
+			System.out.println("Enter the amount:");
+			int amount = scan.nextInt();
+			System.out.println("Please collect Rs. "+amount);
+			System.out.println("Do you want to continue(yes/no)?");
+			cdn = scan.next();
+		}
+		scan.close();
+		
+	}
+}
+
+3. do-while loo
+->In Do while loop first execution will happen without condition check. Second iteration depends on the condition
+Example:
+public class A {
+	public static void main(String[] args) {
+		int i=0;
+		do {
+			System.out.println(i);
+			i++;
+		}while(i<3);
+		
+	}
+}
+
+Conditional Statements
+##########################
+1. if() -> Will execute for true condition
+2. if() - else -> for true condition if will execute & for false condition else will execute
+3. elseif()->
+1. Both if and else if will execute for true condition
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+		if(i<35 && i>=0) {
+			System.out.println("Failed");
+		}else if(i>=35 && i<=100) {
+			System.out.println("Pass");
+		}else if(i==0) {
+			System.out.println("Input given is ZERO");
+		}else {
+			System.out.println("Invalid input");
+		}
+		
+	}
+}
+Note: OR (||) Operator Example
+public class A {
+	public static void main(String[] args) {
+		int i=0;
+		if(i<35 || i>=0) {
+			System.out.println("Failed");
+		}
+		
+	}
+}
+Note: ! - Not Operator in Java
+public class A {
+	public static void main(String[] args) {
+		int i=-1;
+		
+		if(!(i>=0)) {
+			System.out.println("Failed");
+		}
+	}
+}
+
+Swicth Case Example:
+#########################
+public class A {
+	public static void main(String[] args) {
+		int key=20;
+		switch (key) {
+		case 1:
+			System.out.println(1);
+			break;
+		case 2:
+			System.out.println(2);
+			break;
+		case 3:
+			System.out.println(3);
+			break;
+
+		default:
+			System.out.println("Default");
+			break;
+		}
+	}
+}
+
+File Handling in Java
+#######################
+
+1. File
+-----------
+Note: Special Characters
+               System.out.print(200);
+		System.out.print("\n");
+		System.out.print(300);
+		System.out.print("\n");
+		System.out.print(200);
+		System.out.print("\t");
+		System.out.print(300);
+
+Example 1:It holds the given path in variable "f"
+----------------------------------------------------
+File f = new File("G:\\f1\\t1.txt");
+System.out.println(f);
+
+1. exists() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is boolean
+c. It checks whether the file exists in the given path.
+d. If file exists, it will return true or else false
+Example:
+---------
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G://f1//t2.txt");
+		boolean val = f.exists();
+		System.out.println(val);
+	}
+}
+
+2. delete() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is boolean
+c. It deletes the file exists in the given path.
+d. If file is deleted, it will return true or else false
+
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G://f1//t1.txt");
+		boolean val = f.delete();
+		System.out.println(val);
+	}
+}
+
+3.mkdir() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is boolean
+c. It creates folder  in the given path.
+d. If folder is created, it will return true or else false
+e. It will not replace existing folder
+
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G://f1//t1");
+		boolean val = f.mkdir();
+		System.out.println(val);
+	}
+}
+
+Example: To delete Folder using delete() method
+------------------------------------------------
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G://f1//t1");
+		boolean val = f.delete();
+		System.out.println(val);
+	}
+}
+
+4.length() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is long
+c. It counts characters with white spaces in the given file.
+Example:
+---------
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G://f1//t1.txt");
+		long val = f.length();
+		System.out.println(val);
+	}
+}
+
+Note:
+Compiletime Exception/ Checkedc Exception
+_____________________________________________
+-> These exceptions will occur even when the program is correct/Incorrect
+-> Handling exception becomes mandatory when it is compile time
+
+5. createNewFile()-
+-------------------
+a. It is non static method present inside File Class
+b. It's return type is boolean
+c. It Throws Compiletime exception. So should be handled before executing the program
+d. If file is created, it will return true or else false
+
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		try {
+			File f = new File("G://f1//t3.txt");
+			boolean val = f.createNewFile();
+			System.out.println(val);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+6. list()-
+-------------------
+a. It is non static method present inside File Class
+b. It's return type is String[] array
+c. It get all files/folders names from a given path
+
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		
+		    File f = new File("G://f1//");
+		    String[] val = f.list();
+		    
+		    for(String x:val) {
+		    	System.out.println(x);
+		    }
+		    System.out.println(val.length);
+	}
+}
+
+Note: Using "File" class we cannot read / write content From / To text file
+
+2. FileReader:
+#######################
+-> It can read text file content
+a. read(): int
+---------------
+-> it will read one charater from the file and return integer value:
+Example:
+---------
+public class A {
+	public static void main(String[] args) {
+		try {
+			 FileReader fr = new FileReader("G:\\f1\\t1.txt");
+			 int x = fr.read();
+			 System.out.println((char)x);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+Example:
+---------
+public class A {
+	public static void main(String[] args) {
+		try {
+			 FileReader fr = new FileReader("G:\\f1\\t1.txt");
+			 for(int i=0;i<4;i++) {
+				 System.out.print((char)fr.read());
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+Example:
+-----------
+public class A {
+	public static void main(String[] args) {
+		try {
+			 File f = new File("G:\\f1\\t1.txt");
+			 FileReader fr = new FileReader(f);
+			 for(int i=0;i<f.length();i++) {
+				 System.out.print((char)fr.read());
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		try {
+			 File f = new File("G:\\f1\\t1.txt");
+			 FileReader fr = new FileReader(f);
+			 char[] ch = new char[(int)f.length()];
+			 fr.read(ch);
+			 
+			 for(char c:ch) {
+				 System.out.print(c);
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+#####################
+FileWriter class
+#####################
+1. It will write content to text file
+2. If File is not present in given path, it will create a new file
+3. If the file is present in the given path, then it will replace the existing file by default
+
+Example: 
+--------
+import java.io.FileWriter;
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G://f1//t1.txt");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+Note: If you donot want to replace old file with new file, and you want to append data to existing file then add boolean value true
+Example:
+---------
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G://f1//t1.txt",true);
+// If you make it false/donot provide boolean value then it will replace old file with new one //and data from previous file will be lost
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+Example:
+--------
+import java.io.FileWriter;
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G://f1//t1.txt");
+			fw.write(97);
+			fw.write(98);
+			fw.write(99);
+			fw.write(100);
+			
+			fw.close();//Save the file content and closes the file
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G://f1//t1.txt");
+			fw.write("mike");
+			fw.write("\n");
+			fw.write("stallin");
+			fw.write("\n");
+			fw.write("adam");
+			fw.close();//Save the file content and closes the file
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+Example:
+----------
+import java.io.FileWriter;
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G://f1//t1.txt");
+			char[] ch = {'a','b','c'};
+			fw.write(ch);
+			fw.close();//Save the file content and closes the file
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+########################
+BufferedReader
+#######################
+1. This will improve file reading performance
+2. This should be used with FileReader class, If we use only BufferedReader then FileReading cannot be done
+3. It has readLine() method. Using this method we can read the entire line from the file
+Example:
+--------
+import java.io.BufferedReader;
+import java.io.FileReader;
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileReader fr = new FileReader("G://f1//t1.txt");
+			BufferedReader br = new BufferedReader(fr);
+			System.out.println((char)br.read());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+Example :
+----------
+import java.io.BufferedReader;
+import java.io.FileReader;
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileReader fr = new FileReader("G://f1//t1.txt");
+			BufferedReader br = new BufferedReader(fr);
+			char[] ch = new char[4];
+			br.read(ch);
+			for(char c: ch) {
+				System.out.print(c);
+			}
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+Example:
+--------
+import java.io.BufferedReader;
+import java.io.FileReader;
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileReader fr = new FileReader("G://f1//t1.txt");
+			BufferedReader br = new BufferedReader(fr);
+			for(int i=0;i<4;i++) {
+				System.out.println(br.readLine());
+			}
+			br.close();
+			fr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+#####################
+BufferedWriter
+#####################
+-> It improves file writing performance
+-> This should be used with FileWriter class, If we use only BufferedWriter then FileWriting cannot be done
+-> BufferedWriter class has new line method
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G://f1//t1.txt",true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write("mike");
+			bw.newLine();
+			bw.write(97);
+			char[] ch = {'b','c','d'};
+			bw.newLine();
+			bw.write(ch);
+			
+			bw.close();
+			fw.close();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+################################
+Serialization & Deserialization
+################################
+
+-> Serialization is a process of converting object to byte code and storing that in a file system
+-> De-Serialization is a process of reading byte code from the file and form Object based on byte code
+-> To skip writing certain content to object during serialization we can use transient keyword
+
+Example:
+A.java
+-------
+import java.io.Serializable;
+
+public class A implements Serializable{
+	public String name="mike";
+	transient public String password="testing";
+}
+
+B.java - Serialization
+----------------------
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+public class B {
+	public static void main(String[] args) {
+		try {
+			FileOutputStream fos = new FileOutputStream("G:\\f1\\file.ser");
+			A a1 = new A();
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(a1);
+			oos.close();
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+C.java - De-Serialization
+----------------------------
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+public class C {
+	public static void main(String[] args) {
+		try {
+			FileInputStream fis = new FileInputStream("G:\\f1\\file.ser");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			A a1 = (A)ois.readObject();
+			System.out.println(a1.name);
+			System.out.println(a1.password);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+##########################################
+JDBC - Java Database Connnectivity
+##########################################
+-> Database: Here we store data in the form of tables permanently
+-> Popular Databases: MySQl, Postgres, Oracle, SQlServer, MongoDB, Derby, h2Database
+-> Install MySql Database
+Download from here: https://dev.mysql.com/downloads/windows/installer/8.0.html
+-> When you download MySql Workbench you will get the following
+a. IDE - To Write SQl Query (Structured Query Language)
+(SQl query is use to interact with the database)
+b. MySQl Server
+
+Installation Doc: https://www.prowesstics.com/blogs/mysql-workbench-installation/
+
+-> Launch Mysqlworkbench
+-> Create psaDB connection
+-> Crate Database: Create Database psaDB
+-> Connect to Database: use psaDB
+-> Create Table Student: 
+Create table student(
+	name varchar(45),
+    email varchar(128),
+    mobile varchar(10)
+)
+-> Read Table Content: Select * from student
+-> Insert data to table: insert into student values('mike','mike@gmail.com','9632629033')
+-> Read Table Content: Select * from student
+
+Assignment: Complete SQL Recorded Classes. Access will be given in PSA App. Nearly covered 250+ examples
+
+After Installing MySQl Workbench, We can now start with JDBC Concept
+------------------------------------------------------------------------
+-> Interacting with database using java program
+-> Download Connector File for MySql: https://dev.mysql.com/downloads/file/?id=538917
+-> Create a folder with name lib inside root path of your java project & paste the connector jar file inside it
+-> Right click on project>>Go to properties>>select java build path>> click on libraries tab>>Click on add jar>>navigate to lib folder and select mysql connector j jar>> click apply + close
+
+Example 1: JDBC code to insert data
+-----------------------------------
+package jdbc_examples;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class A {
+	public static void main(String[] args) {
+		try {
+//Connect to database - use psaDB (SQL)
+			
+Connection con=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/psaDB","root","test");
+
+//Write & execute SQl query
+Statement stmnt =  con.createStatement();
+stmnt.executeUpdate("insert into student values('adam','adam@gmail.com','9632629555')");
+			
+//Close database connection
+con.close();
+} catch (Exception e) {
+	e.printStackTrace();
+}
+}
+
+}
+
+Example 2: JDBC Code to delete a record
+---------------------------------------
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class B {
+	public static void main(String[] args) {
+		try {
+			//Connect to database - use psaDB (SQL)
+		Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://localhost:3306/psaDB","root","test");
+					
+			//Write & execute SQl query
+			
+			Statement stmnt =  con.createStatement();
+			stmnt.executeUpdate("Delete from student where email='adam@gmail.com'");
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Example 3: JDBC Code to update Record
+-------------------------------------
+import java.sql.*;
+
+
+public class C {
+	public static void main(String[] args) {
+		try {
+			//Connect to database - use psaDB (SQL)
+			
+			Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://127.0.0.1:3306/psaDB","root","test");
+		
+			
+			//Write & execute SQl query
+			//
+			
+			Statement stmnt =  con.createStatement();
+			stmnt.executeUpdate("Update student set mobile='9632882052' where email='stallin@gmail.com'");
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Example 4: JDBC Code to read data from database
+-----------------------------------------------
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class D {
+	public static void main(String[] args) {
+		try {
+			//Connect to database - use psaDB (SQL)
+			
+			Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://127.0.0.1:3306/psaDB","root","test");
+		
+			
+			//Write & execute SQl query
+			//
+			
+			Statement stmnt =  con.createStatement();
+			ResultSet result = stmnt.executeQuery("Select * from student");
+			
+			while(result.next()) {
+				System.out.println(result.getString(1));
+				System.out.println(result.getString(2));
+				System.out.println(result.getString(3));
+			}
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Example for Dynamic input to JDBC using Scanner class
+------------------------------------------------------
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Enter your name:");
+			String name = scan.next();
+			System.out.println("Enter your Email:");
+			String email = scan.next();
+			System.out.println("Enter your mobile number:");
+			String mobile = scan.next();
+			
+			
+			
+			//Connect to database - use psaDB (SQL)
+			
+			Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://localhost/psaDB","root","test");
+		
+			
+			//Write & execute SQl query
+			//
+			
+			Statement stmnt =  con.createStatement();
+			stmnt.executeUpdate("insert into student values('"+name+"','"+email+"','"+mobile+"')");
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Example to Delete data by giving dynamic input to JDBC
+---------------------------------------------------------
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class B {
+	public static void main(String[] args) {
+		try {
+				Scanner scan = new Scanner(System.in);
+				System.out.println("Enter your Email:");
+				String email = scan.next();
+			//Connect to database - use psaDB (SQL)
+		Connection con = 
+					DriverManager.
+	getConnection("jdbc:mysql://localhost/psaDB","root","test");
+					
+			//Write & execute SQl query
+			
+			Statement stmnt =  con.createStatement();
+			stmnt.executeUpdate("Delete from student where email='"+email+"'");
+			
+			//Close database connection
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+
+Assignment: Update recortd by giving email & mobile as dynamic input using Scanner class
+-----------------------------------------------------------------------------------------
+
+Multi catch blocks:
+---------------------
+
+-> We can create multiple catch block.
+-> Always start with child exception class followed by parent exception class
+
+Example:
+--------
+public class E {
+	int x = 10;
+	public static void main(String[] args) {
+		try {
+			Integer.parseInt("ahsjkdhas687");
+			E a1 = null;
+			System.out.println(a1.x);
+			int x = 10/0;
+		}catch (ArithmeticException e) {
+			System.out.println(1);
+		}catch (NullPointerException e) {
+			System.out.println(2);
+		}catch (Exception e) {
+			System.out.println(3);
+		}
+		
+	}
+}
+
+finally block in java
+###########################
+
+-> this is extension of try catch block
+-> The code that we write in finally block will run 100%, regardless of exception
+
+Example:
+--------
+public class E {
+	int x = 10;
+	public static void main(String[] args) {
+		try {
+			int x = 100/0;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			System.out.println("Finally");
+		}
+		
+	}
+}
+Output: Finally
+
+Example:
+--------
+public class E {
+	int x = 10;
+	public static void main(String[] args) {
+		try {
+			int x = 100/2;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			System.out.println("Finally");
+		}
+		
+	}
+}
+Output: Finally
+
+Example: Can we write only try & catch block: yes
+--------
+public class E {
+	int x = 10;
+	public static void main(String[] args) {
+		try {
+			int x = 100/0;
+		}finally {
+			System.out.println("Finally");
+		}
+		
+		System.out.println("Welcome");
+		
+	}
+}
+Output:
+Finally
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at jdbc_examples.E.main(E.java:7)
+
+Note: Can u give practical example where finally block can be used?
+Ans: 
+a. We can perform database closing operation
+b. We can peform file closing operation
+
+
+Interview Question:
+a. Difference between final versus finally versus finalize
+=============================================================
+final
+--------
+-> final makes variable contant
+-> final prevents overriding
+-> final on class stops inhertiance
+
+finally
+-------
+-> this is extension of try catch block
+-> The code that we write in finally block will run 100%, regardless of exception
+
+finalize():
+----------
+-> This is a method inside Object class and here Garbage collection logic is implemented
+-> We can try calling garbage collector using System.gc()
+__________________________________________________________________________________________________

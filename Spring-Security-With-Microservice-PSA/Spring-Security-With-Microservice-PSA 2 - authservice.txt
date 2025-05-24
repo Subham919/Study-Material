@@ -1,0 +1,949 @@
+Spring-Security-With-Microservice-PSA 2 - authservice
+
+	------------------------------
+	   Package :- com.authservice
+	------------------------------
+
+---------------------------------------------------------
+pom.xml
+Spring-Security-With-Microservice-PSA/authservice/pom.xml
+_________________________________________________________
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.5</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.authservice</groupId>
+	<artifactId>authservice</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>authservice</name>
+	<description>Demo project for Spring Boot</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+		<spring-cloud.version>2024.0.1</spring-cloud.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+		    <groupId>org.springdoc</groupId>
+		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+		    <version>2.5.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.auth0</groupId>
+		    <artifactId>java-jwt</artifactId>
+		    <version>4.4.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+--------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------
+Package   :- resources
+file name :- application.yml
+Spring-Security-With-Microservice-PSA/authservice/src/main/resources/application.yml
+_____________________________________________________________________________________
+
+spring:
+  application:
+    name: authserviceapp
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/testDB
+    username: root
+    password: test
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  port: 1122
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+-------------------------------------------------------------------------------------
+
+-------------------------------
+.config
+.controller
+.dto
+.entity
+.repository
+.service
+AuthserviceApplication.java
+-------------------------------
+
+-----------------------------------------------------------------------------------------------------------------
+Package :- config
+Class   :- AppSecurityConfig.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/config/AppSecurityConfig.java
+-----------------------------------------------------------------------------------------------------------------
+
+package com.authservice.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.authservice.service.CustomerUserDetailsService;
+import com.authservice.service.JwtFilter;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+	
+	@Autowired
+	private CustomerUserDetailsService customerUserDetailsService;
+	
+	@Autowired
+	private JwtFilter filter;
+
+    String[] publicEndpoints = {
+        "/api/v1/auth/register",
+        "/api/v1/auth/login",
+        "/api/v1/auth/update-password",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-resources/**",
+        "/webjars/**",
+        "/actuator/**", 
+        "/eureka/**"
+    };
+
+    @Bean
+    public PasswordEncoder getEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+	public AuthenticationManager authManager(AuthenticationConfiguration config) throws Exception {
+		return config.getAuthenticationManager();
+	}
+    
+    @Bean
+	public AuthenticationProvider authProvider() {
+
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+		authProvider.setUserDetailsService(customerUserDetailsService);
+		authProvider.setPasswordEncoder(getEncoder());
+
+		return authProvider;
+	}
+
+    @Bean
+	public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception{
+		
+		http.authorizeHttpRequests( req -> {
+			req.requestMatchers(publicEndpoints)
+			   .permitAll()
+			   .requestMatchers("/api/v1/admin/welcome").hasAnyRole("ADMIN","USER")
+			   .anyRequest()
+			   .authenticated();			
+		}) .authenticationProvider(authProvider())
+        .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+		
+		return http.csrf().disable().build();
+	}
+
+
+}
+---------------------------------------------------------------------------------------
+
+---------------------------------------------
+Package :- controller
+Class   :- AuthController.java
+Class   :- WelcomeController.java
+---------------------------------------------
+
+Class :- AuthController.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/controller/AuthController.java
+_______________________________________________________________________________________________________________
+
+package com.authservice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+
+import com.authservice.dto.APIResponse;
+import com.authservice.dto.LoginDto;
+import com.authservice.dto.UpdatePasswordDto;
+import com.authservice.dto.UserDto;
+import com.authservice.entity.User;
+import com.authservice.repository.UserRepository;
+import com.authservice.service.AuthService;
+import com.authservice.service.JwtService;
+
+@RestController
+@RequestMapping("/api/v1/auth/")
+public class AuthController {
+
+    private final UserRepository userRepository;
+	
+	@Autowired
+	private AuthService authService;
+	
+	@Autowired
+	private JwtService jwtService;
+	
+	@Autowired
+	private AuthenticationManager authManager;
+
+    AuthController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+	
+	 @PostMapping("/register")
+	    public ResponseEntity<APIResponse<String>> register(@RequestBody UserDto dto) {
+		    dto.setRole("ROLE_ADMIN");
+	        APIResponse<String> response = authService.register(dto);
+	        return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+	    }
+	 
+	 @PutMapping("/update-password")
+	 public ResponseEntity<APIResponse<String>> updatePassword(@RequestBody UpdatePasswordDto updatePasswordDto){
+		 APIResponse<String> response = authService.setNewPassword(updatePasswordDto);
+		return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+	 }
+	 
+	 
+	 @PostMapping("/login")
+	 public ResponseEntity<APIResponse<String>> loginCheck(@RequestBody LoginDto loginDto){
+		 
+		 APIResponse<String> response = new APIResponse<>();
+		 
+		 UsernamePasswordAuthenticationToken token = 
+				 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+		 
+		try {
+			 Authentication authenticate = authManager.authenticate(token);
+			 
+			 if(authenticate.isAuthenticated()) {
+				 String jwtToken = jwtService.generateToken(loginDto.getUsername(),
+			                authenticate.getAuthorities().iterator().next().getAuthority());
+
+			            response.setMessage("Login Successful");
+			            response.setStatus(200);
+			            response.setData(jwtToken);  // return JWT
+			            return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		 response.setMessage("Failed");
+		 response.setStatus(401);
+		 response.setData("Un-Authorized Access");
+		 return new ResponseEntity<>(response, HttpStatusCode.valueOf(response.getStatus()));
+	 }
+	 
+	 @GetMapping("/get-user")
+	 public User getUser(@RequestParam String username) {
+		 return userRepository.findByUsername(username);
+	 }
+
+}
+----------------------------------------------------------------------------------------------------
+
+Class :- WelcomeController.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/controller/WelcomeController.java
+__________________________________________________________________________________________________________________
+
+package com.authservice.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/admin")
+public class WelcomeController {
+	
+	
+	@GetMapping("/welcome")
+	public String welcomeAdmin() {
+		return "Welcome admin";
+	}
+
+}
+-----------------------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+Package :- dto
+Class   :- APIResponse.java
+Class   :- LoginDto.java
+Class   :- UpdatePasswordDto.java
+Class   :- UserDto.java
+-------------------------------------------------------------------------------
+
+Class   :- APIResponse.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/dto/APIResponse.java
+_____________________________________________________________________________________________________
+
+package com.authservice.dto;
+
+public class APIResponse<T> {
+	
+	private String message;
+	private int status;
+	private T data;
+	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public T getData() {
+		return data;
+	}
+	public void setData(T data) {
+		this.data = data;
+	}
+}
+-----------------------------------------------------------------------------------------------
+
+
+Class   :- LoginDto.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/dto/LoginDto.java
+__________________________________________________________________________________________________
+
+package com.authservice.dto;
+
+public class LoginDto {
+	
+	private String username;
+	private String password;
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+}
+----------------------------------------------------------------------------------------------
+
+
+
+Class   :- UpdatePasswordDto.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/dto/UpdatePasswordDto.java
+___________________________________________________________________________________________________________
+
+package com.authservice.dto;
+
+public class UpdatePasswordDto {
+	
+	private String email;
+	private String username;
+	private String newPassword;
+	private String oldPassword;
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getNewPassword() {
+		return newPassword;
+	}
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
+	}
+	public String getOldPassword() {
+		return oldPassword;
+	}
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+}
+-----------------------------------------------------------------------------------------------------
+
+
+Class   :- UserDto.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/dto/UserDto.java
+_____________________________________________________________________________________________________
+
+package com.authservice.dto;
+
+
+public class UserDto {
+	
+	private long id;
+	
+	private String name;
+	
+	private String username;
+	
+	private String email;
+	
+	private String password;
+	
+	private String role;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+}
+-------------------------------------------------------------------------------------------------
+
+Package :- entity
+Class   :- User.java
+---------------------------------------------------------------------------------------------------
+
+Class   :- User.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/entity/User.java
+____________________________________________________________________________________________________
+
+package com.authservice.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="user")
+public class User {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
+	@Column(name="name", nullable = false)
+	private String name;
+	
+	@Column(name="username", nullable = false, unique = true)
+	private String username;
+	
+	@Column(name="email", nullable = false, unique = true)
+	private String email;
+	
+	@Column(name = "password")
+	private String password;
+	
+	@Column(name = "role")
+	private String role;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+}
+---------------------------------------------------------------------------------------------------
+
+Package :- repository
+Class   :- UserRepository.java
+---------------------------------------------------------------------------------------------------
+
+
+Class   :- UserRepository.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/repository/UserRepository.java
+_______________________________________________________________________________________________________________
+
+
+package com.authservice.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.authservice.entity.User;
+
+public interface UserRepository extends JpaRepository<User, Long>{
+	
+	
+	User findByUsername(String username);
+	User findByEmail(String email);
+	boolean existsByUsername(String username);
+	boolean existsByEmail(String email);
+}
+------------------------------------------------------------------------------------------------------
+
+----------------------------------------------
+Package :- service
+Class   :- AuthService.java
+Class   :- CustomerUserDetailsService.java
+Class   :- JwtFilter.java
+Class   :- JwtService.java
+----------------------------------------------
+
+
+Class   :- AuthService.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/service/AuthService.java
+_________________________________________________________________________________________________________
+
+package com.authservice.service;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.authservice.dto.APIResponse;
+import com.authservice.dto.UpdatePasswordDto;
+import com.authservice.dto.UserDto;
+import com.authservice.entity.User;
+import com.authservice.repository.UserRepository;
+
+
+@Service
+public class AuthService {
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	
+	public APIResponse<String> register(UserDto dto) {
+		
+		if(userRepository.existsByUsername(dto.getUsername())) {
+			APIResponse<String> response = new APIResponse<>();
+			response.setMessage("Registration Failed");
+			response.setStatus(500);
+			response.setData("User with username exists");
+			return response;
+		}
+		if(userRepository.existsByEmail(dto.getEmail())) {
+			APIResponse<String> response = new APIResponse<>();
+			response.setMessage("Registration Failed");
+			response.setStatus(500);
+			response.setData("User with Email Id exists");
+			return response;
+		}
+		
+		User user = new User();
+		BeanUtils.copyProperties(dto, user);
+		user.setPassword(passwordEncoder.encode(dto.getPassword()));
+		
+		userRepository.save(user);
+		
+		APIResponse<String> response = new APIResponse<>();
+		response.setMessage("Registration Done");
+		response.setStatus(201);
+		response.setData("User is registered");
+		
+		return response;
+		
+		
+	}
+
+
+	public APIResponse<String> setNewPassword(UpdatePasswordDto updatePasswordDto) {
+		if(!userRepository.existsByUsername(updatePasswordDto.getUsername())) {
+			APIResponse<String> response = new APIResponse<>();
+			response.setMessage("Failed");
+			response.setStatus(500);
+			response.setData("User with username doesnot exists");
+			return response;
+		}
+		if(!userRepository.existsByEmail(updatePasswordDto.getEmail())) {
+			APIResponse<String> response = new APIResponse<>();
+			response.setMessage("Failed");
+			response.setStatus(500);
+			response.setData("User with Email Id does not exists");
+			return response;
+		}
+		
+		User user = userRepository.findByEmail(updatePasswordDto.getEmail());
+		
+		if(BCrypt.checkpw(updatePasswordDto.getOldPassword(), user.getPassword())) {
+			user.setPassword(updatePasswordDto.getNewPassword());
+			userRepository.save(user);
+			APIResponse<String> response = new APIResponse<>();
+			response.setMessage("Done");
+			response.setStatus(200);
+			response.setData("User password is updated");
+			return response;
+		}
+		
+		return null;
+		
+		
+	}
+
+}
+----------------------------------------------------------------------------------------------
+
+Class   :- CustomerUserDetailsService.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/service/CustomerUserDetailsService.java
+________________________________________________________________________________________________________________________
+
+
+package com.authservice.service;
+
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.authservice.entity.User;
+import com.authservice.repository.UserRepository;
+
+@Service
+public class CustomerUserDetailsService implements UserDetailsService{
+	
+	@Autowired
+	private UserRepository userRepository;
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+		
+		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),Collections.singleton(new SimpleGrantedAuthority(user.getRole())));
+	}
+
+}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Class   :- JwtFilter.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/service/JwtFilter.java
+_______________________________________________________________________________________________________
+
+
+package com.authservice.service;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.authservice.service.CustomerUserDetailsService;
+
+import java.io.IOException;
+
+@Component
+public class JwtFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private CustomerUserDetailsService userDetailsService;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwt = authHeader.substring(7);
+            String username = jwtService.validateTokenAndRetrieveSubject(jwt);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                var userDetails = userDetailsService.loadUserByUsername(username);
+                var authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}
+-------------------------------------------------------------------------------------------------------
+
+
+Class   :- JwtService.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/service/JwtService.java
+_______________________________________________________________________________________________________
+
+
+package com.authservice.service;
+
+import java.util.Date;
+import org.springframework.stereotype.Service;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
+@Service
+public class JwtService {
+
+    private static final String SECRET_KEY = "secret12345";
+    private static final long EXPIRATION_TIME = 86400000; // 1 day
+
+    public String generateToken(String username, String role) {
+        return JWT.create()
+            .withSubject(username)
+            .withClaim("role", role)
+            .withIssuedAt(new Date())
+            .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+            .sign(Algorithm.HMAC256(SECRET_KEY));
+    }
+
+    public String validateTokenAndRetrieveSubject(String token) {
+        return JWT.require(Algorithm.HMAC256(SECRET_KEY))
+            .build()
+            .verify(token)
+            .getSubject();
+    }
+}
+----------------------------------------------------------------------------------------
+
+Programmer Starter File :- AuthserviceApplication.java
+Spring-Security-With-Microservice-PSA/authservice/src/main/java/com/authservice/AuthserviceApplication.java
+___________________________________________________________________________________________________________
+
+package com.authservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class AuthserviceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AuthserviceApplication.class, args);
+	}
+
+}
+_________________________________________________________________________________________________________
+
+
+

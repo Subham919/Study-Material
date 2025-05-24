@@ -1,0 +1,3105 @@
+java-22nd-Apil-notes/Java-notes-22nd April.txt
+
+___________________________________________________________________
+
+################################
+Core Java - Pankaj Sir Academy
+###############################
+
+What is a class?
+-> Class helps us to create object in java
+-> In java we use class keyword to create class.
+-> Keyword should be in lower case
+Example :
+
+class A {
+
+}
+-> We define the boundary of class using flower brackets
+
+Class Naming Convention
+#######################
+-> Class name should always start with upper case
+-> If the class has more than one work then use camel casing. that is
+first letter of every word should be in upper case
+
+Example: Correct
+-------
+class Bank {
+
+}
+Example: Correct
+-------
+class BankAccountNumber {
+
+}
+Example: InCorrect
+-------
+class Bank Account Number {
+
+}
+
+Example:
+----------
+-> Snake Casing-->Should not use for java
+-> Will Execute without any error
+
+public class Bank_Account_Number {
+ 
+}
+
+Example: Class name cannot start with a number
+----------------------------------------------
+-> Will give error
+public class 1Bank {
+  public static void main(String[] args){
+     
+  }
+}
+
+Example:Class name can start with a character follwed by Number
+---------
+public class Bank1 {
+  public static void main(String[] args){
+     
+  }
+}
+
+Note:
+1. Donot use specials characters like #,@ % & etc while creating class
+2. $Class name will execute. But never create a class with special character $
+
+Example:Correct, but not recommended
+___________
+public class $A {
+	public static void main(String[] args) {
+	
+	}
+}
+
+Example: For Creating objects in java
+---------------------------------------
+
+public class A {
+  public static void main(String[] args){
+     A a1 = new A();
+     A a2 = new A();
+     System.out.println(a1);
+     System.out.println(a2);
+  }
+}
+
+new keyword:
+##############
+
+-> Using new keyword we send request to class to create object
+-> Once object is created new keyword will get objects's address and stores that in a reference variable
+
+Syntax to create object:
+-------------------------
+ClassName variableName = new ClassName();
+
+Note:
+-----------------------------------
+Two types of camel casing:
+
+a. Upper Case Camel Casing: Used for naming class, interface, abtract class etc
+b. Lower Case Camel Casing: Used for creating method, variables etc
+_______________________________________________________________________
+
+Non-static Variable/ Instance Variable /Object Variables
+#####################
+1. We should create non static variable inside class outside method without using static keyword
+2. Without creating object we cannot access non static variable
+Example 1:
+-----------
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+	}
+}
+Output: 10
+--------------------------------------------------------------------------------
+Example 2:
+----------
+
+public class A {
+	int x = 10;
+	int y = 20;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		System.out.println(a1.y);
+	}
+}
+Output:
+10
+20
+
+-----------------------------------------------------------------
+3. Every time we create object non-static variable copy is loaded to that object
+4. Copy of variable in these object's are different. That is if you change the value of variable in one object, those changes cannot be seen in another object
+
+Example:
+---------
+
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//10
+		a1.x = 20;
+		System.out.println(a1.x);//20
+		
+		A a2 = new A();
+		System.out.println(a2.x);//10
+	}
+}
+Output
+10
+20
+10
+
+
+5. It is not mandatory to initialize non-static variable. Depending on data type automatically default value will get stored in it.
+Example:
+---------
+public class A {
+	int x ;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		
+	}
+}
+
+Ouput: 0
+-----------------------------------------------------------
+
+Static variables:
+#################
+
+1. We should create static variables inside class but outsiude method with static keyword
+2. To access static variable we will use below Options
+a. ClassName.variableName
+b. variableName (Contraints)
+c. objectAddress.variableName (Wrong Appraoch but will work)
+
+Example:
+---------------
+public class A {
+	static int x=10 ;
+	public static void main(String[] args) {
+		System.out.println(A.x);
+		System.out.println(x);
+		
+		//Wrong
+		A a1 = new A();
+		System.out.println(a1.x);//A.x
+	}
+	
+}
+Output
+10
+10
+10
+--------------------------------------------------------------------------
+Example:
+--------
+public class A {
+	static int x=10 ;
+	public static void main(String[] args) {
+		System.out.println(A.x);//10
+		A.x=20;
+		System.out.println(A.x);
+		System.out.println(A.x);
+		A.x = 30;
+		System.out.println(A.x);
+		System.out.println(A.x);
+		
+		
+	}
+	
+}
+-----------------------------------------------------------------------
+
+Types of variables in java
+############################
+
+1. Local Variable
+######################
+a. Local vaiables should be created inside methods
+b. We should use local variable within the created method only
+Example 1:
+---------
+public class A {
+	
+	public static void main(String[] args) {
+		int x = 100;//Created
+		System.out.println(x);//Using
+	}
+	
+}
+Output: 100
+
+Example 2:
+-----------
+public class A {
+	public static void main(String[] args) {
+		int x = 100;//Created
+		System.out.println(x);//Using
+		A a1 = new A();
+		a1.test();
+	}
+	public void test() {
+		System.out.println(x);//Error
+	}
+}
+Output: Error
+
+Example 3:
+----------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+	}
+		
+	public void test() {
+		int x = 100;//Created
+		System.out.println(x);//Correct
+	}
+}
+
+Example 4:
+------------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+		System.out.println(x);//Error
+	}
+		
+	public void test() {
+		int x = 100;//Created
+		System.out.println(x);//Correct
+	}
+}
+
+c. Without initializing if you are using local variable then you will get an error
+Example 5:
+----------
+public class A {
+	public static void main(String[] args) {
+		int x;
+		System.out.println(x);//Error
+	}
+}
+
+Note: Static variable has global access
+Example:
+---------
+public class A {
+	static int y = 10;
+	public static void main(String[] args) {
+		System.out.println(A.y);
+		int x=10;
+		System.out.println(x);
+	}
+	public void test() {
+		System.out.println(A.y);
+		System.out.println(x);
+	}
+}
+
+2. Static variable
+3. Non-static variable / instance variable
+
+4. Reference Variable
+#####################
+a. Can hold either Object address or null value
+Example 1:
+----------
+public class A {
+	
+	public static void main(String[] args) {
+		A a1 = null;
+		A a2 = new A();
+	}
+	
+}
+
+b. Datatype of reference variable is class name
+Example 2: A x;
+
+Example 3:
+In the below example "a1" is created inside main and hence it is a local variable. We cannot access that outside main method
+
+public class A {
+	
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1);
+	}
+	public void test() {
+		System.out.println(a1);//Error
+	}
+	
+}
+
+Example 4:
+Error because "a1" is local variable and not initialized
+
+public class A {
+	
+	public static void main(String[] args) {
+		A a1;
+		System.out.println(a1);//Error
+	}
+	
+	
+}
+Example 5: If we donot initialize static reference variable then by default null value will get stored in it
+
+Example:
+public class A {
+	static A a1;
+	public static void main(String[] args) {
+		System.out.println(a1);
+	}
+	
+	
+}
+
+Example:
+public class A {
+	static A a1;
+	public static void main(String[] args) {
+		System.out.println(a1);
+		a1 = new A();
+		a1.test();
+	}
+	public void test() {
+		System.out.println(a1);
+	}
+	
+	
+}
+
+Note:
+Stack - > LIFO (Last In First Out)
+Heap - > Objects are created inside heap memory
+Garbage Collector - > Manages Memory to avoid overflow of memory by constantly removing objects that is not is use from heap memory
+
+Heap and stack memory
+#####################
+
+
+###############
+methods in java
+###############
+1. void keyword: A void method cannot return any value
+
+Example 1:
+----------
+public class C {
+	public static void main(String[] args) {
+		
+	}
+	
+	public void test() {
+		return 100;//Error
+	}
+}
+
+Example :
+-----------
+public class C {
+	public static void main(String[] args) {
+		C c1 = new C();
+		int x = c1.test();
+		System.out.println(x);
+	}
+	
+	public int test() {
+		return 100;
+	}
+}
+Output: 100
+
+Example:
+----------
+public class C {
+	public static void main(String[] args) {
+		C c1 = new C();
+		String x = c1.test();
+		System.out.println(x);
+	}
+	
+	public String test() {
+		return "mike";
+	}
+}
+
+return keyword versus return "value"
+#####################################
+
+return keyword:
+-> A method has to be void
+-> It is optional
+-> it will return control to method calling statement
+
+Example:
+-------
+
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test();
+	}
+	
+	public void test() {
+		System.out.println(100);
+		return;
+	}
+}
+Output: 100
+
+Note: if we write code after return keyword, then that code will 100% not run. This error is called as unreachable code error
+
+Example:
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test();
+	}
+	
+	public void test() {
+		System.out.println(100);
+		return;
+		System.out.println(200);
+	}
+}
+Output: unreachable code error
+
+return "value"
+---------------
+-> The method has to be not a void method
+-> It is mandatory to use return "value" statement inside not a void method
+-> It will return control and value to method calling statement
+
+Example:
+public class C {
+	public static void main(String[] args) {
+	 
+	}
+	
+	public int test() {//Error
+		
+	}
+}
+Output: Error because return "value" statement is missing inside test method
+
+
+Example:
+public class C {
+	public static void main(String[] args) {
+	 
+	}
+	
+	public int test() {
+		return 100;
+		System.out.println(300);
+	}
+}
+Output: Unreachable code error
+
+Method Arguments
+##################
+-> Using method arguments we supply values to method when we are calling it
+-> The method argument is a local variable
+-> arguments inside the method values that you supply to the method should match
+
+Example:
+-------
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test(100);
+	}
+	
+	public void test(int x) {
+		System.out.println(x);
+	}
+}
+
+Example:
+--------
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test(100,"mike");
+	}
+	
+	public void test(int x,String y) {
+		System.out.println(x);
+	}
+}
+
+Note: When method argument type is Object, then we can supply any kind of value to it
+
+Example:
+--------
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test('a');
+	}
+	
+	public void test(Object x) {
+		System.out.println(x);
+	}
+}
+
+Example:
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test("mike",100,200,300,400);
+	}
+	
+	public void test(String y, int... x) {
+		System.out.println(x[0]);
+		System.out.println(x[1]);
+		System.out.println(x[2]);
+		System.out.println(x[3]);
+		System.out.println(y);
+	}
+}
+Output:
+100
+200
+300
+400
+mike
+
+Static Methods
+###############
+
+Example 1:
+public class C {
+	public static void main(String[] args) {
+	    C.test();
+	}
+	public static void test() {
+		System.out.println(599);
+	}
+	
+}
+
+Example 2:
+---------
+public class C {
+	public static void main(String[] args) {
+	   int x =  C.test();
+	   System.out.println(x);
+	}
+	public static int test() {
+		return 100;
+	}
+	
+}
+
+Example 3:
+-----------
+public class C {
+	public static void main(String[] args) {
+	   int x =  C.test(100,200);
+	   System.out.println(x);
+	}
+	public static int test(int a, int b) {
+		return a+b;
+	}
+	
+}
+Example 4:
+----------
+public class C {
+	public static void main(String[] args) {
+	   C.test();
+	   C.test();
+	   C.test();
+	}
+	public static void test() {
+		System.out.println(500);
+	}
+	
+}
+
+Datatypes in java
+##################
+Storing integer Values:
+------------------------------------
+1. byte - 1 byte - default value: 0
+2. short - 2 bytes - default value: 0
+3. int - 4 bytes - default value: 0
+4. long - 8 byte - default value: 0
+
+Floating Value
+-------------------------------
+1. float - 4 bytes - default value: 0.0
+2. double - 8 bytes - default value: 0.0
+
+boolean(true/false)
+----------------------------
+1. boolean - NA - default: false
+
+character values
+-----------------------
+1. char - 2 bytes - default: blank space
+
+String - Class
+---------------
+String - NA - dynamic - default: null
+
+Note:
+byte: -128 to 127 (8-bit signed two's complement integer)
+short: -32,768 to 32,767 (16-bit signed two's complement integer)
+int: -2,147,483,648 to 2,147,483,647 (32-bit signed two's complement integer)
+long: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 (64-bit signed two's complement integer)
+float: Approximately ±3.40282347E+38F (32-bit IEEE 754 single-precision floating-point)
+double: Approximately ±1.79769313486231570E+308 (64-bit IEEE 754 double-precision floating-point)
+char: 0 to 65,535 (16-bit unsigned Unicode character)
+boolean: true or false (size is not precisely defined, often considered 1 bit)
+
+Datatypes example:
+---------------------
+public class C {
+	static byte x1 ;
+	static short x2 ;
+	static int x3 = 23_567 ;
+	static long x4=9632629033L ;
+	static float x5=10.3F ;
+	static double x6 ;
+	static char x7 ;
+	static boolean x8 ;
+	static String x9;
+	
+	public static void main(String[] args) {
+		System.out.println(x1);
+		System.out.println(x2);
+		System.out.println(x3);
+		System.out.println(x4);
+		System.out.println(x5);
+		System.out.println(x6);
+		System.out.println(x7);
+		System.out.println(x8);
+		System.out.println(x9);
+	}
+	
+}
+
+New type introduced in java version 10
+---------------------------------------
+var type
+#########
+-> This was introduced in java version 10
+-> It gives dynamic datatype concept. Depending on the value stored inside variable, dataype is allocated to it internally
+
+Example:
+public class C {
+	
+	public static void main(String[] args) {
+		var x1 =100;
+		var x2 =100.3;
+		var x3 ='a';
+		var x4 ="mike";
+		var x5 =new C();
+		System.out.println(x1);
+		System.out.println(x2);
+		System.out.println(x3);
+		System.out.println(x4);
+		System.out.println(x5);
+	}
+	
+}
+-> var type can only be local variable
+-> It cannot be static / non-static variable
+-> It cannot be method argument
+-> It cannot be method return type
+Example:
+--------
+public class C {
+	var x1;//Error
+	static var x2;//Error
+	public static void main(String[] args) {
+		var x5 = 100;//Correct
+	}
+	public var test(var x3) {//Error
+		
+	}
+	
+}
+
+######################
+Constructors in java
+######################
+
+-> Should have same name as that of class
+-> It is always void by default
+Example 1:
+----------
+public class C {
+	C(){
+		return 100;//Error
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+	}
+	
+}
+-> To call a constructor we have to create object.
+
+Example 2:
+--------
+public class C {
+	C(){
+		System.out.println(100);
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+	}
+	
+}
+
+-> Whenever we creat object constructor is being called
+
+Example 3:
+---------
+public class C {
+	C(){
+		System.out.println(100);
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+		C c2 = new C();
+		C c3 = new C();
+	}
+	
+}
+Ouput:
+100
+100
+100
+
+-> If you mention return type for a constructor. Then it is treated as a method
+
+Example 4:
+----------
+public class C {
+	void C(){
+		System.out.println(100);
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+	}
+	
+}
+
+Ouput: No Output, because void C() is a method
+
+Example 5: 
+Note :
+-> Method name can be same as class name
+-> Variable name can be same as class name
+
+public class C {
+        int C = 1000;
+	void C(){
+		System.out.println(100);
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+		c1.C();
+		System.out.println(c1.C);
+	}
+
+}
+
+Contructor Overloading:
+-------------------------
+Here we create more than one constructor in same class provided they have different number of arguments or different type of arguments
+
+Example:
+--------
+public class A {
+	A(){//NoofArgs=0
+		System.out.println("A");
+	}
+	A(int x){//NoofArgs=1
+		System.out.println(x);
+	}
+	A(int x,int y){//NoofArgs=2
+		System.out.println(x);
+		System.out.println(y);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		A a2  = new A(100);
+		A a3 = new A(200,300);
+	}
+}
+
+Example:
+--------------
+public class A {
+	A(int x){//noOfArgs=1, type=int
+		System.out.println(x);
+	}
+	A(float y){//noOfArgs=1, type=float
+		System.out.println(y);
+	}
+	public static void main(String[] args) {
+		A a1 = new A(100);
+		A a2 = new A(10.3F);
+	}
+}
+
+Example:
+---------
+public class A {
+	A(int x){//noOfArgs=1, type=int
+		System.out.println(x);
+	}
+	A(String x, int y){//noOfArgs=2, type=String, int
+		System.out.println(x);
+		System.out.println(y);
+	}
+	public static void main(String[] args) {
+		A a1 = new A("mike",100);
+		A a2 = new A(500);
+		
+	}
+}
+
+############
+this keyword
+#############
+-> this keyword is a special reference variable tha hold's object's address
+Example:
+----------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1);
+		a1.test();
+	}
+	public void test() {
+		System.out.println(this);
+	}
+}
+
+-> Using this keyword we can access non-static members of the class
+Example:
+--------
+
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+	public void test() {
+		System.out.println(this.x);
+	}
+}
+
+-> We cannot use this keyword inside "static method"
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(this);//Error
+	}
+	public static void test() {
+		System.out.println(this);//Error
+	}
+}
+Example:
+-------
+public class A {
+	int x = 10;
+	int y = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+	}
+	public void test() {
+		System.out.println(this.x);
+		System.out.println(this.y);
+	}
+}
+#################################################
+Note: PeerUp App start Communication here......
+#################################################
+
+-> this keyword hold's current object address that is executing
+
+Example:
+--------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+		A a2 = new A();
+		a2.test();
+		a1.test();
+		
+	}
+	public void test() {
+		System.out.println(this);
+	}
+}
+
+this()- This syntax is used to call constructor
+--------------------------------------------
+-> Using this() keyword we can call a constructor
+
+Example:
+-------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		this();
+	}
+	public static void main(String[] args) {
+	   A a1 = new A(100);
+	}
+	
+}
+
+-> While calling a constructor using this() keyword, ensure calling is done from anothe constructor
+
+Example:
+--------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		this();
+	}
+	public static void main(String[] args) {
+	   A a1 = new A(100);
+	}
+	public void test() {
+		this();//Error, we cannot call constructor from method
+	}
+	
+}
+
+Example:
+---------
+public class A {
+	A(int x){
+		System.out.println(x);
+	}
+	A(){
+		this(100);
+	}
+	public static void main(String[] args) {
+	   A a1 = new A();
+	}
+	
+	
+}
+
+-> While calling a constructor using this() keyword ensure it is always first statement inside another constructor
+
+Example:
+---------
+public class A {
+	A(int x){
+		System.out.println(x);
+	}
+	A(){
+		System.out.println(200);
+		this(100);//Error because it cannot be second statement while calling constructor
+		
+	}
+	public static void main(String[] args) {
+	   A a1 = new A();
+	}
+	
+	
+}
+
+Example:
+---------
+public class A {
+	int x;//-->0
+	A(int x){////Step 4-->x=100
+		this.x=x;//Step 5
+		System.out.println(this.x);//Step 6===>100
+	}
+	A(){//Step 2
+		this(100);//Step 3
+	}
+	public static void main(String[] args) {
+	   A a1 = new A();//Step 1
+	}
+	
+	
+}
+
+Constructor Chaining
+---------------------
+-> When we call one constructor from another constructor it will form chain like flow structure. This is called as constructor chaining
+-> This can be achieved by using this() keyword or Creating Object in another constructor
+
+Example 1:
+----------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		this();
+	}
+	public static void main(String[] args) {
+		A a1 = new A(100);
+	}
+}
+
+Example 2:
+-----------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		A a2 = new A();
+	}
+	public static void main(String[] args) {
+		A a1 = new A(100);
+	}
+}
+
+###############################
+Important Shortcuts in eclipse
+################################
+1. Ctrl + Space
+⚡ Content Assist — suggests code completions.
+
+Example: 
+a. syso  (do control+ space bar)
+b. main (do control+ space bar)
+
+2. Ctrl + 1
+💡 Quick fix — suggests solutions for errors or warnings.
+
+Example: String x = 100; (Press control + 1 to get solutions to fix problem) 
+
+3. Ctrl + O
+🧭 Quick outline — shows methods/fields of the current class.
+
+Example:
+public class Animal {
+
+    private String name;
+    private int age;
+   
+    public Animal(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+
+    public void sleep() {
+    	
+        System.out.println(name + " is sleeping.");
+    }
+
+    private void breathe() {
+    	System.out.println(name + " is breathing.");
+    }
+}
+
+-> in the above file when pressed Control + O we will get soo all  content of like like shown below:
+
+Animal 
+-> name
+-> age
+-> Animal(String name, int age)
+-> eat()
+-> sleep() etc.....
+
+4. F3
+🔄 Go to the declaration of a variable, method, or class.
+
+Example: 
+public class Animal {
+
+    private String name;// Will show this step, as variable is declared here
+    private int age;
+   
+    public Animal(String name, int age) {
+        this.name = name; // When placed cusor on this.name, and pressed f3
+        this.age = age;
+    }
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+
+    public void sleep() {
+    	
+        System.out.println(name + " is sleeping.");
+    }
+
+    private void breathe() {
+    	System.out.println(name + " is breathing.");
+    }
+}
+
+5. Ctrl + .
+➡️ Jump to the next error or warning in the file.
+public class Dog {
+	
+	int x//This is your first error. When pressed control + .
+	
+	public static void main(String[] args) {
+		int y//It will take you to this error
+	}
+
+}
+
+##########################
+Packages in java
+###########################
+a. Packages are folders created in java to store programs in organized manner
+b. This will make maintainance of the project easy
+c. Naming Convention for packages
+-> Package name cannot be keyword like - new , static, public , in etc...
+-> Donot start package name with capital letters
+-> Package name not to be given as java
+
+d. When you create a class inside package, we have to define package keyword in our program as shown below:
+
+Example:
+package p1;
+public class A {
+
+}
+
+e. Create 2 classes in same package and perform inheritance. Import is not required
+Example:
+package p1;
+public class A {
+
+}
+
+package p1;
+public class B extends A {
+
+}
+
+f. Create 2 classes in different package and perform inheritance. "Import required"
+
+Example:
+package p1;
+public class A {
+
+}
+
+package p2;
+import p1.A;
+public class C extends A{
+
+}
+------------------------------------------------------
+Example :
+package p1;
+public class A {
+
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+----------------------------------------------------------
+Example:
+package p1;
+public class A {
+
+}
+
+package p2;
+public class C {
+
+}
+
+package p1;
+import p2.C;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		C c1 = new C();
+	}
+}
+---------------------------------------
+Example:
+package p1;
+public class A {
+
+}
+
+package p1;
+public class B {
+	
+}
+
+package p2;
+import p1.*;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();
+		B b1 = new B();
+	}
+}
+
+--------------------------------
+Example:
+package p1;
+public class A {
+
+}
+
+package p2;
+public class A {
+	
+}
+
+package p3;
+public class B {
+	public static void main(String[] args) {
+		p1.A a1 = new p1.A();//---> p2
+		p2.A a2 = new p2.A();//---> p1
+	}
+}
+
+---------------------------------------
+Example:
+
+package p1;
+public class A {
+
+}
+
+package p2;
+public class A {
+	
+}
+
+package p3;
+import p2.A;
+public class B {
+	public static void main(String[] args) {
+		p1.A a1 = new p1.A();//---> p2
+		A a2 = new A();//---> p1
+	}
+}
+-------------------------------------------------
+
+Example:
+
+package com.tcs.service;
+public class EmailService {
+	//Logic To Send Email
+	public void sendEmail() {
+		System.out.println("Email Sending");
+	}
+}
+EmailService.java
+---------------------------------------------------
+package com.tcs.auth;
+import com.tcs.service.EmailService;
+public class Auth {
+	//Registration Logic
+	
+	public void register() {
+		//Logic to register user
+		EmailService emailService = new EmailService();
+		emailService.sendEmail();
+	}
+	
+	public static void main(String[] args) {
+		Auth a = new Auth();
+		a.register();
+	}
+}
+
+#######################################
+Object Oriented Programming -  Pillars
+########################################
+
+a. inheritance
+b. polymorphism
+c. encapsulation
+d. abstraction
+
+a. inheritance
+######################
+-> Here we inherit the members of parent class to child class so that we can re-use those members
+Example 1:
+---------
+package app_java_1;
+public class Animal {
+	public void eat() {
+		System.out.println("Eating");
+	}
+	public void sleep() {
+		System.out.println("sleeping");
+	}
+}
+
+package app_java_1;
+public class Dog extends Animal{
+	public static void main(String[] args) {
+		Dog d = new Dog();
+		d.eat();
+		d.sleep();
+	}
+}
+Output:
+------
+Eating
+sleeping
+
+Example 2:
+package app_java_1;
+public class Animal {
+	public void eat() {
+		System.out.println("Eating");
+	}
+	public void sleep() {
+		System.out.println("sleeping");
+	}
+}
+Animal.java
+
+package app_java_1;
+public class Dog extends Animal{
+	//eat(),sleep()--->Animal
+}
+Dog.java
+
+package app_java_1;
+public class Cat extends Animal{
+	//eat(),sleep()--->Animal
+}
+Cat.java
+
+package app_java_1;
+public class Cow extends Animal{
+	//eat(),sleep()--->Animal
+}
+Cow.java
+
+package app_java_1;
+public class Root {
+	public static void main(String[] args) {
+		Dog d = new Dog();
+		d.eat();
+		d.sleep();
+		System.out.println("_______");
+		Cat cat = new Cat();
+		cat.eat();
+		cat.sleep();
+		System.out.println("_______");
+		Cow cow = new Cow();
+		cow.eat();
+		cow.sleep();
+	}
+}
+Root.java
+
+Example 3: Multilevel inheritance
+-----------------------------------
+
+package app_java_1;
+public class A {
+	public void test1() {
+		System.out.println(1);
+	}
+}
+
+package app_java_1;
+//test1, test2
+public class B extends A{
+	public void test2() {
+		System.out.println(2);
+	}
+}
+package app_java_1;
+
+public class C extends B{
+	public static void main(String[] args) {
+		C c1 = new C();
+		c1.test1();
+		c1.test2();
+	}
+}
+output:
+1
+2
+------------------------------------------------------------------------------
+
+################################################################################################
+What is mulitlpe inheritance?
+Answer: When a child class has more than one parent class, it is called as mulitple inheritance
+#################################################################################################
+
+Note: Java classes does not support mulitple inheritance because of diamond problem
+diamond problem: Suppose we inherit a method from A->B->D  and Same method is inherited from A->C->D, then confusion from which parent class method is inherited to child class D. This is called as DIAMOND PROBLEM. Hence in java classes does not support multiple inheritance.
+
+Note: We can do mulitple inheritance on interface. But will explain this during interfaces concept
+
+Example 4:Mulitple inheritance error
+------------------------------------------
+package app_java_1;
+public class A {
+	
+}
+
+package app_java_1;
+public class B{
+	
+}
+package app_java_1;
+public class C extends A,B{//Error
+	
+}
+
+Example 4: Inheritance between classes present inside different packages
+----------------------------------------
+package p1;
+public class A {
+	public void test() {
+		System.out.println(1);
+	}
+}
+package p2;
+import p1.A;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		b1.test();
+	}
+}
+
+Example on non sub class: When in your project we have two class and no inheritance is happening between them then it is called as non-sub class
+--------------------------------------------------------------------------------------------------------
+package p1;
+public class A {
+	public void test() {
+		System.out.println(1);
+	}
+}
+package p2;
+import p1.A;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+	}
+}
+------------------------------------------------------------
+Output: 1
+
+###############################
+Access Specifiers in java
+###############################
+--------------------------------------------------------------------
+Questions:
+1. What happens when a variable is  private/default/protected/public
+2. What happens when a constructor is  private/default/protected/public
+3. What happens when a class is  private/default/protected/public
+4. What happens when a interface is  private/default/protected/public
+----------------------------------------------------------------------
+
+-> They define the visibility of variables, methods, class & interface.
+
+------------------------------------------------------------------------------
+a. private: When a variable / method is made private then we can access that in same class but not outside class
+----------------------------------------------------------------------------------
+Example 1:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+Output:
+10
+1
+
+Example 2:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+}
+package p1;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		System.out.println(b1.x);//Error
+		b1.test();//Error
+	}
+}
+
+Example 3:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//Error
+		a1.test();//Error
+	}
+}
+
+Example 4:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C extends A {
+	public static void main(String[] args) {
+		C c1 = new C();
+		System.out.println(c1.x);//-->Error
+		c1.test();//-->Error
+	}
+}
+Example 5:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C  {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//-->Error
+		a1.test();//-->Error
+	}
+}
+
+
+------------------------------------------------------------------------
+b. default: A variable/method with default access specifier can work only inside same class or same package, but cannot be accessed in different package
+
+Example 1:
+------------
+
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+	
+}
+
+Example 2:
+---------------------------------------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		System.out.println(b1.x);
+		b1.test();
+	}
+}
+Output:
+10
+1
+-----------------------------------------------------------------------
+Example 4:
+------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+-----------------------------------------------------------------
+Example 5:
+------------------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C  extends A{
+	public static void main(String[] args) {
+		C c1 = new C();
+		System.out.println(c1.x);//-->Error
+		c1.test();//-->Error
+	}
+}
+--------------------------------------------------------
+Example 6:
+----------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//--->Error
+		a1.test();//--->Error
+	}
+}
+-------------------------------------------
+
+c. protected: We can access variables/methods in same class/same package and inside different package only when inheritance is done
+
+Example 1:
+-------------
+package p1;
+public class A {
+	protected int x=10;
+	protected void test() {
+		System.out.println(1);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+	
+}
+Ouput:
+10
+1
+
+Example 2:
+------------------
+package p1;
+public class A {
+	protected int x=10;
+	protected void test() {
+		System.out.println(1);
+	}
+}
+package p1;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		System.out.println(b1.x);
+		b1.test();
+	}
+}
+Output:
+10
+1
+
+Example 3:
+----------
+package p1;
+public class A {
+	protected int x=10;
+	protected void test() {
+		System.out.println(1);
+	}
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+Ouput:
+10
+1
+
+Example 4: 
+-----------
+package p1;
+public class A {
+	protected int x=10;
+	protected void test() {
+		System.out.println(1);
+	}
+}
+package p2;
+import p1.A;
+public class C extends A{
+	public static void main(String[] args) {
+		C c1 = new C();
+		System.out.println(c1.x);
+		c1.test();
+	}
+}
+Ouput:
+10
+1
+
+Example 5:
+--------------
+package p1;
+public class A {
+	protected int x=10;
+	protected void test() {
+		System.out.println(1);
+	}
+}
+package p2;
+import p1.A;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//----> Error
+		a1.test();//----> Error
+	}
+}
+------------------------------------------------------
+
+d. public: When we make variable/method public then we can access that in sam class/same package/different package
+
+Example 1:
+package p1;
+public class A {
+	public int x=10;
+	public void test() {
+		System.out.println(1);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+Ouput:
+10
+1
+
+Example 2:
+-----------
+package p1;
+public class A {
+	public int x=10;
+	public void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		System.out.println(b1.x);
+		b1.test();
+	}
+}
+Ouput:
+10
+1
+
+Example 3:
+-------------------------------------------
+
+package p1;
+public class A {
+	public int x=10;
+	public void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+Output:
+10
+1
+
+Example 4:
+--------------
+package p1;
+public class A {
+	public int x=10;
+	public void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C extends A {
+	public static void main(String[] args) {
+		C c1 = new C();
+		System.out.println(c1.x);
+		c1.test();
+	}
+}
+Output:
+10
+1
+
+Example 5:
+------------
+package p1;
+public class A {
+	public int x=10;
+	public void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+Output:
+10
+1
+
+########################################################
+Access Specifier on Constructors
+#######################################################
+
+Can we Inherit Constructor?
+Answer: We cannot inherit constructor
+
+a. private Constructor
+----------------------------
+-> If a constructor is made private then its object cannot be created outside the class
+
+Example 1:
+package p1;
+public class A {
+	private A() {
+		
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+	
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();//--->Error
+	}
+}
+package p2;
+import p1.A;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();//-->Error
+	}
+}
+
+-> When a constructor is made private then inheritance of that class is not allowed
+(Note: Construct re not inherit)
+
+Example 2:
+----------
+package p1;
+public class A {
+	private A() {
+		
+	}
+	
+}
+package p1;
+public class B extends A{//-->Error
+	
+}
+package p2;
+import p1.A;
+public class C extends A{//-->Error
+	
+}
+
+b. default Constructor
+-------------------------
+-> If a constructor is made default then its object can be created in same class/same package but not outside the package
+
+Example 1:
+----------
+package p1;
+public class A {
+	A() {
+		
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p2;
+import p1.A;
+public class C{
+	public static void main(String[] args) {
+		A a1 = new A();//-->Error
+	}
+}
+
+
+-> When a constructor is made default then inheritance of that class is  allowed only in same package but not outside the package
+(Note: Construct re not inherit)
+
+Example 2:
+----------
+package p1;
+public class A {
+	A() {
+		
+	}
+	
+}
+package p1;
+public class B extends A {
+	
+}
+package p2;
+import p1.A;
+public class C extends A{//-->Error
+	
+}
+
+e. protected Constructor
+--------------------------
+-> If a constructor is made protected then its object can be created in same class/same package but not outside the package 
+
+Example 1:
+---------
+package p1;
+public class A {
+	protected A() {
+		
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p1;
+public class B  {
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p2;
+import p1.A;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();//-->Error
+	}
+}
+
+-> When a constructor is made protected then inheritance of that class is  allowed in same package / outside the package (both)
+(Note: Construct re not inherit)
+
+Example 2:
+----------
+package p1;
+public class A {
+	protected A() {
+		
+	}
+	
+}
+package p1;
+public class B extends A {
+	
+}
+package p2;
+import p1.A;
+public class C extends A {
+	
+}
+
+e. public Constructor
+------------------------
+-> If a constructor is made public then its object can be created in same class/same package and outside the package also
+
+Example 1:
+---------
+package p1;
+public class A {
+	public A() {
+		
+	}
+	public static void main(String[] args) {
+		 A a1 = new A();
+	}
+}
+package p1;
+public class B  {
+	public static void main(String[] args) {
+		 A a1 = new A();
+	}
+}
+package p2;
+import p1.A;
+public class C  {
+	public static void main(String[] args) {
+		 A a1 = new A();
+	}
+}
+
+-> When a constructor is made public then inheritance of that class is  allowed in same package / outside the package (both)
+(Note: Construct re not inherit)
+
+Example 2:
+----------
+package p1;
+public class A {
+	public A() {
+		
+	}
+	
+}
+package p1;
+public class B extends A {
+	
+}
+package p2;
+import p1.A;
+public class C extends A {
+	
+}
+
+########################################
+Access Specifier on Class
+########################################
+-> A class can be only public / default
+-> A class cannot be private / protected
+
+What happens when a class is made default?
+Answer:
+->  It's object can be created in same class/same package but not inside different package
+-> Inheritance is allowed in same package
+
+Example 1:
+package p1;
+class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p2;
+import p1.A;//--->Error
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();//--->Error
+	}
+}
+
+Example 2:
+package p1;
+class A {
+	
+}
+package p1;
+public class B extends A{
+	
+}
+package p2;
+import p1.A;//-->Error
+public class C extends A{//-->Error
+	
+}
+
+--------------------------------------------------------------]
+What happens when a class is made public?
+Answer:
+->  It's object can be created in same class/same package & inside different package
+-> Inheritance is allowed in same package & inside different package
+
+Example 1:
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p1;
+public class B{
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+package p2;
+import p1.A;
+public class C{
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+
+Example 2:
+-----------------
+
+package p1;
+public class A {
+	
+}
+package p1;
+public class B extends A{
+	
+}
+package p2;
+import p1.A;
+public class C extends A{
+	
+}
+
+Note: A class cannot be made private
+---------------------------------------
+Example :
+package p1;
+private class A {//-->Error
+	
+}
+
+Note: A class cannot be made protected
+---------------------------------------
+Example :
+package p1;
+protected class A {//-->Error
+	
+}
+
+###################################
+Note: 
+a. Compile Time: Here our java compiler converts .java files to .class files(byte code)
+b. Run Time: Here we run .class file(byte code using Java Runtime Environment.
+
+
+########################################
+Polymorphism in java
+#########################################
+
+Here we develop a feature such that it can take more than one form depending on the situation
+Note: Polymorphism is applicable only on methods and not variables
+
+------------------------------------------------------------------------------------
+Two types of polymorphism
+
+a. Overriding (Run time polymorphism): 
+-> Here we modify the logic of inherited method in child class
+Example 1:
+-----------
+package p1;
+public class GoldAccount {
+	public void onlineBanking() {
+		System.out.println("yes");
+	}
+	public void rateOfInterest() {
+		System.out.println("nill");
+	}
+}
+GoldAccount.java
+
+package p1;
+public class PlatinumAccount extends GoldAccount {
+	public void rateOfInterest() {
+		System.out.println("6% PA");
+	}
+	public static void main(String[] args) {
+		PlatinumAccount p = new PlatinumAccount();
+		p.onlineBanking();
+		p.rateOfInterest();//-->6% PA
+		System.out.println("--------");
+		GoldAccount g = new GoldAccount();
+		g.onlineBanking();
+		g.rateOfInterest();//-->nill
+	}
+}
+PlatinumAccount.java
+
+Output:
+yes
+6% PA
+--------
+yes
+nill
+
+Example 2:
+-> In version java 5 , A concept of annotations was introduced
+-> Annotations can instruct compiler to perform a specific task
+-> @AnnotationName
+-> @Override: This annotation instructs compiler to check whether overriding is happening or not
+
+	package p1;
+	public class GoldAccount {
+		
+		public void rateOfInterest() {
+			System.out.println("nill");
+		}
+	}
+GoldAccount.java
+
+package p1;
+public class PlatinumAccount extends GoldAccount {
+	@Override
+	public void rateOfInterests() {//-->Error because method name mismatch
+		System.out.println("6% PA");
+	}
+	
+}
+PlatinumAccount.java
+
+Example 3:
+---------
+Question: Access Specifier should it be same or can be different during Overriding?
+Answer: During Overriding we can increase the scope of access specifier but we cannot reduce the scope of access specifier
+
+package p1;
+public class GoldAccount {
+
+	void rateOfInterest() {
+		System.out.println("nill");
+	}
+}
+GoldAccount.java
+
+package p1;
+public class PlatinumAccount extends GoldAccount {
+//No Error Because default scope is increase to public	
+	@Override
+	public void rateOfInterest() {
+		System.out.println("6% PA");
+	}
+
+}
+PlatinumAccount.java
+
+-------------------------------------------------------------------
+
+Example 4:
+----------
+package p1;
+public class GoldAccount {
+
+	public void rateOfInterest() {
+		System.out.println("nill");
+	}
+}
+
+package p1;
+public class PlatinumAccount extends GoldAccount {
+//Error Because public scope is reduced to 	default
+	@Override
+	void rateOfInterest() {
+		System.out.println("6% PA");
+	}
+
+}
+
+Example 5:
+-----------
+package p1;
+public class GoldAccount {
+
+	void rateOfInterest() {
+		System.out.println("nill");
+	}
+}
+
+package p1;
+public class PlatinumAccount extends GoldAccount {
+//No Error Because default scope is increased to protected
+	@Override
+	protected void rateOfInterest() {
+		System.out.println("6% PA");
+	}
+}
+
+Example 6:
+-----------
+package p1;
+public class GoldAccount {
+
+	private void rateOfInterest() {
+		System.out.println("nill");
+	}
+}
+
+package p1;
+public class PlatinumAccount extends GoldAccount {
+//Error Because private methods we cannot inherit
+//Without inheritance Overriding cannot be done
+	
+	@Override
+	protected void rateOfInterest() {
+		System.out.println("6% PA");
+	}
+
+}
+
+####################################
+Note: 
+-> Static members cannot be inherited
+Example :
+package p1;
+public class GoldAccount {
+	static int x = 100;
+	public static void rateOfInterest() {
+		System.out.println("nill");
+	}
+}
+package p1;
+
+public class PlatinumAccount extends GoldAccount {
+	
+	public static void main(String[] args) {
+		PlatinumAccount.rateOfInterest();
+		System.out.println(PlatinumAccount.x);
+		//GoldAccount.rateOfInterest();
+		//GoldAccount.x
+	}
+
+}
+//PlatinumAccount.rateOfInterest()---->Converted to ------>GoldAccount.rateOfInterest();
+//PlatinumAccount.x--->Converted---->GoldAccount.x
+//Hence we are geeting output
+
+################################################
+Question : Can we Override static methods?
+-> We cannot override static methods, as we cannot inherit static methods
+########################################
+
+Example 1:
+package p1;
+public class GoldAccount {
+	
+	public static void test() {
+		System.out.println(100);
+	}
+}
+package p1;
+
+public class PlatinumAccount extends GoldAccount {
+	
+	@Override
+	public static void test() {//--->Error, cannot override static methods
+		System.out.println(100);
+	}
+
+}
+
+Example 2: During Overriding method return type should match
+package p1;
+public class GoldAccount {
+	
+	public int test() {
+		return 100;
+	}
+}
+package p1;
+
+public class PlatinumAccount extends GoldAccount {
+	
+	@Override
+	public void test() {//-> Error because method return type is not matching 
+		System.out.println(100);
+	}
+
+}
+
+
+b. Overloading (Compile time polymorphism)
+-> Here we develop more than one method with same name in same class provided they have different number of arguments or different type of arguments
+
+Example:
+-> I want to send email with attachment & Also an email to be sent without attachment
+-> Email feature is taking more than one form
+
+package p1;
+
+public class EmailService {
+	public void sendEmail(String to, String subject, String message) {
+		System.out.println("Email sending....");
+	}
+	public void sendEmail(String to, String subject, String message, String filePath) {
+		System.out.println("Email sending with attachment.....");
+	}
+	public static void main(String[] args) {
+		EmailService service = new EmailService();
+		service.sendEmail("mike@gmail.com", "Welcome", "Some Message","G:\\image.png");
+	}
+}
+
+################################
+Final Keyword
+################################
+-> If you make a variable final then we cannot change it's value(Just like constant variables)
+-> If you make static/non-static variable final then initialization is mandatory
+-> If you make a method final then overriding is not allowed
+-> If you make a class final then inheritance is not allowed
+
+Example 1: 
+----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		final int x = 10;
+		x=20;//-->Cannot change the value of final variable
+		System.out.println(x);
+	}
+}
+
+Example 2:
+----------
+package p1;
+
+public class A {
+	final int x;//->final mandatory to be initialized
+	final static int y;//->final mandatory to be initialized
+	//These above erros are called as blank field errors
+	public static void main(String[] args) {
+		
+	}
+}
+
+Example 3:
+----------
+package p1;
+
+public class A {
+	final public void test() {
+		System.out.println(100);
+	}
+}
+package p1;
+
+public class B extends A{
+	@Override
+	public void test() {//--> Error because we cannot override final methods
+		System.out.println(100);
+	}
+}
+
+Example 4:
+----------
+package p1;
+
+final public class A {
+	
+}
+package p1;
+
+public class B extends A{//---> Error because we cannot inherit final class
+	
+}
+
+#####################################
+interfaces in java - abstraction
+#######################################
+-> An interface can consist of only incomplete methods/abstract methods in it ( Java Version 7)
+-> All Variables in an interface by default are final & static
+-> Interfaces defines what needs to be developed and not how it is to be developed
+-> Interfaces are like contract that a class follows, and the class has to implements these methods
+-> An Object of interface cannot be created. Because objects cannot have incomplete methods in it
+-> loosely coupled
+-> It forces all the implementation classes to have same method same resulting in good design
+
+Example 1:
+---------
+package p1;
+
+public interface A {
+
+	public void test1() {//-->Error because complete methods are not allowed in an interface
+		
+	}
+}
+
+Example 2:
+-----------
+package p1;
+
+public interface A {
+	public void test1() ;
+}
+
+Example 3:
+----------
+package p1;
+
+public interface NotificationService {
+
+	//What needs to be implemented
+	public void emailService();
+	public void whatsAppService();
+	public void smsService();
+}
+
+package p1;
+
+public class NotificationServiceImpl 
+implements NotificationService
+{
+	//How it will be implemented
+	@Override
+	public void emailService() {
+		System.out.println("Email Sending");
+	}
+	@Override
+	public void whatsAppService() {
+		System.out.println("Whats app Sending");
+	}
+	@Override
+	public void smsService() {
+		System.out.println("SMS Sending");
+	}
+	public static void main(String[] args) {
+		NotificationServiceImpl impl = new NotificationServiceImpl();
+		impl.emailService();
+		impl.smsService();
+		impl.whatsAppService();
+	}
+}
+
+Example 4:
+----------
+package p1;
+
+public interface PropertyService {
+
+	public void addProperty();
+	public void updateProperty();
+	public void deleteProperty();
+	public void searchProperty();
+}
+package p1;
+
+public class PropertyServiceImpl 
+implements PropertyService
+{
+	@Override
+	public void addProperty() {
+		System.out.println("Added Property");
+	}
+	@Override
+	public void updateProperty() {
+		System.out.println("Updated Property");
+	}
+	@Override
+	public void deleteProperty() {
+		System.out.println("Deleted Property");
+	}
+	@Override
+	public void searchProperty() {
+		System.out.println("Search Property");
+	}
+	public static void main(String[] args) {
+		PropertyServiceImpl service = new PropertyServiceImpl();
+		service.addProperty();
+		service.updateProperty();
+		service.deleteProperty();
+		service.searchProperty();
+	}
+	
+}
+
+#############################
+Note: Drawback of inheritance
+#############################
+-> Inheritance results in tightly couple programming.
+
+Example 5:
+----------
+package p1;
+
+public interface Calculator {
+	public void add(int x, int y);
+	public void mul(int x, int y);
+}
+
+package p1;
+public class OrdinaryCalc implements Calculator{
+
+	@Override
+	public void add(int x, int y) {
+		System.out.println(x+y);
+	}
+	
+	@Override
+	public void mul(int x, int y) {
+		System.out.println(x*y);
+	}
+
+}
+
+package p1;
+
+public class SciCalc implements Calculator{
+
+	@Override
+	public void add(int x, int y) {
+		System.out.println(x*x+y*y);
+	}
+	
+	@Override
+	public void mul(int x, int y) {
+		int num1 = x*x;
+		int num2 = y*y;
+		System.out.println(num1*num2);
+	}
+
+}
+package p1;
+
+public class MainCalc {
+	public static void main(String[] args) {
+		OrdinaryCalc oc = new OrdinaryCalc();
+		oc.add(10, 20);
+		oc.mul(10, 20);
+		
+		SciCalc sc = new SciCalc();
+		sc.add(10, 20);
+		sc.mul(10, 20);
+		
+		
+	}
+}
+
+
+Advantages of interfaces
+---------------------------
+
+
+1. abstraction: hiding of implementation details. That is we define what needs to be developed and not how it needs to be developed
+2. It imposes contract on a class to implement all methods of an interface
+3. Results in good design
+4. loosely coupled
+
+-> All Variables by default in an interface are final and static
+----------------------------------------------------------------
+package p1;
+
+//-> All variables in the given program are final & static
+//-> Hence intialization is mandatory
+public interface A {
+	int MAX_VAL=100;
+	static final int MIN_VAL=0;
+}
+package p1;
+
+public class B {
+	public static void main(String[] args) {
+		System.out.println(A.MAX_VAL);
+		System.out.println(A.MIN_VAL);
+	}
+}
+Output:
+100
+0
+#################################################
+Note:
+-> Class to Class Inheritance --> extends
+-> interface to interface Inheritance --> extends
+-> interface to class Inheritance --> implements
+#################################################
+
+Example 1:
+---------
+package p1;
+
+public interface A {
+	public void test1();
+}
+package p1;
+
+public interface B extends A{
+	public void test2();
+}
+package p1;
+
+public class C implements B {
+
+	@Override
+	public void test1() {
+		System.out.println("From test1");
+	}
+
+	@Override
+	public void test2() {
+		System.out.println("From test2");
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+		c1.test1();
+		c1.test2();
+	}
+
+}
+
+Example 2:
+-----------
+package p1;
+
+public interface A {
+	public void test2();
+}
+package p1;
+
+public interface B {
+	public void test1();
+}
+package p1;
+
+public interface C extends  A,B {
+
+	
+}
+
+Example 3:
+----------
+-> If you do mulitple inheritance on a class then it's parent should be interfaces only
+
+package p1;
+public interface A {
+	public void test2();
+}
+
+package p1;
+public interface B {
+	public void test1();
+}
+
+package p1;
+public class C implements  A,B {
+
+	@Override
+	public void test1() {
+		System.out.println("From test1");
+	}
+
+	@Override
+	public void test2() {
+		System.out.println("From test2");		
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+		c1.test1();
+		c1.test2();
+	}
+	
+}
+
+Example 4:
+----------
+-> On class can we perform extends implements together
+-> But ensure extends is used first and then implements
+
+package p1;
+public interface A {
+	public void test2();
+}
+
+package p1;
+public class B {
+	public void test1() {
+		System.out.println("From test1");
+	}
+}
+
+package p1;
+public class C extends B  implements  A {
+	@Override
+	public void test2() {
+		System.out.println("From test2");		
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+		c1.test1();
+		c1.test2();
+	}
+}
+
+###############################################################
+Question: Can i develop incomplete static method in an interface?
+Answer: We cannot inherit static method & override, hence incomplete static methods are not allowed in an interface
+
+Example:
+package p1;
+public interface A {
+	public static void test2();//-------> Error
+}
+
+###############################################################
+
+Java 8 Features
+###################
+1. default keyword:
+-> Using default keyword we can create complete methods inside interface. This was introduced in java version 8
+
+Example 1:
+--------
+package p1;
+public interface A {
+	default public void test1() {
+		System.out.println("From test1");
+	}
+}
+
+package p1;
+public class B implements A {
+	public static void main(String[] args) {
+		B b1 = new B();
+		b1.test1();
+	}		
+}
+Output:
+From test1
+
+Example 2:
+----------
+package p1;
+public interface A {
+	default public void test1() {
+		System.out.println("From test1");
+	}
+	public void test2();
+}
+
+package p1;
+public class B implements A {
+	public static void main(String[] args) {
+		B b1 = new B();
+		b1.test1();
+		b1.test2();
+	}
+	@Override
+	public void test2() {
+		System.out.println("From test2");
+	}		
+}
+Output:
+-------
+From test1
+From test2
+
+Note: 
+
+2. Functional Interface:
+---------------------------
+-> A functional interface should consist of exactly one incomplete method inside it
+-> Inside functional interface we can develop any number of complete methods using default keyword
+-> During inheritance/multiple inheritance if more than one method is inherited to Functional Interface then you will get error. As shown in below examples 
+
+Example 1:
+--------------------
+@FunctionalInterface
+public interface A {//Error-> Because cannot have ZERO incomplete method
+}
+
+Example 2:
+----------
+@FunctionalInterface
+public interface A {
+	public void test1();
+}
+
+Output: 
+No Error because it has exactly one incomplete method
+
+Example 3:
+----------
+@FunctionalInterface
+public interface A {//Error->A functional interface should consist of exactly one //incomplete method inside it
+	public void test1();
+	public void test2();
+}
+
+Example 4:
+----------
+package p1;
+@FunctionalInterface
+public interface A {
+	public void test1();
+	default public void test2() {
+		System.out.println("From Test 2");
+	}
+	default public void test3() {
+		System.out.println("From Test 3");
+	}
+	default public void test4() {
+		System.out.println("From Test 4");
+	}
+}
+package p1;
+public class B implements A {
+	public static void main(String[] args) {
+		B b1 = new B();
+		b1.test1();
+		b1.test2();
+		b1.test3();
+		b1.test4();
+	}
+
+	@Override
+	public void test1() {
+		System.out.println("From test 1");
+	}
+		
+}
+Output:
+---------
+From test 1
+From Test 2
+From Test 3
+From Test 4
+
+Example 5:
+-----------
+package p1;
+public interface A {
+	public void test1();
+}
+package p1;
+@FunctionalInterface
+public interface B extends A{
+	
+}
+Output: No Error
+
+Example 2:
+----------
+package p1;
+public interface A {
+	public void test1();
+	public void test2();
+}
+package p1;
+@FunctionalInterface
+public interface B extends A{
+	
+}
+Output: Error because we are inheriting 2 method to functional interface
+
+Example 6:
+---------
+package p1;
+public interface A {
+	public void test1();
+	
+}
+
+package p1;
+@FunctionalInterface
+public interface B extends A{
+	public void test2();
+}
+Output: Output: Error because we are inheriting 1 method to functional interface  and functional interface has a method which totals to 2 methods in an interface
+
+
+
+3. lambdas expression - 
+4. stream API
+5. Optional class
+

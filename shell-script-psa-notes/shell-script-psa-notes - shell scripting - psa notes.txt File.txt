@@ -1,0 +1,947 @@
+shell-script-psa-notes/shell scripting - psa notes.txt
+-------------------------------------------------------
+
+________________________________________________________________________________________
+
+
+
+Definition:
+#######################################################################################
+Scripting refers to writing a set of commands in a file to be executed sequentially.
+
+It is used to automate repetitive tasks and system operations.
+-------------------------------------------------------------------------------------
+
+Why Use Scripting?
+#################################################################################
+1. Reduces manual effort by automating routine tasks.
+
+2. Ensures consistency and accuracy in execution.
+
+3. Saves time by executing multiple commands at once.
+
+Example: Automating Daily Commands
+--------------------------------------------------------------------------------------
+
+Instead of running these commands manually every day:
+
+whoami
+pwd
+date
+cal
+ls -l
+
+We can store them in a script file (tasks.sh) and execute it:
+
+$ bash tasks.sh
+----------------------------------------------------------------------------------------
+
+What is Shell Scripting?
+###################################################################################
+
+1. The process of executing a script file using a shell (command-line interpreter).
+
+2. Shell scripting helps automate tasks in projects.
+----------------------------------------------------------------------------------
+
+Common Use Cases of Shell Scripting:
+###################################################################################
+
+-> Backup Automation - Automatically backing up files and databases.
+
+-> Cleanup Scripts - Removing temporary or unnecessary files.
+
+-> Log Analysis - Parsing and analyzing system logs.
+
+-> System Health Checks - Monitoring CPU, memory, and disk usage.
+
+-> Shell scripts typically have a .sh extension.
+--------------------------------------------------------------------------------------
+Examples:
+
+task.sh      # Script to take backup
+
+Running a Shell Script
+
+To execute a script, use one of the following commands:
+
+$ bash task.sh   # Execute using Bash
+$ ./task.sh      # Execute directly (if executable permission is set)
+
+To make the script executable:
+
+$ chmod +x task.sh
+----------------------------------------------------------------------------------------
+Shell scripting is a powerful way to automate tasks
+
+What is Sha-Bang in Linux?
+#####################################################################################
+
+Definition:
+
+Sha-Bang (#!) is used to specify which shell should be used to process a script file. It is placed at the beginning of the script file.
+
+Syntax:
+
+#! /bin/bash
+
+#! is called Sha-Bang or Shebang.
+
+/bin/bash specifies that the script should be executed using the Bash shell.
+
+Why Use Sha-Bang?
+
+-> Ensures the script runs in the correct shell regardless of the user's default shell.
+
+-> Prevents compatibility issues when running scripts across different environments.
+----------------------------------------------------------------------------------------
+
+Is Sha-Bang Mandatory?
+########################################################################################
+
+-> No, but it is recommended.
+
+-> If omitted, the script will be executed using the default shell set in the system.
+
+-> To explicitly define the shell, always include a Sha-Bang line.
+
+Example Script with Sha-Bang:
+________________________________________________________________________________________
+
+#!/bin/bash
+
+# Print current user
+whoami
+
+# Print current directory
+pwd
+
+# Print date
+date
+
+------------------------------------------------------------------------------------------
+Alternative to sha-bang
+
+Sh (Bourne Shell): #!/bin/sh
+
+Zsh: #!/bin/zsh
+-------------------------------------------------------------------------------------------
+
+Variable Naming Conventions in Shell
+############################################################################################
+
+General Rules for Naming Variables:
+--------------------------------------
+1. Use only letters, numbers, and underscores (_).
+
+2. Variable names must start with a letter or underscore (_), not a number.
+
+3. Do not use spaces in variable names.
+
+4. Avoid special characters (@, #, !, -, etc.).
+
+5. Variable names are case-sensitive.
+
+
+Examples of valid convention:
+
+valid_name="John"
+_valid_name="Doe"
+VALID_AGE=25
+------------------------------------------
+
+Invalid examples:
+
+123name="Invalid"    # Cannot start with a number
+name-with-dash="Bad"  # Cannot contain special characters
+name space="Wrong"    # Cannot contain spaces
+
+----------------------------------------------
+
+Best Practices:
+--------------
+
+Use UPPERCASE for constants:
+-----------------------------
+MAX_RETRIES=5
+-----------------------------
+
+--------------------------------------------------
+Use lowercase with underscores for normal variables:
+
+user_name="Alice"
+file_path="/home/alice/documents"
+--------------------------------------------------
+
+Use meaningful names instead of generic ones:
+
+counter=10   # Bad
+file_count=10  # Good
+---------------------------------------------------
+Use double quotes when assigning strings that contain spaces:
+
+full_name="John Doe"
+---------------------------------------------------
+Accessing Variables:
+
+To retrieve a variable's value, use $:
+
+name="Alice"
+echo "Hello, $name!"
+---------------------------------------------------
+
+Declaring Read-Only Variables:
+
+Use readonly to make a variable immutable:
+
+readonly MY_CONSTANT=100
+MY_CONSTANT=200  # Error: cannot modify a readonly variable
+----------------------------------------------------
+
+Unsetting a Variable:
+
+Use unset to remove a variable:
+
+my_var="Hello"
+unset my_var
+echo $my_var  # No output, variable is deleted
+
+Following these naming conventions ensures readability, maintainability, and prevents conflicts in shell scripting
+---------------------------------------------------
+Example 1:
+
+#!/bin/bash
+
+# Prompt the user to enter their name
+echo "Enter your name:"
+
+# Read user input and store it in the variable NAME
+read name
+
+# Greet the user with a customized message
+echo "hello, $name"
+
+Explanation:
+
+#!/bin/bash
+This is called a "shebang" (#!). It tells the system that this script should be executed using the Bash shell.
+
+echo "Please enter your name:"  -Displays a message asking the user to input their name.
+
+read name  - Reads the user’s input from the terminal and stores it in the variable NAME.
+
+echo "hello, $name"  -Prints a greeting message that includes the user's name.
+----------------------------------------------------
+
+Example 2:
+
+#!/bin/bash
+
+# Prompt the user to enter their first name and store it in the variable FNAME
+read -p "Enter your first name: " first_name
+
+# Prompt the user to enter their last name and store it in the variable LNAME
+read -p "Enter your last name: " last_name
+
+# Display the full name
+echo "Hello, $first_name $last_name! Welcome!"
+
+------------------------------------------------------------
+
+Types of Variables in Linux
+In Linux, variables are classified into two main types:
+
+1) System Variables (Environment Variables)
+-> These are predefined by the system and available for all users and processes.
+-> They store essential system information such as current user, shell path, and executable directories.
+-> System variables are usually written in UPPERCASE.
+
+Examples of System Variables
+Run these commands in the terminal to check system variables:
+
+echo $SHELL    # Shows the current shell being used (e.g., /bin/bash)
+echo $USER     # Displays the current logged-in user
+echo $PATH     # Lists directories where system searches for executable files
+📌 To view all system variables, use:
+
+env
+
+2) User-Defined Variables
+-> These are custom variables created by users to store values for their scripts or tasks.
+-> They are not available globally unless exported.
+-> By convention, they are written in lowercase.
+
+Example of User-Defined Variables
+
+name=Pankaj
+id=101
+age=25
+gender=male
+
+To access these variables, use:
+
+echo $name    # Output: pankaj
+echo $id      # Output: 101
+echo $age     # Output: 25
+
+🚨 Important: Do not add spaces before or after = while assigning a variable (e.g., name = pankaj ❌ will cause an error).
+
+Why to use export keyword to create variable in shell script:
+-> To access a variable from one script file into another we should use export keyword.
+
+Example: Demonstrating export
+Step 1: Create Parent Script (parent.sh)
+
+#!/bin/bash
+export MESSAGE="Hello from Parent"
+./child.sh
+
+Step 2: Create Child Script (child.sh)
+
+#!/bin/bash
+echo "Child received: $MESSAGE"
+
+Step 3: Run the Parent Script
+
+chmod +x parent.sh child.sh  # Give execution permission
+./parent.sh
+
+######################################
+Setting Variables Permanently in Linux
+######################################
+
+To make environment variables persistent, we store them in the .bashrc file. This ensures the variables are available even after restarting the terminal or system.
+
+Steps to Set Permanent Variables
+
+1) Locate the .bashrc File
+
+The .bashrc file is a hidden file located in the user's home directory.
+To check if the file exists, run:
+
+ls -la
+
+To view its content:
+
+cat ~/.bashrc
+
+2) Open the .bashrc File for Editing
+Use the vi or nano editor to modify the file:
+
+vi ~/.bashrc
+(or use nano ~/.bashrc if you prefer nano editor.)
+
+3) Add Variables at the End of the File
+Scroll to the bottom of the file and add the following lines:
+
+
+export COURSE=devops
+export TRAINER=pankaj
+
+✅ Changes made here will persist across terminal sessions.
+
+4) Apply the Changes
+After editing, save and exit (ESC → :wq in vi, or CTRL + X → Y → Enter in nano).
+
+Then, apply the changes immediately by running:
+
+source ~/.bashrc
+
+5) Access the Variables
+Now, check if the variables are set:
+
+echo $COURSE
+echo $TRAINER
+
+Expected Output:
+
+devops
+pankaj
+
+Key Points
+-> Every user has their own .bashrc file in their home directory (/home/username/.bashrc).
+-> Changes in .bashrc apply only to that user.
+
+################################################
+How to Set Variables for All Users in Linux?
+################################################
+
+By default, variables set in .bashrc are user-specific. However, to make variables available system-wide (for all users), you need to define them in global configuration files such as /etc/profile or /etc/environment.
+
+1) Setting Variables in /etc/profile
+/etc/profile is a global shell configuration file executed for all users when they log in.
+
+Adding variables here ensures they are available system-wide for all users.
+
+Steps to Set System-Wide Variables in /etc/profile
+Step 1: Open /etc/profile with a text editor
+
+sudo vi /etc/profile
+(Use nano /etc/profile if you prefer nano.)
+
+Step 2: Add the Variables at the End of the File
+
+export COURSE=devops
+export TRAINER=pankaj
+
+
+Step 3: Apply Changes Immediately
+Run:
+
+
+source /etc/profile
+This ensures the changes take effect without needing a reboot.
+
+Step 4: Verify the Variables
+
+echo $COURSE
+echo $TRAINER
+
+✅ Output:
+
+devops
+pankaj
+
+##########################################
+Operators in Linux Shell Scripting
+##########################################
+
+-> Operators are symbols that perform operations on variables or values. For example:
+
+Example: 
+
+echo $((10 + 20))  # Output: 30
+
+
+1) Arithmetic Operators in Shell
+Operator	   Description	                Example (a=10, b=5)
++	              Addition	                 echo $((a + b)) → 15
+-	             Subtraction	               echo $((a - b)) → 5
+*            	Multiplication	             echo $((a * b)) → 50
+/	              Division	                 echo $((a / b)) → 2
+%	               Modulus (Remainder)	     echo $((a % b)) → 0
+
+How It Works
+$(( ... )): This syntax tells Bash to evaluate the mathematical expression inside the parentheses.
+
+
+📌 Example:
+
+FNUM=10
+SNUM=5
+
+echo $((FNUM + SNUM))  # Addition → 15
+echo $((FNUM - SNUM))  # Subtraction → 5
+echo $((FNUM * SNUM))  # Multiplication → 50
+echo $((FNUM / SNUM))  # Division → 2
+echo $((FNUM % SNUM))  # Modulus → 0
+
+
+3) Handling Decimal Values (Floating-Point Arithmetic)
+
+-> The default $(()) does not support floating-point calculations.
+-> To handle decimals, use bc (Basic Calculator) command is used for floating-point arithmetic
+
+echo "10.5 + 2.3" | bc    # Output: 12.8
+echo "10 / 3" | bc -l     # Output: 3.333333333
+
+📌 bc -l enables floating-point calculations.
+
+#####################################################
+Complete List of Relational Operators in Bash (used for numbers only)
+#####################################################
+Operator	    Description	                    Example
+-eq	            Equal to	                    [ 5 -eq 5 ] → true
+-ne	            Not equal to	                [ 5 -ne 3 ] → true
+-gt	            Greater than	                [ 10 -gt 5 ] → true
+-lt	            Less than	                    [ 3 -lt 8 ] → true
+-ge	            Greater than or equal to	    [ 10 -ge 10 ] → true
+-le	            Less than or equal to	        [ 4 -le 7 ] → true
+
+####################################################
+1. Space Around Square Brackets [ condition ]
+-> In Bash, when using the if condition, there must be spaces around the square brackets [ ].
+-> Bash treats [ as a command.
+-> The condition inside must be separated by spaces; otherwise, Bash will treat [$NUM-gt10] as a single argument and throw an error.
+
+Note: shell treats everything as a string by default, unless explicitly told otherwise.
+
+-------------------------------------
+❌ Incorrect:
+if [$NUM-gt10 ]; then
+----------------------------------------
+--------------------------------------
+✅ Correct:
+if [ "$NUM" -gt 10 ]; then
+--------------------------------------
+Why?
+
+####################################################
+2. Space Between the if, elif, and then Keywords
+####################################################
+
+-> The then keyword must be on the same line as if or a newline.
+-> If it is on the same line, it must be separated by a semicolon (;).
+
+--------------------------------------------------
+✅ Correct:
+if [ "$NUM" -gt 10 ]; then
+OR
+if [ "$NUM" -gt 10 ]
+then
+-----------------------------------------------------
+❌ Incorrect:
+if [ "$NUM" -gt 10 ]then
+-----------------------------------------------------
+##################################################
+3. Space Around Operators (-gt, -eq, -lt, etc.)
+###################################################
+Comparison operators like -gt, -eq, -lt, etc., should have spaces before and after them.
+----------------------------------------------------------
+✅ Correct:
+if [ "$NUM" -gt 10 ]; then
+-----------------------------------------------------------
+❌ Incorrect:
+if [ "$NUM"-gt10 ]; then
+------------------------------------------------------------
+
+🧪 Example 1: Using (( ... )) — Arithmetic Style (Modern & Clean)
+x=2
+if (( x > 1 )); then
+    echo "Using (( ... )): x is greater than 1 → $x"
+fi
+
+✅ How it works:
+-> (( ... )) is bash arithmetic context
+-> x > 1 is treated like a math expression (like in C or Java)
+-> You don’t need $ inside (( ... )), but it works either way
+
+🧪 Example 2: Using [ ... ] — Classic Style (More Compatible)
+
+x=2
+if [ $x -gt 1 ]; then
+    echo "Using [ ... ]: x is greater than 1 → $x"
+fi
+
+✅ How it works:
+-> [ ... ] is the test command
+-> -gt means “greater than” for numbers
+-> $x is required to access the value
+-> Spaces are mandatory before and after [
+
+Note: ❌ You CANNOT use -ge (or -gt, -lt, etc.) inside (( ... ))
+
+
+
+###################################################
+String Comparison Operators (Used with [[ ... ]])
+###################################################
+
+When comparing strings, use the following operators:
+
+Operator	      Meaning	                      Example
+==	            Equal to	              [[ "$str1" == "$str2" ]]
+!=	            Not equal to	          [[ "$str1" != "$str2" ]]
+>	          Greater (alphabetically)	  [[ "$str1" > "$str2" ]]
+<	            Less (alphabetically)	    [[ "$str1" < "$str2" ]]
+
+
+🚨 Important Notes:
+a.  > and < work for string comparison inside [[ ... ]] but not in [ ... ].
+b. Always use quotes around string variables to prevent errors
+
+Example 1:
+------------
+echo "Enter a number:"
+read num
+
+if [ "$num" -gt 0 ]; then
+    echo "The number is positive."
+fi
+
+Example 2:
+------------
+#!/bin/bash
+
+echo "Enter a number:"
+read num
+
+if [ "$num" -gt 0 ]; then
+    echo "Positive number."
+else
+    echo "Zero or negative number."
+fi
+
+Example 3:
+------------
+#!/bin/bash
+
+echo "Enter a number:"
+read num
+
+if [ "$num" -gt 0 ]; then
+    echo "Positive"
+elif [ "$num" -lt 0 ]; then
+    echo "Negative"
+else
+    echo "Zero"
+fi
+
+###################################
+🔁 Looping in Shell Scripting
+###################################
+
+Loops are used to repeat a block of code multiple times. There are mainly two types:
+
+a. Range-Based Loop – for loop
+
+b. Condition-Based Loop – while loop
+
+Syntax:
+
+for(( initialization; condition; increment/decrement ))
+do
+  # statements
+done
+
+✅ Explanation:
+
+for (( ... )) – this is the arithmetic format of the for loop (like in C/C++).
+
+initialization – usually a variable like i=1
+
+condition – a check like i<=10
+
+increment – update variable like i++
+
+NO SPACES around the (( ... ))
+SPACES are needed after do and before done
+
+Note:
+---------
+((...))	Performs arithmetic operations only (no output)	((i++))
+$((...))	Performs arithmetic and returns the result (used in expressions)	echo $((2 + 3))
+
+Note:
+---------------------------------------
+🛠️ The problem:
+[ ... ] is used for conditions, like in if or while, not in for loops.
+
+NOte:
+--------------------------------------------
+✅ In (( ... )) — NO need for $ with variables
+bash
+Copy
+Edit
+i=5
+if (( i < 10 )); then
+  echo "Yes, i is less than 10"
+fi
+(( ... )) is for arithmetic.
+
+Inside, you can use variables directly without $.
+
+It's like writing math in C or Java.
+
+✔️ Both of these are OK:
+
+-> (( i < 10 )) #valid
+-> (( $i < 10 ))   # also valid but $ is optional
+-> ❗ In [ ... ] — You MUST use $ with variables
+------------------------------------------------------
+i=5
+if [ $i -lt 10 ]; then
+  echo "Yes, i is less than 10"
+fi
+------------------------------------------------------
+-> [ ... ] treats everything as strings/commands.
+-> So, you need to dereference the variable using $.
+--------------------------------------------------------------------
+❌ This will NOT work:
+if [ i -lt 10 ]; then   # i is just a string here, not the variable!
+----------------------------------------------------------------------
+✔️ Correct way:
+if [ $i -lt 10 ]; then
+----------------------------------------------------------------------
+
+
+Example 1:
+-----------
+
+#! /bin/bash
+
+for(( i=1; i<=20; i++ ))
+do
+  if(( i%2 != 0 )); then
+    echo $i
+  fi
+done
+
+Example 2:
+------------
+🔹 Example 2: Print Multiples of 5 from 1 to 50
+
+#! /bin/bash
+
+for(( i=1; i<=50; i++ ))
+do
+  if(( i%5 == 0 )); then
+    echo $i
+  fi
+done
+
+Syntax
+--------------
+
+while [ condition ]
+do
+  # statements
+done
+
+NOte:
+--------
+Example using ((...)):
+
+i=1
+while (( i <= 5 ))
+do
+  echo "Number: $i"
+  ((i++))
+done
+
+✔ This is equivalent to:
+
+i=1
+while [ $i -le 5 ]
+do
+  echo "Number: $i"
+  ((i++))
+done
+
+-------------------------------------------
+
+
+Example 1:
+-----------
+Print Even Numbers from 1 to 20 using While Loop
+
+#! /bin/bash
+
+i=1
+while [ $i -le 20 ]
+do
+  if (( i%2 == 0 )); then
+    echo $i
+  fi
+  ((i++))
+done
+
+Example 2:
+-----------
+Print Table of 2 using While Loop
+
+#! /bin/bash
+
+i=1
+while [ $i -le 10 ]
+do
+  echo $((2 * i))
+  ((i++))
+done
+
+Example 3:
+--------------
+Sum of Numbers from 1 to 10 using While Loop
+
+#! /bin/bash
+
+i=1
+sum=0
+while [ $i -le 10 ]
+do
+  sum=$((sum + i))
+  ((i++))
+done
+
+echo "Sum is: $sum"
+
+################################
+Function
+###############################
+
+What is a Function in Shell Script?
+--------------------------------------
+A function is a block of code that performs a specific task. Once defined, you can call it multiple times whenever needed
+
+syntax:
+
+function function_name() {
+    # your commands
+}
+
+or
+
+function_name() {
+    # your commands
+}
+
+method calling syntax:
+----------------------------
+function_name
+
+Example 1:
+-----------
+
+#! /bin/bash
+
+welcome() {
+    echo "Welcome"
+}
+
+# Function call
+welcome
+
+Example 2:
+-----------
+
+#! /bin/bash
+
+greet_user() {
+    echo "Hello, $1!"
+    echo "You are learning $2."
+}
+
+# Call function with arguments
+greet_user "John" "Shell Scripting"
+
+Example 3:
+-------------
+
+#! /bin/bash
+
+sum() {
+    result=$(($1 + $2))
+    echo "Sum is: $result"
+}
+
+sum 10 25
+
+Example 4:
+----------
+
+#! /bin/bash
+
+sum() {
+    echo "Sum: $(($1 + $2))"
+}
+
+subtract() {
+    echo "Difference: $(($1 - $2))"
+}
+
+# Use cmd args for calculation
+sum $1 $2
+subtract $1 $2
+
+✅ Benefits of Using Functions
+✔ Code reuse
+✔ Easier to test/debug
+✔ Logical separation of tasks
+✔ Can take parameters (just like mini scripts)
+
+#############################################
+✅ What is Scheduling in Linux?
+#############################################
+
+-> Scheduling means setting up a task to run automatically at a specific time — without needing manual execution.
+
+-> Instead of you running a script, the system runs it for you — automatically, at a fixed time or repeating interval.
+
+#############################
+🧰 Why Use Scheduling?
+#############################
+In real-time environments (like DevOps, system admin, cloud, etc.), many tasks need to be automated:
+
+🗑️ Deleting temp or log files regularly
+
+🗂️ Backing up data daily or weekly
+
+🖥️ Monitoring system health
+
+📧 Sending reports via email
+
+🛠️ Running maintenance scripts
+
+#######################################
+🕒 How Do We Schedule in Linux?
+########################################
+
+-> We use a tool called cron (short for chronograph) which allows you to schedule tasks using cron jobs.
+
+###########################
+📄 What is a Cron Job?
+###########################
+
+-> A cron job is a command or script scheduled to run at a particular time using the cron service.
+
+-> You define cron jobs in a file called a crontab (short for “cron table”).
+
+###############################
+Install CRON in Amazonlinux
+##############################
+
+sudo yum install cronie
+sudo systemctl enable crond
+sudo systemctl start crond
+
+
+📝 Example Requirement:
+You want to run the script system-health-check.sh every day at 9:00 AM.
+
+✅ Step-by-Step:
+Open the crontab editor:
+crontab -e
+
+Add this line:
+0 9 * * * /path/to/system-health-check.sh
+
+📅 Cron Time Format:
+
+🌟 * * * * * = Every Minute
+Each asterisk * represents a unit of time, in this order:
+
+Position	        Field	                    Meaning	Example
+1️⃣	Minute	        0–59	                    * = every minute
+2️⃣	Hour	        0–23 (24h clock)	        * = every hour
+3️⃣	Day of Month	1–31	                    * = every day
+4️⃣	Month	        1–12	                    * = every month
+5️⃣	Day of Week	    0–7 (0 or 7 = Sunday)	    * = every day
+So in 0 9 * * *, it means:
+
+0 minute
+
+9 hour
+
+Every day, month, and weekday
+
+Example 1:
+---------
+▶️ 2. Every 5 Minutes
+*/5 * * * *
+
+▶️ 3. Every Day at 9:00 AM
+0 9 * * * 
+
+▶️ 4. Every Day at 6:30 PM
+30 18 * * * 
+
+▶️ 5. Every Monday at 8:00 AM
+0 8 * * 1
+
+▶️ 6. Run job everyday @4:15 PM Monday - Friday
+15 16 * * 1-5 
+
+▶️ 6. Every 2 Hours
+0 */2 * * *
+
+

@@ -1,0 +1,437 @@
+Spring-Security-With-Microservice-PSA 3 - microservices-1
+
+	-----------------------------------
+	    Package :- com.microservices-1
+	-----------------------------------
+
+----------------------------
+pom.xml
+Spring-Security-With-Microservice-PSA/microservices-1/pom.xml
+_______________________________________________________________
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.5</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.microservices1</groupId>
+	<artifactId>microservices-1</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>microservices-1</name>
+	<description>Microservices-1</description>
+	<url />
+	<licenses>
+		<license />
+	</licenses>
+	<developers>
+		<developer />
+	</developers>
+	<scm>
+		<connection />
+		<developerConnection />
+		<tag />
+		<url />
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+		<spring-cloud.version>2024.0.1</spring-cloud.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.auth0</groupId>
+		    <artifactId>java-jwt</artifactId>
+		    <version>4.4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+---------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------
+Package :- resources
+Class   :- application.properties
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/resources/application.properties
+________________________________________________________________________________________________
+
+spring.application.name=microservices-1
+
+server.port=8081
+
+management.endpoints.web.exposure.include=*
+---------------------------------------------------------------------------------------------------
+______________________________________________________
+Package :- client
+Package :- config
+Package :- controller
+Package :- dto
+Package :- filter
+Program Starter File :- Microservices1Application.java
+____________________________________________________________________________________________________
+
+
+Package :- client
+Class   :- AuthServiceFeignClient.java
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/java/com/microservices1/client/AuthServiceFeignClient.java
+___________________________________________________________________________________________________________________________
+
+package com.microservices1.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.microservices1.dto.User;
+
+@FeignClient(name = "AUTHSERVICEAPP")
+public interface AuthServiceFeignClient {
+
+    @GetMapping("/api/v1/auth/get-user")
+    User getUserByUsername(@RequestParam("username") String username, @RequestHeader("Authorization") String token);
+}
+----------------------------------------------------------------------------------------------------------------------
+
+
+Package :- config
+Class   :- AppSecurityConfig.java
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/java/com/microservices1/config/AppSecurityConfig.java
+_____________________________________________________________________________________________________________________
+
+package com.microservices1.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.microservices1.filter.JwtFilter;
+
+@Configuration
+@EnableWebSecurity
+public class AppSecurityConfig {
+    
+    @Autowired
+    private JwtFilter filter;
+
+    String[] publicEndpoints = {
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/swagger-resources/**",
+        "/webjars/**",
+        "/actuator/**", 
+        "/eureka/**"
+    };
+
+    @Bean
+    public PasswordEncoder getEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain securityConfig(HttpSecurity http) throws Exception {
+        
+        http.authorizeRequests(req -> {
+            req.requestMatchers(publicEndpoints)
+                .permitAll()
+               // .requestMatchers("/welcome").hasRole("USER")  // Ensure no "ROLE_" prefix is used here
+                .anyRequest()
+                .authenticated();
+        })
+        .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+        
+        return http.csrf().disable().build();
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------
+
+
+Package :- controller
+Class   :- WelcomeControllerApi.java
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/java/com/microservices1/controller/WelcomeControllerApi.java
+____________________________________________________________________________________________________________________________
+
+
+package com.microservices1.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WelcomeControllerApi {
+	
+	@GetMapping("/message")
+	public String getMessage() {
+		return "welcome";
+	}
+
+}
+--------------------------------------------------------------------------------------------
+
+
+
+Package :- dto
+Class   :- User.java
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/java/com/microservices1/dto/User.java
+_____________________________________________________________________________________________________
+
+
+package com.microservices1.dto;
+
+
+public class User {
+	
+	private long id;
+	
+	private String name;
+	
+	private String username;
+	
+	private String email;
+	
+	private String password;
+	
+	private String role;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+}
+-------------------------------------------------------------------------------
+
+
+Package :- filter
+Class   :- JwtFilter.java
+Class   :- JwtService.java
+-------------------------------
+
+Package :- filter
+Class   :- JwtFilter.java
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/java/com/microservices1/filter/JwtFilter.java
+_____________________________________________________________________________________________________________
+
+package com.microservices1.filter;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.microservices1.client.AuthServiceFeignClient;
+import com.microservices1.dto.User;
+
+import java.io.IOException;
+import java.util.Collections;
+
+@Component
+public class JwtFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JwtService jwtService;
+    
+    @Autowired
+    private AuthServiceFeignClient authServiceFeignClient;
+
+  
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwt = authHeader.substring(7);
+            String username = jwtService.validateTokenAndRetrieveSubject(jwt);
+
+            User user = authServiceFeignClient.getUserByUsername(username,authHeader);
+            
+        
+            
+                var authToken = new UsernamePasswordAuthenticationToken(
+                		user, null, Collections.singleton(new SimpleGrantedAuthority(user.getRole())));
+
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+       
+
+        filterChain.doFilter(request, response);
+
+
+    }
+}
+-------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------
+Package :- filter
+Class   :- JwtService.java
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/java/com/microservices1/filter/JwtService.java
+________________________________________________________________________________________________________________
+
+
+package com.microservices1.filter;
+
+import java.util.Date;
+import org.springframework.stereotype.Service;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+
+@Service
+public class JwtService {
+
+    private static final String SECRET_KEY = "secret12345";
+    private static final long EXPIRATION_TIME = 86400000; // 1 day
+
+//    public String generateToken(String username, String role) {
+//        return JWT.create()
+//            .withSubject(username)
+//            .withClaim("role", role)
+//            .withIssuedAt(new Date())
+//            .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+//            .sign(Algorithm.HMAC256(SECRET_KEY));
+//    }
+
+    public String validateTokenAndRetrieveSubject(String token) {
+        return JWT.require(Algorithm.HMAC256(SECRET_KEY))
+            .build()
+            .verify(token)
+            .getSubject();
+    }
+}
+--------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------
+Program Starter File :- Microservices1Application.java
+Spring-Security-With-Microservice-PSA/microservices-1/src/main/java/com/microservices1/Microservices1Application.java
+______________________________________________________________________________________________________________________
+
+package com.microservices1;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
+public class Microservices1Application {
+
+	public static void main(String[] args) {
+		SpringApplication.run(Microservices1Application.class, args);
+	}
+
+}
+------------------------------------------------------------------------------------------------------

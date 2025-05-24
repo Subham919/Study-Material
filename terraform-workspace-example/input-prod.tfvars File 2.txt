@@ -1,0 +1,6 @@
+terraform-workspace-example/input-prod.tfvars
+_____________________________________________
+
+instance_type = "t2.large"
+
+------------------------------
