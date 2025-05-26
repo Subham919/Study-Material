@@ -66,10 +66,12 @@ Step 4: Copy "zookeeper.properties" and "server.properties" files from "kafka/co
 Step-5 : Start Zookeeper server from "kafka/bin/windows" root folder
 
     Command : zookeeper-server-start.bat zookeeper.properties
+    Command* : zookeeper-server-start.bat ..\..\config\zookeeper.properties
 
 Step-6: Start Kafka Server using below command from "kafka/bin/windows" folder
 
     Command : kafka-server-start.bat server.properties
+    Command* : kafka-server-start.bat ..\..\config\server.properties
 
 Note: If kafka server is stopped, delete kafka logs from temp folder and try again to start kafka server
 
