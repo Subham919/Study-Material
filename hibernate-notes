@@ -1,0 +1,85 @@
+hibernate-psa-notes/hibernate-psa-notes.txt
+____________________________________________
+
+
+#######################
+Hibernate
+#######################
+
+-> Hibernate is an ORM (Object relation mapping) tool
+-> It helps developers map Java classes to database tables and automate CRUD operations (Create, Read, Update, Delete) without writing complex SQL queries.
+
+
+Example: Entity Class Employee
+
+@Entity
+public class Employee {	
+	@Id
+	private int id;
+	private String name;
+	private float salary;
+	
+	//setters
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setSalary(float salary) {
+		this.salary = salary;
+	}
+
+	//Getters
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public float getSalary() {
+		return salary;
+	}
+	
+}
+
+1. @Entity - “This annotaion maps Java class to a table in the database.”
+2. @Id   - Indicates the primary key column, and is mandatory to define inside entity class
+
+
+What is JPA?
+JPA (Java Persistence API) is only a specification — meaning it is a set of interfaces and incomplete annotations
+
+What is hibernate?
+The Implementation of JPA is done in hibernate and other ORM tools like EclipseLink, OpenJPA, DataNucleus
+
+Note:
+
+🔹 JPA = What to do
+🔹 Hibernate = How to do it (plus extra power)
+
+######################
+Hibernate Mappings
+######################
+
+a. OneToMany Mapping - One entity (parent) is associated with many instances of another entity (child).
+-> @OneToMany
+Example:
+1. One Post has many Comments
+2. One Hotel can have many reviews
+3. One Hotel can have many Bookings
+4. One Customer can place many Orders
+
+b. ManyToOne Mapping - where many child entities relate to one parent entity.
+-> @ManyToOne
+
+
+
+
+
+
+
