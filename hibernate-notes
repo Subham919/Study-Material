@@ -66,7 +66,7 @@ Note:
 Hibernate Mappings
 ######################
 
-a. OneToMany Mapping - One entity (parent) is associated with many instances of another entity (child).
+a. OneToMany Mapping - One record in Table A matches with multiple record in Table B
 -> @OneToMany
 Example:
 1. One Post has many Comments
@@ -74,10 +74,18 @@ Example:
 3. One Hotel can have many Bookings
 4. One Customer can place many Orders
 
-b. ManyToOne Mapping - where many child entities relate to one parent entity.
+b. ManyToOne Mapping - Multiple records in Table A matches with one record in Table B
 -> @ManyToOne
 
+c. ManyToMany Mapping - In Hibernate, a Many-to-Many relationship is used when each record in one table can be associated with multiple records in another table and vice versa. 
+For example, 
+a. Student can enroll in many Courses, and a Course can have many Students.
+b. One Bus can travel to many stops, and one stop can have many buses
 
+d. OneToOne Mapping - One Record in Table A matches with exactly One Record in Table B
+-> @OneToOne
+For Example:
+One Person can have one KYC
 
 
 
