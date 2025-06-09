@@ -87,7 +87,21 @@ d. OneToOne Mapping - One Record in Table A matches with exactly One Record in T
 For Example:
 One Person can have one KYC
 
+###########################
+Normalization
+############################
 
+1. 1NF (First Normal Form)
+-> Should have atomic values
+-> Identify each record uniquely
+-> No repeating groups
 
+2. 2NF (Second Normal Form)
+-> Group the columns based on entity & seperate that to different tables
+
+3. 3 NF (Third Normal Form)]
+-> Remove all duplicate/redundant values
+-> Ensure each record is uniquely identified by a Primary Key
+-> Create relations between tables using Foreign Keys
 
 
