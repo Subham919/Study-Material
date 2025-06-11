@@ -104,4 +104,126 @@ Normalization
 -> Ensure each record is uniquely identified by a Primary Key
 -> Create relations between tables using Foreign Keys
 
+What is Spring Data JPA?
+############################
+
+a. Spring Data JPA makes working with JPA easier by eliminating boilerplate code required for common database operations like saving, updating, deleting, and finding entities.
+
+d. By default, Spring Data JPA uses Hibernate as the ORM (Object Relational Mapping) tool in Spring Boot applications (unless you configure another JPA provider manually).
+
+
+
+What is repository layer in spring boot?
+##############################################
+
+-> The Repository Layer provides utility methods,
+-> Using this utility method we can perform database CRUD Operations
+-> Example of some utility methods save(), findById(), delete(), etc.
+
+
+#######################################################
+What is Dependency Injection (DI) in Spring Boot?
+#######################################################
+-> Dependency Injection is a design pattern used by Spring Boot to automatically create and manage objects (dependencies) your classes need — without you manually creating them.
+-> Dependency Injection is a technique where objects (dependencies) are injected into a class by the framework (Spring) at runtime
+
+Anology:
+------------
+Imagine you're building a house. You don’t make the bricks yourself — you ask someone to provide them.
+Similarly, Spring Boot provides the objects your app needs.
+
+
+Why Use DI?
+a. Loose coupling between components
+b. Automatic lifecycle management (Spring manages the objects)
+
+Why Use DI?
+a. Loose coupling between components
+b. Automatic lifecycle management (Spring manages the objects)
+
+Example Of Tightly Coupled:
+------------------------------
+
+public class EmailService {
+    public void sendEmail(String message) {
+        System.out.println("Email sent: " + message);
+    }
+}
+
+public class Notification {
+    private EmailService emailService = new EmailService(); // creating directly
+
+    public void send(String msg) {
+        emailService.sendEmail(msg);
+    }
+}
+
+
+Example Of Loosely Coupled:
+------------------------------
+
+// Step 1: Define an interface
+public interface MessageService {
+    void sendMessage(String msg);
+}
+
+// Step 2: Implement the interface
+public class EmailService implements MessageService {
+    public void sendMessage(String msg) {
+        System.out.println("Email sent: " + msg);
+    }
+}
+
+public class WhatsAppService implements MessageService {
+    public void sendMessage(String msg) {
+        System.out.println("WhatsApp message sent: " + msg);
+    }
+}
+
+// Step 3: Notification depends on the interface, not the implementation
+public class Notification {
+    private MessageService messageService;
+
+    // Inject dependency via constructor
+    public Notification(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    public void send(String msg) {
+        messageService.sendMessage(msg);
+    }
+}
+
+
+public class Main {
+    public static void main(String[] args) {
+        // Step 2: Create the implementation instance
+        MessageService emailService = new EmailService();
+
+        // Step 3: Inject the dependency via constructor
+        Notification notification = new Notification(emailService);
+
+        // Use the Notification service
+        notification.send("Hello! This is a test message.");
+    }
+}
+########################
+What is Spring IOC?
+#########################
+-> Spring IOC Container is the core of the Spring Framework.
+-> It manages the lifecycle and Creation of application objects (called beans).
+-> It creates, configures, and wires objects automatically based on configuration
+-> Helps implement Dependency Injection (DI) easily.
+-> Promotes loose coupling because your classes don’t instantiate their dependencies directly.
+
+
+##################################
+Bean life cycle
+#####################################
+
+Bean is Created---->Dependencies Injected (@Autowired)----->Execution(Bean is use by the application)------>Destruction of the bean
+
+
+
+
 
