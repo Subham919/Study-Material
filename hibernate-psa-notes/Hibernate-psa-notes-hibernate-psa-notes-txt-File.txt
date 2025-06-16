@@ -458,6 +458,38 @@ What is repository layer in spring boot?
 -> Using this utility method we can perform database CRUD Operations
 -> Example of some utility methods save(), findById(), delete(), etc.
 
+
+Note: Interview Question
+-------------------------
+What is SessionFactory in Hibernate?
+SessionFactory is a core interface in Hibernate responsible for:
+-> Connecting to the database
+-> Creating Session objects to perform operations like insert, update, delete, and query
+
+Note:
+Optional class:
+----------------
+-> Optional class was introduced in java version 8
+-> It is alternate way to handle null pointer exception
+
+Example:
+---------
+import java.util.Optional;
+public class D {
+	int x  = 10;
+	public static void main(String[] args) {
+		D d1 = new D();
+		Optional val = Optional.ofNullable(d1);
+		if(val.isPresent()) {
+			System.out.println(d1.x);
+		}else {
+			System.out.println("Null reference");
+		}
+	}
+}
+
+
+
 #######################################
 Perform CRUD Operation using hibernate
 ########################################
@@ -468,7 +500,11 @@ spring.datasource.url=jdbc:mysql://localhost:3306/test_crud_db
 spring.datasource.username=root
 spring.datasource.password=test
 
-spring.jpa.hibernate.ddl-auto=create
+#It will drop existing table and create a new one every time we star the project
+#spring.jpa.hibernate.ddl-auto=create
+
+#It will create new table is table doesnot exist and is table is already present then will use the same table
+spring.jpa.hibernate.ddl-auto=upate
 
 ----------------------------
 Step 2: Create Entity Class
@@ -545,3 +581,85 @@ public class Employee {
 
 }
 ----------------------------------------------------
+
+Step 3: Create Repository layer:
+--------------------------------
+
+package com.democrud.repository;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.democrud.entity.Employee;
+
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
+
+}
+
+Step 4: Perform Unit test
+-------------------------
+
+package com.democrud;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.democrud.entity.Employee;
+import com.democrud.repository.EmployeeRepository;
+
+@SpringBootTest
+class DemocrudApplicationTests {
+	
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
+	@Test
+	void saveRecord() {
+		Employee emp = new Employee();
+		emp.setFirstName("adam");
+		emp.setLastName("a");
+		emp.setEmailId("adam@gmail.com");
+		emp.setMobile("9632629455");
+		employeeRepository.save(emp);
+	}
+
+	@Test
+	void deleteRecord() {
+		employeeRepository.deleteById(3L);
+	}
+	
+	@Test
+	void getRecordById() {
+		Optional<Employee> opEmp = employeeRepository.findById(1L);
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void getRecords() {
+		Iterable<Employee> itrEmp = employeeRepository.findAll();
+		for (Employee employee: itrEmp) {
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}
+	}
+	
+	
+	@Test
+	void countRecords() {
+		long count = employeeRepository.count();
+		System.out.println(count);
+	}
+}
