@@ -1,0 +1,454 @@
+###############################################
+Core Java Notes  - 17th June 2025  - 10th June
+###############################################
+
+What is a class?
+------------------------
+-> Class helps us to create object in java
+-> In java we use class keyword to create class.
+-> Keyword should be in lower case
+Example :
+
+class A {
+
+}
+-> We define the boundary of class using flower brackets
+
+Class Naming Convention
+#######################
+-> Class name should always start with upper case
+-> If the class has more than one word then use camel casing, that is
+first letter of every word should be in upper case
+
+
+Example: Correct
+-------
+class Bank {
+
+}
+Example: Correct
+-------
+class BankAccountNumber {
+
+}
+Example: InCorrect
+-------
+class Bank Account Number {
+
+}
+
+Example:
+----------
+-> Snake Casing-->Should not use for java
+-> Will Execute without any error
+
+public class Bank_Account_Number {
+ 
+}
+
+Example: Class name cannot start with a number
+----------------------------------------------
+-> Will give error
+public class 1Bank {
+  public static void main(String[] args){
+     
+  }
+}
+
+Example:Class name can start with a character follwed by Number
+---------
+public class Bank1 {
+  public static void main(String[] args){
+     
+  }
+}
+
+Note:
+1. Donot use specials characters like #,@ % & etc while creating class
+2. $Class name will execute. But never create a class with special character $
+
+
+Example:Correct, but not recommended
+___________
+public class $A {
+	public static void main(String[] args) {
+	
+	}
+}
+
+Example: For Creating objects in java
+---------------------------------------
+
+public class A {
+  public static void main(String[] args){
+     A a1 = new A();
+     A a2 = new A();
+     System.out.println(a1);
+     System.out.println(a2);
+  }
+}
+
+new keyword:
+##############
+
+-> Using new keyword we send request to class to create object
+-> Once object is created new keyword will get objects's address and stores that in a reference variable
+
+Syntax to create object:
+-------------------------
+ClassName variableName = new ClassName();
+
+
+Non-static Variable/ Instance Variable /Object Variables
+############################################################
+1. We should create non static variable inside class outside method without using static keyword
+2. Without creating object we cannot access non static variable
+
+
+Example 1:
+-----------
+package p1;
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+	}
+}
+Ouput: 10
+
+
+Example 2:
+----------
+
+public class A {
+	int x = 10;
+	int y = 20;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		System.out.println(a1.y);
+	}
+}
+Output:
+10
+20
+
+-----------------------------------------------------------------
+3. Every time we create object non-static variable copy is loaded to that object
+4. Copy of variable in these object's are different. That is if you change the value of variable in one object, those changes cannot be seen in another object
+
+Example :
+----------
+package p1;
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//10
+		a1.x = 20;
+		System.out.println(a1.x);//20
+		A a2 = new A();
+		System.out.println(a2.x);//10
+	}
+}
+Output:
+------
+10
+20
+10
+
+5. It is not mandatory to initialize non-static variable. Depending on data type automatically default value will get stored in it.
+
+Example:
+---------
+public class A {
+	int x ;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		
+	}
+}
+
+Ouput: 0
+
+Static variables:
+#################
+
+1. We should create static variables inside class but outsiude method with static keyword
+2. To access static variable we will use below Options
+a. ClassName.variableName
+b. variableName (Contraints)
+c. objectAddress.variableName (Wrong Appraoch but will work)
+3. It is not mandatory to initialize static variable. Depending on data type automatically default value will get stored in it.
+
+Example 1:
+----------
+package p1;
+public class A {
+	static int x=10;
+	public static void main(String[] args) {
+		System.out.println(A.x);
+		System.out.println(x);
+		
+		A a1 = new A();
+		System.out.println(a1.x);//A.x
+	}
+	
+}
+Output:
+10
+10
+10
+
+Example 2:
+-----------
+package p1;
+public class A {
+	static int x=10;
+	public static void main(String[] args) {
+		System.out.println(A.x);//10
+		A.x = 100;
+		System.out.println(A.x);
+		System.out.println(A.x);
+	}
+	
+}
+Output:
+10
+100
+100
+
+Example 3:
+----------
+package p1;
+public class A {
+	static int x;
+	public static void main(String[] args) {
+		System.out.println(A.x);//0
+	}
+	
+}
+Output:
+0
+
+Note:
+------
+Example 1:
+-----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+	}
+	public void test() {
+		System.out.println(100);
+	}
+	
+}
+Output:
+100
+
+Example 2:
+---------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		A.test();
+	}
+	public static void test() {
+		System.out.println(100);
+	}
+	
+}
+Output:
+100
+Types of variables in java
+############################
+
+1. Local Variable
+######################
+a. Local vaiables should be created inside methods
+b. We should use local variable within the created method only
+c. Without initializing if you are using local variable then you will get an error
+
+Example 1:
+------------
+package p1;
+public class A {
+	
+	public static void main(String[] args) {
+		int x = 10;
+		System.out.println(x);
+	}
+}
+Output:
+10
+
+Example 2:
+-----------
+package p1;
+public class A {
+	
+	public static void main(String[] args) {
+		int x = 10;//Created
+		System.out.println(x);//Using, Correct
+	}
+	public void test() {
+		System.out.println(x);//Error
+	}
+}
+
+Example 3:
+----------
+package p1;
+public class A {
+	
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+	}
+	public void test() {
+		int x = 10;//Local, Created
+		System.out.println(x);//Using, Correct
+	}
+}
+Output:
+10
+
+Example 4:
+----------
+package p1;
+public class A {
+	
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+		System.out.println(x);//Error
+	}
+	public void test() {
+		int x = 10;//Local, Created
+		System.out.println(x);//Using, Correct
+	}
+}
+
+Example 5:
+----------
+package p1;
+public class A {
+	
+	public static void main(String[] args) {
+		int x;//Not Initialized
+		System.out.println(x);//Error
+	}
+}
+
+2. Static variable:
+ These variables has global access
+
+Example 1:
+---------
+package p1;
+public class A {
+	static int x = 10;
+	public static void main(String[] args) {
+		System.out.println(A.x);
+		A a1 = new A();
+		a1.test();
+	}
+	public void test() {//Non static
+		System.out.println(A.x);
+	}
+}
+Output:
+10
+10
+
+3. Non-static variable / instance variable
+
+4. Reference Variable
+#####################
+a. Can hold either Object address or null value
+
+Example 1:
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		A a1 = null; //Object is not created, but reference variable is created
+		A a2 = new A();//Storing Object address inside a2
+		
+		System.out.println(a1);
+		System.out.println(a2);
+	}
+}
+Ouput:
+null
+p1.A@4517d9a3
+
+b. Datatype of reference variable is class name
+Example 2: A x;
+
+Example 3:
+In the below example "a1" is created inside main and hence it is a local variable. We cannot access that outside main method
+
+package p1;
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();//local, created
+		System.out.println(a1);//Using, Correct
+	}
+	public void test() {
+		System.out.println(a1);//Error
+	}
+}
+
+
+Example 4:
+Error because "a1" is local variable and not initialized
+
+public class A {
+	
+	public static void main(String[] args) {
+		A a1;
+		System.out.println(a1);//Error
+	}
+}
+Example 5: If we donot initialize static reference variable then by default null value will get stored in it
+
+Example:
+public class A {
+	static A a1;
+	public static void main(String[] args) {
+		System.out.println(a1);
+	}
+	
+	
+}
+
+Example:
+public class A {
+	static A a1;
+	public static void main(String[] args) {
+		System.out.println(a1);
+		a1 = new A();
+		a1.test();
+	}
+	public void test() {
+		System.out.println(a1);
+	}
+	
+	
+}
+
+Note:
+Stack - > LIFO (Last In First Out)
+Heap - > Objects are created inside heap memory
+Garbage Collector - > Manages Memory to avoid overflow of memory by constantly removing objects that is not is use from heap memory
+
+Heap and stack memory
+#####################
+
+
