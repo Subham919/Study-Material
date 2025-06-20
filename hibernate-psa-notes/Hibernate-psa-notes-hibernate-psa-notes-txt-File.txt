@@ -663,3 +663,510 @@ class DemocrudApplicationTests {
 		System.out.println(count);
 	}
 }
+
+What are finder methods in hibernate?
+--------------------------------------
+Finder methods in Hibernate (or JPA) are custom methods used to find or fetch records from the database, based on certain conditions.
+
+Update Repository:
+
+package com.democrud.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.democrud.entity.Employee;
+
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
+	
+	
+	Optional<Employee> findByEmailId(String email);
+	Optional<Employee> findByMobile(String mobile);
+	boolean existsByEmailId(String email);
+	boolean existsByMobile(String mobile);
+	long countByEmailId(String email);
+	List<Employee> findByFirstNameContaining(String keyword);
+	List<Employee> findByFirstNameStartingWith(String prefix);
+	List<Employee> findByFirstNameEndingWith(String suffix);
+	
+
+}
+
+Update:
+-------
+package com.democrud;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.democrud.entity.Employee;
+import com.democrud.repository.EmployeeRepository;
+
+@SpringBootTest
+class DemocrudApplicationTests {
+	
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
+	@Test
+	void saveRecord() {
+		Employee emp = new Employee();
+		emp.setFirstName("adam");
+		emp.setLastName("a");
+		emp.setEmailId("adam@gmail.com");
+		emp.setMobile("9632629455");
+		employeeRepository.save(emp);
+	}
+
+	@Test
+	void deleteRecord() {
+		employeeRepository.deleteById(3L);
+	}
+	
+	@Test
+	void getRecordById() {
+		Optional<Employee> opEmp = employeeRepository.findById(1L);
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void getRecords() {
+		Iterable<Employee> itrEmp = employeeRepository.findAll();
+		for (Employee employee: itrEmp) {
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}
+	}
+	
+	
+	@Test
+	void countRecords() {
+		long count = employeeRepository.count();
+		System.out.println(count);
+	}
+	
+	@Test
+	void findByEmail() {
+		Optional<Employee> opEmp = employeeRepository.findByEmailId("adam@gmail.com");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	@Test
+	void findByMobile() {
+		Optional<Employee> opEmp = employeeRepository.findByMobile("9632629455");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void existsByEmail() {
+		boolean result = employeeRepository.existsByEmailId("adam1@gmail.com");
+		if(result) {
+			System.out.println("Record exists");
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void existsByMobile() {
+		boolean result = employeeRepository.existsByMobile("9632629455");
+		if(result) {
+			System.out.println("Record exists");
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void countByEmail() {
+		long result = employeeRepository.countByEmailId("adam@gmail.com");
+		System.out.println(result);
+	}
+	
+	@Test
+	void containingLetter() {
+		List<Employee> emp = employeeRepository.findByFirstNameContaining("m");
+		for(Employee e:emp) {
+			System.out.println(e.getFirstName());
+		}
+	}
+	
+	@Test
+	void StaringLetter() {
+		List<Employee> emp = employeeRepository.findByFirstNameStartingWith("m");
+		for(Employee e:emp) {
+			System.out.println(e.getFirstName());
+		}
+	}
+	
+	@Test
+	void endingLetter() {
+		List<Employee> emp = employeeRepository.findByFirstNameEndingWith("m");
+		for(Employee e:emp) {
+			System.out.println(e.getFirstName());
+		}
+	}
+}
+
+
+####################################################
+JPQL (Java Persistence Query Language) in Hibernate
+#####################################################
+
+JPQL stands for Java Persistence Query Language. It is similar to SQL, but:
+-> It works with Java entity objects, not directly with database tables.
+-> It uses entity names and field/property names, not table or column names.
+
+Example:
+Create Repository Layer
+-----------------------
+package com.democrud.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
+import com.democrud.entity.Employee;
+
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
+	
+	
+	Optional<Employee> findByEmailId(String email);
+	Optional<Employee> findByMobile(String mobile);
+	boolean existsByEmailId(String email);
+	boolean existsByMobile(String mobile);
+	long countByEmailId(String email);
+	List<Employee> findByFirstNameContaining(String keyword);
+	List<Employee> findByFirstNameStartingWith(String prefix);
+	List<Employee> findByFirstNameEndingWith(String suffix);
+	Optional<Employee> findByEmailIdAndMobile(String email, String mobile);
+	List<Employee> findByEmailIdOrMobile(String email, String mobile);
+	
+	@Query("select e from Employee e where e.emailId=:x")
+	Optional<Employee> searchByEmail(@Param("x") String email);
+	
+	@Query("Select e from Employee e where e.mobile=:m")
+	Optional<Employee> searchByMobile(@Param("m") String mobile);
+	
+	@Query("select e from Employee e where e.emailId=:x and e.mobile=:m")
+	Optional<Employee> searchByEmailAndMobile( String email,@Param("m") String mobile);
+	
+	@Query("select e from Employee e where e.emailId=:x or e.mobile=:m")
+	List<Employee> searchByEmailIdOrMobile(@Param("x") String email,@Param("m") String mobile);
+}
+
+Perform Junit Test
+----------------
+package com.democrud;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.democrud.entity.Employee;
+import com.democrud.repository.EmployeeRepository;
+
+@SpringBootTest
+class DemocrudApplicationTests {
+	
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
+	@Test
+	void saveRecord() {
+		Employee emp = new Employee();
+		emp.setFirstName("adam");
+		emp.setLastName("a");
+		emp.setEmailId("adam@gmail.com");
+		emp.setMobile("9632629455");
+		employeeRepository.save(emp);
+	}
+
+	@Test
+	void deleteRecord() {
+		employeeRepository.deleteById(3L);
+	}
+	
+	@Test
+	void getRecordById() {
+		Optional<Employee> opEmp = employeeRepository.findById(1L);
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void getRecords() {
+		Iterable<Employee> itrEmp = employeeRepository.findAll();
+		for (Employee employee: itrEmp) {
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}
+	}
+	
+	
+	@Test
+	void countRecords() {
+		long count = employeeRepository.count();
+		System.out.println(count);
+	}
+	
+	@Test
+	void findByEmail() {
+		Optional<Employee> opEmp = employeeRepository.findByEmailId("adam@gmail.com");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	@Test
+	void findByMobile() {
+		Optional<Employee> opEmp = employeeRepository.findByMobile("9632629455");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void existsByEmail() {
+		boolean result = employeeRepository.existsByEmailId("adam1@gmail.com");
+		if(result) {
+			System.out.println("Record exists");
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void existsByMobile() {
+		boolean result = employeeRepository.existsByMobile("9632629455");
+		if(result) {
+			System.out.println("Record exists");
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void countByEmail() {
+		long result = employeeRepository.countByEmailId("adam@gmail.com");
+		System.out.println(result);
+	}
+	
+	@Test
+	void containingLetter() {
+		List<Employee> emp = employeeRepository.findByFirstNameContaining("m");
+		for(Employee e:emp) {
+			System.out.println(e.getFirstName());
+		}
+	}
+	
+	@Test
+	void StaringLetter() {
+		List<Employee> emp = employeeRepository.findByFirstNameStartingWith("m");
+		for(Employee e:emp) {
+			System.out.println(e.getFirstName());
+		}
+	}
+	
+	@Test
+	void endingLetter() {
+		List<Employee> emp = employeeRepository.findByFirstNameEndingWith("m");
+		for(Employee e:emp) {
+			System.out.println(e.getFirstName());
+		}
+	}
+	
+	@Test
+	void searchByEmailAndMobile() {
+		Optional<Employee> opEmp = employeeRepository.findByEmailIdAndMobile("adam@gmail.com", "9632629451");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void searchByEmailOrMobile() {
+		List<Employee> emp = employeeRepository.findByEmailIdOrMobile("mike.thyson@gmail.com", "9632629455");
+		for(Employee e:emp) {
+			System.out.println(e.getFirstName());
+			System.out.println(e.getEmailId());
+			System.out.println(e.getMobile());
+		}
+	}
+	
+	@Test
+	void searchByEmail() {
+		Optional<Employee> opEmp = employeeRepository.searchByEmail("adam@gmail.com");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void searchByMobile() {
+		Optional<Employee> opEmp = employeeRepository.searchByMobile("9632629455");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void getByEmailAndMobile() {
+		Optional<Employee> opEmp = employeeRepository.searchByEmailAndMobile("adam@gmail.com","9632629455");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void getByEmailOrMobile() {
+		List<Employee> emp = employeeRepository.searchByEmailIdOrMobile("adam@gmail.com","9632629155");
+		for(Employee e: emp) {
+			System.out.println(e.getFirstName());
+		}
+	}
+}
+
+############################
+Native SQl Query
+##########################
+ -> Raw SQL can be written with hibernate
+Add this in repsoitory layer
+--------------------------------
+        @Query(value = "SELECT * FROM employees WHERE email_id = ?1", nativeQuery = true)
+	Optional<Employee> findByEmailUsingSQl(String email);
+	
+	@Query(value = "SELECT * FROM employees WHERE mobile = ?1", nativeQuery = true)
+	Optional<Employee> findByMobileUsingSQl(String mobile);
+	
+	@Query(value = "SELECT * FROM employees WHERE email_id = ?1 and mobile = ?2", nativeQuery = true)
+	Optional<Employee> findByEmailandMobileUsingSQl(String email, String mobile);
+
+
+Add this inside Junit Test
+------------------------------
+@Test
+	void searchByEmailSql() {
+		Optional<Employee> opEmp = employeeRepository.findByEmailUsingSQl("adam@gmail.com");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	@Test
+	void searchByMobileSql() {
+		Optional<Employee> opEmp = employeeRepository.findByMobileUsingSQl("9632629455");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+	
+	@Test
+	void getByEmailAndMobileSql() {
+		Optional<Employee> opEmp = employeeRepository.findByEmailandMobileUsingSQl("adam@gmail.com","9632629455");
+		if(opEmp.isPresent()) {
+			Employee employee = opEmp.get();
+			System.out.println(employee.getId());
+			System.out.println(employee.getFirstName());
+			System.out.println(employee.getLastName());
+			System.out.println(employee.getEmailId());
+		}else {
+			System.out.println("No record Found");
+		}
+	}
+
+
