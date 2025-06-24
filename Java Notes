@@ -451,4 +451,647 @@ Garbage Collector - > Manages Memory to avoid overflow of memory by constantly r
 Heap and stack memory
 #####################
 
+###############
+methods in java
+###############
+1. void keyword: A void method cannot return any value
+
+Example 1:
+----------
+public class C {
+	public static void main(String[] args) {
+		
+	}
+	
+	public void test() {
+		return 100;//Error
+	}
+}
+
+Example 2:
+-----------
+public class C {
+	public static void main(String[] args) {
+		C c1 = new C();
+		int x = c1.test();
+		System.out.println(x);
+	}
+	
+	public int test() {
+		return 100;
+	}
+}
+Output: 100
+
+Example:
+----------
+public class C {
+	public static void main(String[] args) {
+		C c1 = new C();
+		String x = c1.test();
+		System.out.println(x);
+	}
+	
+	public String test() {
+		return "mike";
+	}
+}
+Output:
+mike
+
+return keyword versus return "value"
+#####################################
+return keyword:
+-> A method has to be void
+-> It is optional
+-> it will return control to method calling statement
+
+Example:
+-------
+
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test();
+	}
+	
+	public void test() {
+		System.out.println(100);
+		return;
+	}
+}
+Output: 100
+
+Note: if we write code after return keyword, then that code will 100% not run. This error is called as unreachable code error
+
+Example
+-------
+public class A {
+	public static void main(String[] args) {
+		A a1  = new A();
+		a1.test();
+	}
+	public void test() {
+		System.out.println(100);
+		return;
+		System.out.println(200);//Unreachable code error
+	}
+}
+
+return "value"
+---------------
+-> The method has to be not a void method
+-> It is mandatory to use return "value" statement inside not a void method
+-> It will return control and value to method calling statement
+
+Example
+-------
+
+Example:
+public class C {
+	public static void main(String[] args) {
+	 
+	}
+	
+	public int test() {//Error
+		
+	}
+}
+Output: Error because return "value" statement is missing inside test method
+
+Example:
+public class C {
+	public static void main(String[] args) {
+	 
+	}
+	
+	public int test() {
+		return 100;
+		System.out.println(300);
+	}
+}
+Output: Unreachable code error
+
+Method Arguments
+##################
+-> Using method arguments we supply values to method when we are calling it
+-> The method argument is a local variable
+-> arguments inside the method values that you supply to the method should match
+
+
+Example 1:
+-------
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test(100);
+	}
+	
+	public void test(int x) {
+		System.out.println(x);
+	}
+}
+Output:
+100
+
+Example 2:
+--------
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test(100,"mike");
+	}
+	
+	public void test(int x,String y) {
+		System.out.println(x);
+	}
+}
+
+Note: When method argument type is Object, then we can supply any kind of value to it
+
+Example 3:
+--------
+public class C {
+	public static void main(String[] args) {
+	  C c1 = new C();
+	  c1.test('a');
+	}
+	
+	public void test(Object x) {
+		System.out.println(x);
+	}
+}
+
+Example 4:
+----------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test(1,2,3,4,5);
+	}
+	public void test(int ...x) {//Local variable
+		System.out.println(x[0]);
+		System.out.println(x[1]);
+		System.out.println(x[2]);
+		System.out.println(x[3]);
+		System.out.println(x[4]);
+	}
+}
+Output:
+1
+2
+3
+4
+5
+
+Example 5:
+--------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test("mike",1,2,3,4,5);
+	}
+	public void test(String y, int ...x) {//Local variable
+		System.out.println(x[0]);
+		System.out.println(x[1]);
+		System.out.println(x[2]);
+		System.out.println(x[3]);
+		System.out.println(x[4]);
+		System.out.println(y);
+	}
+}
+Output:
+1
+2
+3
+4
+5
+mike
+
+Static Methods
+###############
+
+public class A {
+	public static void main(String[] args) {
+		A.test();		
+	}
+	public static void test() {
+		System.out.println(100);
+	}
+}
+Output:
+100
+
+Example 2:
+-----------
+
+public class A {
+	public static void main(String[] args) {
+		int x = A.test();	
+		System.out.println(x);
+	}
+	public static int test() {
+		return 100;
+	}
+}
+Output:
+100
+
+Example 3:
+----------
+public class A {
+	public static void main(String[] args) {
+		int x = A.test(100,200);	
+		System.out.println(x);
+	}
+	public static int test(int a, int b) {
+		return a+b;
+	}
+}
+Output:
+300
+
+Example 4:
+-----------
+public class A {
+	public static void main(String[] args) {
+		A.test();
+		A.test();
+		A.test();
+	}
+	public static void test() {
+		System.out.println(100);
+	}
+}
+Output:
+100
+100
+100
+
+Datatypes in java
+##################
+Storing integer Values:
+------------------------------------
+1. byte - 1 byte - default value: 0
+2. short - 2 bytes - default value: 0
+3. int - 4 bytes - default value: 0
+4. long - 8 byte - default value: 0
+
+Floating Value
+-------------------------------
+1. float - 4 bytes - default value: 0.0
+2. double - 8 bytes - default value: 0.0
+
+boolean(true/false)
+----------------------------
+1. boolean - NA - default: false
+
+character values
+-----------------------
+1. char - 2 bytes - default: blank space
+
+String - Class
+---------------
+String - NA - dynamic - default: null
+Note:
+byte: -128 to 127 (8-bit signed two's complement integer)
+short: -32,768 to 32,767 (16-bit signed two's complement integer)
+int: -2,147,483,648 to 2,147,483,647 (32-bit signed two's complement integer)
+long: -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807 (64-bit signed two's complement integer)
+float: Approximately ±3.40282347E+38F (32-bit IEEE 754 single-precision floating-point)
+double: Approximately ±1.79769313486231570E+308 (64-bit IEEE 754 double-precision floating-point)
+char: 0 to 65,535 (16-bit unsigned Unicode character)
+boolean: true or false (size is not precisely defined, often considered 1 bit)
+
+Datatypes example:
+---------------------
+public class C {
+	static byte x1 ;
+	static short x2 ;
+	static int x3 = 23_567 ;
+	static long x4=9632629033L ;
+	static float x5=10.3F ;
+	static double x6 ;
+	static char x7 ;
+	static boolean x8 ;
+	static String x9;
+	
+	public static void main(String[] args) {
+		System.out.println(x1);
+		System.out.println(x2);
+		System.out.println(x3);
+		System.out.println(x4);
+		System.out.println(x5);
+		System.out.println(x6);
+		System.out.println(x7);
+		System.out.println(x8);
+		System.out.println(x9);
+	}
+	
+}
+
+New type introduced in java version 10
+---------------------------------------
+var type
+#########
+-> This was introduced in java version 10
+-> It gives dynamic datatype concept. Depending on the value stored inside variable, dataype is allocated to it internally
+
+Example 1:
+----------
+public class A {
+	
+	public static void main(String[] args) {
+		var x1 = 100;
+		var x2 = 10.3F;
+		var x3 = "mike";
+		var x4 = false;
+		var x5 = new A();
+		var x6 = 'a';
+		
+		System.out.println(x1);
+		System.out.println(x2);
+		System.out.println(x3);
+		System.out.println(x4);
+		System.out.println(x5);
+		System.out.println(x6);
+	}
+}
+Output:
+100
+10.3
+mike
+false
+p1.A@79fc0f2f
+a
+
+-> var type can only be local variable
+-> It cannot be static / non-static variable
+-> It cannot be method argument
+-> It cannot be method return type
+
+Example:
+--------
+public class C {
+	var x1;//Error
+	static var x2;//Error
+	public static void main(String[] args) {
+		var x5 = 100;//Correct
+	}
+	public var test(var x3) {//Error
+		
+	}
+	
+}
+
+######################
+Constructors in java
+######################
+
+-> Should have same name as that of class
+-> It is always void by default
+
+Example 1:
+----------
+public class A {
+	A(){
+		return 100;//--->Error because constructor is always void
+	}
+	public static void main(String[] args) {
+		
+	}
+}
+
+Example 2:
+----------
+-> To call a constructor we have to create object.
+-> Whenever we creat object constructor is being called
+public class A {
+	A(){
+		System.out.println(100);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		A a2 = new A();
+		A a3 = new A();
+	}
+}
+Output:
+100
+100
+100
+
+-> If you mention return type for a constructor. Then it is treated as a method
+
+Example 4:
+----------
+public class C {
+	void C(){
+		System.out.println(100);
+	}
+	public static void main(String[] args) {
+		C c1 = new C();
+	}
+	
+}
+
+Ouput: No Output, because void C() is a method
+
+Example 5: 
+Note :
+-> Method name can be same as class name
+-> Variable name can be same as class name
+
+public class A {
+	int A=1000;
+	void A(){//-->Non static Method
+		System.out.println(100);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.A();
+		System.out.println(a1.A);
+	}
+}
+
+Output:
+100
+1000
+
+Contructor Overloading:
+-------------------------
+Here we create more than one constructor in same class provided they have different number of arguments or different type of arguments
+
+Example 1:
+-----------
+public class A {
+	A(){//args=0
+		System.out.println("A");
+	}
+	A(int x){//args=1
+		System.out.println(x);
+	}
+	A(int x,int y){//args=2
+		System.out.println(x);
+		System.out.println(y);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		A a2 = new A(100);
+		A a3 = new A(200,300);
+	}
+	
+}
+Output:
+A
+100
+200
+300
+
+Example 2:
+----------
+public class A {
+	A(int x){//args=1, type=int
+		System.out.println(x);
+	}
+	A(float x){//args=1, type=float
+		System.out.println(x);
+	}
+	
+	public static void main(String[] args) {
+		A a1 = new A(100);
+		A a2 = new A(10.3f);
+	}
+	
+}
+Output:
+100
+10.3
+
+Example:
+---------
+public class A {
+	A(int x){//noOfArgs=1, type=int
+		System.out.println(x);
+	}
+	A(String x, int y){//noOfArgs=2, type=String, int
+		System.out.println(x);
+		System.out.println(y);
+	}
+	public static void main(String[] args) {
+		A a1 = new A("mike",100);
+		A a2 = new A(500);
+		
+	}
+}
+
+Output:
+-------
+mike
+100
+500
+
+############
+this keyword
+#############
+-> this keyword is a special reference variable that hold's object's address
+
+Example 1:
+---------
+public class A {
+
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1);
+		a1.test();
+	}
+	public void test() {
+		System.out.println(this);
+	}
+}
+Output:
+p1.A@79fc0f2f
+p1.A@79fc0f2f
+
+-> Using this keyword we can access non-static members of the class
+Example 2:
+--------
+
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+	public void test() {
+		System.out.println(this.x);
+	}
+}
+Output:
+10
+10
+
+Example 3:
+----------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test1();
+	}
+	public void test1() {
+		this.test2();
+	}
+	public void test2() {
+		System.out.println(100);
+	}
+}
+Output:
+100
+
+-> We cannot use this keyword inside "static method"
+
+Example 4:
+-----------
+
+public class A {
+	public static void main(String[] args) {
+		System.out.println(this);//-->Error, cannot be used inside static method
+	}
+	public static void test() {
+		System.out.println(this);//-->Error, cannot be used inside static method
+	}
+	
+}
+
+Example 5:
+---------------
+public class A {
+	int x = 10;
+	int y = 10;
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+		
+	}
+	public void test() {
+		System.out.println(this.x);
+		System.out.println(this.y);
+	}
+	
+}
+Output
+10
+10
+
+
+
+
+
+
+
+
+
+
+
 
