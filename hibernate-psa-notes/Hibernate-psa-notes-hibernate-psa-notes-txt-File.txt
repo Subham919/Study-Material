@@ -1,1175 +1,3 @@
-hibernate-psa-notes-hibernate-psa-notes.txt File
-------------------------------------------------
-
-
-#######################
-Hibernate
-#######################
-
--> Hibernate is an ORM (Object relation mapping) tool
--> It helps developers map Java classes to database tables and automate CRUD operations (Create, Read, Update, Delete) without writing complex SQL queries.
-
-
-Example: Entity Class Employee
-
-@Entity
-public class Employee {	
-	@Id
-	private int id;
-	private String name;
-	private float salary;
-	
-	//setters
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setSalary(float salary) {
-		this.salary = salary;
-	}
-
-	//Getters
-	public int getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public float getSalary() {
-		return salary;
-	}
-	
-}
-
-1. @Entity - “This annotaion maps Java class to a table in the database.”
-2. @Id   - Indicates the primary key column, and is mandatory to define inside entity class
-
-
-What is JPA?
-JPA (Java Persistence API) is only a specification — meaning it is a set of interfaces and incomplete annotations
-
-What is hibernate?
-The Implementation of JPA is done in hibernate and other ORM tools like EclipseLink, OpenJPA, DataNucleus
-
-Note:
-
-🔹 JPA = What to do
-🔹 Hibernate = How to do it (plus extra power)
-
-######################
-Hibernate Mappings
-######################
-
-a. OneToMany Mapping - One record in Table A matches with multiple record in Table B
--> @OneToMany
-Example:
-1. One Post has many Comments
-2. One Hotel can have many reviews
-3. One Hotel can have many Bookings
-4. One Customer can place many Orders
-
-b. ManyToOne Mapping - Multiple records in Table A matches with one record in Table B
--> @ManyToOne
-
-c. ManyToMany Mapping - In Hibernate, a Many-to-Many relationship is used when each record in one table can be associated with multiple records in another table and vice versa. 
-For example, 
-a. Student can enroll in many Courses, and a Course can have many Students.
-b. One Bus can travel to many stops, and one stop can have many buses
-
-d. OneToOne Mapping - One Record in Table A matches with exactly One Record in Table B
--> @OneToOne
-For Example:
-One Person can have one KYC
-
-###########################
-Normalization
-############################
-
-1. 1NF (First Normal Form)
--> Should have atomic values
--> Identify each record uniquely
--> No repeating groups
-
-2. 2NF (Second Normal Form)
--> Group the columns based on entity & seperate that to different tables
-
-3. 3 NF (Third Normal Form)]
--> Remove all duplicate/redundant values
--> Ensure each record is uniquely identified by a Primary Key
--> Create relations between tables using Foreign Keys
-
-What is Spring Data JPA?
-############################
-
-a. Spring Data JPA makes working with JPA easier by eliminating boilerplate code required for common database operations like saving, updating, deleting, and finding entities.
-
-d. By default, Spring Data JPA uses Hibernate as the ORM (Object Relational Mapping) tool in Spring Boot applications (unless you configure another JPA provider manually).
-
-
-
-What is repository layer in spring boot?
-##############################################
-
--> The Repository Layer provides utility methods,
--> Using this utility method we can perform database CRUD Operations
--> Example of some utility methods save(), findById(), delete(), etc.
-
-
-#######################################################
-What is Dependency Injection (DI) in Spring Boot?
-#######################################################
--> Dependency Injection is a design pattern used by Spring Boot to automatically create and manage objects (dependencies) your classes need — without you manually creating them.
--> Dependency Injection is a technique where objects (dependencies) are injected into a class by the framework (Spring) at runtime
-
-Anology:
-------------
-Imagine you're building a house. You don’t make the bricks yourself — you ask someone to provide them.
-Similarly, Spring Boot provides the objects your app needs.
-
-
-Why Use DI?
-a. Loose coupling between components
-b. Automatic lifecycle management (Spring manages the objects)
-
-Why Use DI?
-a. Loose coupling between components
-b. Automatic lifecycle management (Spring manages the objects)
-
-Example Of Tightly Coupled:
-------------------------------
-
-public class EmailService {
-    public void sendEmail(String message) {
-        System.out.println("Email sent: " + message);
-    }
-}
-
-public class Notification {
-    private EmailService emailService = new EmailService(); // creating directly
-
-    public void send(String msg) {
-        emailService.sendEmail(msg);
-    }
-}
-
-
-Example Of Loosely Coupled:
-------------------------------
-
-// Step 1: Define an interface
-public interface MessageService {
-    void sendMessage(String msg);
-}
-
-// Step 2: Implement the interface
-public class EmailService implements MessageService {
-    public void sendMessage(String msg) {
-        System.out.println("Email sent: " + msg);
-    }
-}
-
-public class WhatsAppService implements MessageService {
-    public void sendMessage(String msg) {
-        System.out.println("WhatsApp message sent: " + msg);
-    }
-}
-
-// Step 3: Notification depends on the interface, not the implementation
-public class Notification {
-    private MessageService messageService;
-
-    // Inject dependency via constructor
-    public Notification(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    public void send(String msg) {
-        messageService.sendMessage(msg);
-    }
-}
-
-
-public class Main {
-    public static void main(String[] args) {
-        // Step 2: Create the implementation instance
-        MessageService emailService = new EmailService();
-
-        // Step 3: Inject the dependency via constructor
-        Notification notification = new Notification(emailService);
-
-        // Use the Notification service
-        notification.send("Hello! This is a test message.");
-    }
-}
-########################
-What is Spring IOC?
-#########################
--> Spring IOC Container is the core of the Spring Framework.
--> It manages the lifecycle and Creation of application objects (called beans).
--> It creates, configures, and wires objects automatically based on configuration
--> Helps implement Dependency Injection (DI) easily.
--> Promotes loose coupling because your classes don’t instantiate their dependencies directly.
-
-
-##################################
-Bean life cycle
-#####################################
-
-Bean is Created---->Dependencies Injected (@Autowired)----->Execution(Bean is use by the application)------>Destruction of the bean
-
-####################
-Junit
-#####################
--> We performe testing at the code level. This called as Unit / Whitebox testing
--> When we create Spring boot project by default we will get Junit library
-
-Annotations in Junit
---------------------
-a. @Test:
--> Will run a method as a test case and report pass or fail
--> If we have more than one @Test method in same class then we can run that in sequence
-
-Example 1:
-----------
-@SpringBootTest
-class Demo1ApplicationTests {
-
-	@Test
-	void test1() {
-		System.out.println("From test1");
-	}
-	
-	@Test
-	void test2() {
-		System.out.println("From test2");
-	}
-	
-	
-
-}
-
-Output:
-------
-From test1
-From test2
-
-b. @BeforeEach: It is used to signal that the annotated method should be executed before each @Test
-
-Example:
---------
-@SpringBootTest
-class Demo1ApplicationTests {
-
-	@Test
-	void test1() {
-		System.out.println("From test1");
-	}
-	
-	@Test
-	void test2() {
-		System.out.println("From test2");
-	}
-	
-	@BeforeEach
-	public void beforeTest() {
-		System.out.println("Before Test");
-	}
-	
-
-}
-Output
--------
-
-Before Test
-From test1
-Before Test
-From test2
-
-c. @AfterEach: It is used to signal that the annotated method should be executed after each @Test
-
-Example:
-package com.demo1;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class Demo1ApplicationTests {
-
-	@Test
-	void test1() {
-		System.out.println("From test1");
-	}
-	
-	@Test
-	void test2() {
-		System.out.println("From test2");
-	}
-	
-	@BeforeEach
-	public void beforeTest() {
-		System.out.println("Before Test");
-	}
-	
-	@AfterEach
-	public void afterTest() {
-		System.out.println("After Test");
-	}
-	
-
-}
-Output:
-Before Test
-From test1
-After Test
-Before Test
-From test2
-After Test
-
-d. @BeforeAll: It is used to signal that the annotated method should be executed before all tests in the current test clas
-
-Example:
---------
-package com.demo1;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class Demo1ApplicationTests {
-
-	@Test
-	void test1() {
-		System.out.println("From test1");
-	}
-	
-	@Test
-	void test2() {
-		System.out.println("From test2");
-	}
-	
-	@BeforeEach
-	public void beforeTest() {
-		System.out.println("Before Test");
-	}
-	
-	@AfterEach
-	public void afterTest() {
-		System.out.println("After Test");
-	}
-	
-	@BeforeAll
-	public static void  beforeAll() {
-		System.out.println("Before All");
-	}
-
-}
-
-Output:
-------
-Before All
-Before Test
-From test1
-After Test
-Before Test
-From test2
-After Test
-
-e. @AfterAll: It is used to signal that the annotated method should be executed after all tests in the current test class
-
-package com.demo1;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class Demo1ApplicationTests {
-
-	@Test
-	void test1() {
-		System.out.println("From test1");
-	}
-	
-	@Test
-	void test2() {
-		System.out.println("From test2");
-	}
-	
-	@BeforeEach
-	public void beforeTest() {
-		System.out.println("Before Test");
-	}
-	
-	@AfterEach
-	public void afterTest() {
-		System.out.println("After Test");
-	}
-	
-	@BeforeAll
-	public static void  beforeAll() {
-		System.out.println("Before All");
-	}
-	
-	@AfterAll
-	public static void  afterAll() {
-		System.out.println("After All");
-	}
-
-}
-Output:
----------
-Before Test
-From test1
-After Test
-Before Test
-From test2
-After Test
-After All
-
-
-What is Spring Data JPA?
-############################
-
-a. Spring Data JPA makes working with JPA easier by eliminating boilerplate code required for common database operations like saving, updating, deleting, and finding entities.
-
-d. By default, Spring Data JPA uses Hibernate as the ORM (Object Relational Mapping) tool in Spring Boot applications (unless you configure another JPA provider manually).
-
-
-
-What is repository layer in spring boot?
-##############################################
-
--> The Repository Layer provides utility methods,
--> Using this utility method we can perform database CRUD Operations
--> Example of some utility methods save(), findById(), delete(), etc.
-
-
-Note: Interview Question
--------------------------
-What is SessionFactory in Hibernate?
-SessionFactory is a core interface in Hibernate responsible for:
--> Connecting to the database
--> Creating Session objects to perform operations like insert, update, delete, and query
-
-Note:
-Optional class:
-----------------
--> Optional class was introduced in java version 8
--> It is alternate way to handle null pointer exception
-
-Example:
----------
-import java.util.Optional;
-public class D {
-	int x  = 10;
-	public static void main(String[] args) {
-		D d1 = new D();
-		Optional val = Optional.ofNullable(d1);
-		if(val.isPresent()) {
-			System.out.println(d1.x);
-		}else {
-			System.out.println("Null reference");
-		}
-	}
-}
-
-
-
-#######################################
-Perform CRUD Operation using hibernate
-########################################
-
-Step 1: Connect to Database by using application.properties file and adding the following
-
-spring.datasource.url=jdbc:mysql://localhost:3306/test_crud_db
-spring.datasource.username=root
-spring.datasource.password=test
-
-#It will drop existing table and create a new one every time we star the project
-#spring.jpa.hibernate.ddl-auto=create
-
-#It will create new table is table doesnot exist and is table is already present then will use the same table
-spring.jpa.hibernate.ddl-auto=upate
-
-----------------------------
-Step 2: Create Entity Class
-
-package com.democrud.entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name="employees")
-public class Employee {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	@Column(name = "first_name", nullable = false, length = 45)
-	private String firstName;
-	
-	@Column(name = "last_name", nullable = false, length = 45)
-	private String lastName;
-	
-	@Column(name = "email_id", nullable = false, length = 256, unique = true)
-	private String emailId;
-	
-	@Column(name="mobile", nullable = false, unique = true)
-	private String mobile;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
-
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-	
-	
-
-}
-----------------------------------------------------
-
-Step 3: Create Repository layer:
---------------------------------
-
-package com.democrud.repository;
-
-import org.springframework.data.repository.CrudRepository;
-
-import com.democrud.entity.Employee;
-
-public interface EmployeeRepository extends CrudRepository<Employee, Long> {
-
-}
-
-Step 4: Perform Unit test
--------------------------
-
-package com.democrud;
-
-import java.util.Optional;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import com.democrud.entity.Employee;
-import com.democrud.repository.EmployeeRepository;
-
-@SpringBootTest
-class DemocrudApplicationTests {
-	
-	
-	@Autowired
-	private EmployeeRepository employeeRepository;
-
-	@Test
-	void saveRecord() {
-		Employee emp = new Employee();
-		emp.setFirstName("adam");
-		emp.setLastName("a");
-		emp.setEmailId("adam@gmail.com");
-		emp.setMobile("9632629455");
-		employeeRepository.save(emp);
-	}
-
-	@Test
-	void deleteRecord() {
-		employeeRepository.deleteById(3L);
-	}
-	
-	@Test
-	void getRecordById() {
-		Optional<Employee> opEmp = employeeRepository.findById(1L);
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void getRecords() {
-		Iterable<Employee> itrEmp = employeeRepository.findAll();
-		for (Employee employee: itrEmp) {
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}
-	}
-	
-	
-	@Test
-	void countRecords() {
-		long count = employeeRepository.count();
-		System.out.println(count);
-	}
-}
-
-What are finder methods in hibernate?
---------------------------------------
-Finder methods in Hibernate (or JPA) are custom methods used to find or fetch records from the database, based on certain conditions.
-
-Update Repository:
-
-package com.democrud.repository;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.repository.CrudRepository;
-
-import com.democrud.entity.Employee;
-
-public interface EmployeeRepository extends CrudRepository<Employee, Long> {
-	
-	
-	Optional<Employee> findByEmailId(String email);
-	Optional<Employee> findByMobile(String mobile);
-	boolean existsByEmailId(String email);
-	boolean existsByMobile(String mobile);
-	long countByEmailId(String email);
-	List<Employee> findByFirstNameContaining(String keyword);
-	List<Employee> findByFirstNameStartingWith(String prefix);
-	List<Employee> findByFirstNameEndingWith(String suffix);
-	
-
-}
-
-Update:
--------
-package com.democrud;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import com.democrud.entity.Employee;
-import com.democrud.repository.EmployeeRepository;
-
-@SpringBootTest
-class DemocrudApplicationTests {
-	
-	
-	@Autowired
-	private EmployeeRepository employeeRepository;
-
-	@Test
-	void saveRecord() {
-		Employee emp = new Employee();
-		emp.setFirstName("adam");
-		emp.setLastName("a");
-		emp.setEmailId("adam@gmail.com");
-		emp.setMobile("9632629455");
-		employeeRepository.save(emp);
-	}
-
-	@Test
-	void deleteRecord() {
-		employeeRepository.deleteById(3L);
-	}
-	
-	@Test
-	void getRecordById() {
-		Optional<Employee> opEmp = employeeRepository.findById(1L);
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void getRecords() {
-		Iterable<Employee> itrEmp = employeeRepository.findAll();
-		for (Employee employee: itrEmp) {
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}
-	}
-	
-	
-	@Test
-	void countRecords() {
-		long count = employeeRepository.count();
-		System.out.println(count);
-	}
-	
-	@Test
-	void findByEmail() {
-		Optional<Employee> opEmp = employeeRepository.findByEmailId("adam@gmail.com");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	@Test
-	void findByMobile() {
-		Optional<Employee> opEmp = employeeRepository.findByMobile("9632629455");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void existsByEmail() {
-		boolean result = employeeRepository.existsByEmailId("adam1@gmail.com");
-		if(result) {
-			System.out.println("Record exists");
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void existsByMobile() {
-		boolean result = employeeRepository.existsByMobile("9632629455");
-		if(result) {
-			System.out.println("Record exists");
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void countByEmail() {
-		long result = employeeRepository.countByEmailId("adam@gmail.com");
-		System.out.println(result);
-	}
-	
-	@Test
-	void containingLetter() {
-		List<Employee> emp = employeeRepository.findByFirstNameContaining("m");
-		for(Employee e:emp) {
-			System.out.println(e.getFirstName());
-		}
-	}
-	
-	@Test
-	void StaringLetter() {
-		List<Employee> emp = employeeRepository.findByFirstNameStartingWith("m");
-		for(Employee e:emp) {
-			System.out.println(e.getFirstName());
-		}
-	}
-	
-	@Test
-	void endingLetter() {
-		List<Employee> emp = employeeRepository.findByFirstNameEndingWith("m");
-		for(Employee e:emp) {
-			System.out.println(e.getFirstName());
-		}
-	}
-}
-
-
-####################################################
-JPQL (Java Persistence Query Language) in Hibernate
-#####################################################
-
-JPQL stands for Java Persistence Query Language. It is similar to SQL, but:
--> It works with Java entity objects, not directly with database tables.
--> It uses entity names and field/property names, not table or column names.
-
-Example:
-Create Repository Layer
------------------------
-package com.democrud.repository;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
-
-import com.democrud.entity.Employee;
-
-public interface EmployeeRepository extends CrudRepository<Employee, Long> {
-	
-	
-	Optional<Employee> findByEmailId(String email);
-	Optional<Employee> findByMobile(String mobile);
-	boolean existsByEmailId(String email);
-	boolean existsByMobile(String mobile);
-	long countByEmailId(String email);
-	List<Employee> findByFirstNameContaining(String keyword);
-	List<Employee> findByFirstNameStartingWith(String prefix);
-	List<Employee> findByFirstNameEndingWith(String suffix);
-	Optional<Employee> findByEmailIdAndMobile(String email, String mobile);
-	List<Employee> findByEmailIdOrMobile(String email, String mobile);
-	
-	@Query("select e from Employee e where e.emailId=:x")
-	Optional<Employee> searchByEmail(@Param("x") String email);
-	
-	@Query("Select e from Employee e where e.mobile=:m")
-	Optional<Employee> searchByMobile(@Param("m") String mobile);
-	
-	@Query("select e from Employee e where e.emailId=:x and e.mobile=:m")
-	Optional<Employee> searchByEmailAndMobile( String email,@Param("m") String mobile);
-	
-	@Query("select e from Employee e where e.emailId=:x or e.mobile=:m")
-	List<Employee> searchByEmailIdOrMobile(@Param("x") String email,@Param("m") String mobile);
-}
-
-Perform Junit Test
-----------------
-package com.democrud;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import com.democrud.entity.Employee;
-import com.democrud.repository.EmployeeRepository;
-
-@SpringBootTest
-class DemocrudApplicationTests {
-	
-	
-	@Autowired
-	private EmployeeRepository employeeRepository;
-
-	@Test
-	void saveRecord() {
-		Employee emp = new Employee();
-		emp.setFirstName("adam");
-		emp.setLastName("a");
-		emp.setEmailId("adam@gmail.com");
-		emp.setMobile("9632629455");
-		employeeRepository.save(emp);
-	}
-
-	@Test
-	void deleteRecord() {
-		employeeRepository.deleteById(3L);
-	}
-	
-	@Test
-	void getRecordById() {
-		Optional<Employee> opEmp = employeeRepository.findById(1L);
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void getRecords() {
-		Iterable<Employee> itrEmp = employeeRepository.findAll();
-		for (Employee employee: itrEmp) {
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}
-	}
-	
-	
-	@Test
-	void countRecords() {
-		long count = employeeRepository.count();
-		System.out.println(count);
-	}
-	
-	@Test
-	void findByEmail() {
-		Optional<Employee> opEmp = employeeRepository.findByEmailId("adam@gmail.com");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	@Test
-	void findByMobile() {
-		Optional<Employee> opEmp = employeeRepository.findByMobile("9632629455");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void existsByEmail() {
-		boolean result = employeeRepository.existsByEmailId("adam1@gmail.com");
-		if(result) {
-			System.out.println("Record exists");
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void existsByMobile() {
-		boolean result = employeeRepository.existsByMobile("9632629455");
-		if(result) {
-			System.out.println("Record exists");
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void countByEmail() {
-		long result = employeeRepository.countByEmailId("adam@gmail.com");
-		System.out.println(result);
-	}
-	
-	@Test
-	void containingLetter() {
-		List<Employee> emp = employeeRepository.findByFirstNameContaining("m");
-		for(Employee e:emp) {
-			System.out.println(e.getFirstName());
-		}
-	}
-	
-	@Test
-	void StaringLetter() {
-		List<Employee> emp = employeeRepository.findByFirstNameStartingWith("m");
-		for(Employee e:emp) {
-			System.out.println(e.getFirstName());
-		}
-	}
-	
-	@Test
-	void endingLetter() {
-		List<Employee> emp = employeeRepository.findByFirstNameEndingWith("m");
-		for(Employee e:emp) {
-			System.out.println(e.getFirstName());
-		}
-	}
-	
-	@Test
-	void searchByEmailAndMobile() {
-		Optional<Employee> opEmp = employeeRepository.findByEmailIdAndMobile("adam@gmail.com", "9632629451");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void searchByEmailOrMobile() {
-		List<Employee> emp = employeeRepository.findByEmailIdOrMobile("mike.thyson@gmail.com", "9632629455");
-		for(Employee e:emp) {
-			System.out.println(e.getFirstName());
-			System.out.println(e.getEmailId());
-			System.out.println(e.getMobile());
-		}
-	}
-	
-	@Test
-	void searchByEmail() {
-		Optional<Employee> opEmp = employeeRepository.searchByEmail("adam@gmail.com");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void searchByMobile() {
-		Optional<Employee> opEmp = employeeRepository.searchByMobile("9632629455");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void getByEmailAndMobile() {
-		Optional<Employee> opEmp = employeeRepository.searchByEmailAndMobile("adam@gmail.com","9632629455");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void getByEmailOrMobile() {
-		List<Employee> emp = employeeRepository.searchByEmailIdOrMobile("adam@gmail.com","9632629155");
-		for(Employee e: emp) {
-			System.out.println(e.getFirstName());
-		}
-	}
-}
-
-############################
-Native SQl Query
-##########################
- -> Raw SQL can be written with hibernate
-Add this in repsoitory layer
---------------------------------
-        @Query(value = "SELECT * FROM employees WHERE email_id = ?1", nativeQuery = true)
-	Optional<Employee> findByEmailUsingSQl(String email);
-	
-	@Query(value = "SELECT * FROM employees WHERE mobile = ?1", nativeQuery = true)
-	Optional<Employee> findByMobileUsingSQl(String mobile);
-	
-	@Query(value = "SELECT * FROM employees WHERE email_id = ?1 and mobile = ?2", nativeQuery = true)
-	Optional<Employee> findByEmailandMobileUsingSQl(String email, String mobile);
-
-
-Add this inside Junit Test
-------------------------------
-@Test
-	void searchByEmailSql() {
-		Optional<Employee> opEmp = employeeRepository.findByEmailUsingSQl("adam@gmail.com");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	@Test
-	void searchByMobileSql() {
-		Optional<Employee> opEmp = employeeRepository.findByMobileUsingSQl("9632629455");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-	
-	@Test
-	void getByEmailAndMobileSql() {
-		Optional<Employee> opEmp = employeeRepository.findByEmailandMobileUsingSQl("adam@gmail.com","9632629455");
-		if(opEmp.isPresent()) {
-			Employee employee = opEmp.get();
-			System.out.println(employee.getId());
-			System.out.println(employee.getFirstName());
-			System.out.println(employee.getLastName());
-			System.out.println(employee.getEmailId());
-		}else {
-			System.out.println("No record Found");
-		}
-	}
-
-
 #######################
 Hibernate
 #######################
@@ -2716,6 +1544,18 @@ class BlogappApplicationTests {
         commentRepository.save(comment);
 	}
 
+	@Transactional
+	@Test
+	public void getPostAndItsComments() {
+	    Post post = postRepository.findById(4L).orElseThrow();
+	    List<Comment> comments = post.getComments(); // Works because session is open
+	    for (Comment c:comments) {
+	    	System.out.println(c.getId());
+			System.out.println(c.getContent());
+		}
+	}
+	
+
 }
 Unit Test
 --------------------------------------------------
@@ -2776,3 +1616,133 @@ Note:
 | `@JoinColumn`     | Defines the foreign key column in the child table that maps to the parent table.                                         |
 | `@Query`          | Allows writing custom JPQL or native SQL queries inside repository methods.                                              |
 | `@Transactional`  | Manages the database transaction for the method or class. Automatically commits on success and rolls back on exceptions. |
+
+
+
+###########################
+ManyToManyMapping
+##########################
+
+package com.blogapp.entity;
+
+import jakarta.persistence.*;
+import java.util.*;
+
+@Entity
+public class Bus {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String busName;
+
+    @ManyToMany
+    @JoinTable(
+        name = "bus_stop",
+        joinColumns = @JoinColumn(name = "bus_id"),
+        inverseJoinColumns = @JoinColumn(name = "stop_id")
+    )
+    private List<Stop> stops = new ArrayList<>();
+
+    // Getters and Setters
+    public Long getId() { return id; }
+
+    public String getBusName() { return busName; }
+
+    public void setBusName(String busName) { this.busName = busName; }
+
+    public List<Stop> getStops() { return stops; }
+
+    public void setStops(List<Stop> stops) { this.stops = stops; }
+}
+Bus.java
+-----------------------------------------------------
+-> Bus is the owning side of the relationship.
+-> The @JoinTable annotation defines the join table that connects Bus and Stop.
+-> @JoinColumn(name = "bus_id") tells Hibernate:
+-> This is the foreign key column in the join table pointing to the owning side (Bus).
+-> inverseJoinColumns = @JoinColumn(name = "stop_id")
+-> This is the foreign key column in the join table pointing to the inverse side (Stop).
+
+--------------------------------------------------
+
+package com.blogapp.entity;
+
+import jakarta.persistence.*;
+import java.util.*;
+
+@Entity
+public class Stop {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String stopName;
+
+    @ManyToMany(mappedBy = "stops")
+    private List<Bus> buses = new ArrayList<>();
+
+    // Getters and Setters
+    public Long getId() { return id; }
+
+    public String getStopName() { return stopName; }
+
+    public void setStopName(String stopName) { this.stopName = stopName; }
+
+    public List<Bus> getBuses() { return buses; }
+
+    public void setBuses(List<Bus> buses) { this.buses = buses; }
+}
+Stop.java
+----------------------------------------------------------------------
+
+package com.blogapp.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.blogapp.entity.Bus;
+
+public interface BusRepository extends JpaRepository<Bus, Long> {}
+
+package com.blogapp.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.blogapp.entity.Stop;
+
+public interface StopRepository extends JpaRepository<Stop, Long> {}
+
+repository
+------------------------------------------------------------------------
+            @Autowired
+	    private BusRepository busRepo;
+
+	    @Autowired
+	    private StopRepository stopRepo;
+@Test
+    public void createBusWithStops() {
+        Stop s1 = new Stop();
+        s1.setStopName("Majestic");
+
+        Stop s2 = new Stop();
+        s2.setStopName("BTM Layout");
+
+        Stop s3 = new Stop();
+        s3.setStopName("Electronic City");
+
+        stopRepo.saveAll(Arrays.asList(s1, s2, s3));
+
+        Bus b1 = new Bus();
+        b1.setBusName("Bus 101");
+        b1.setStops(Arrays.asList(s1, s2));
+
+        Bus b2 = new Bus();
+        b2.setBusName("Bus 202");
+        b2.setStops(Arrays.asList(s2, s3));
+
+        busRepo.saveAll(Arrays.asList(b1, b2));
+    }
+Unit Test
+-------------------------------------------------------------
