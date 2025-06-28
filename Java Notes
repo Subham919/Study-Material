@@ -1084,11 +1084,782 @@ Output
 10
 10
 
+-> this keyword hold's current object address that is executing
+
+Example:
+-------
+public class A {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+		
+		A a2 = new A();
+		a2.test();
+		a1.test();
+		
+	}
+	public void test() {
+		System.out.println(this);
+	}
+	
+}
+Output:
+p1.A@79fc0f2f
+p1.A@50040f0c
+p1.A@79fc0f2f
+
+this()- This syntax is used to call constructor
+--------------------------------------------
+-> Using this() keyword we can call a constructor
 
 
+Example:
+-------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		this();
+	}
+	public static void main(String[] args) {
+	   A a1 = new A(100);
+	}
+	
+}
+Output:
+A
+
+-> While calling a constructor using this() keyword, ensure calling is done from another constructor only
+
+Example:
+--------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		this();
+	}
+	public static void main(String[] args) {
+	   A a1 = new A(100);
+	}
+	public void test() {
+		this();//Error, we cannot call constructor from method
+	}
+	
+}
+
+Example:
+---------
+public class A {
+	A(int x){
+		System.out.println(x);
+	}
+	A(){
+		this(100);
+	}
+	public static void main(String[] args) {
+	   A a1 = new A();
+	}
+	
+	
+}
+Output
+100
+
+-> While calling a constructor using this() keyword ensure it is always first statement inside another constructor
+
+Example:
+---------
+public class A {
+	A(int x){
+		System.out.println(x);
+	}
+	A(){
+		System.out.println(200);
+		this(100);//Error because it cannot be second statement while calling constructor
+		
+	}
+	public static void main(String[] args) {
+	   A a1 = new A();
+	}
+	
+	
+}
+
+Example:
+---------
+public class A {
+	int x;//-->0
+	A(int x){////Step 4-->x=100
+		this.x=x;//Step 5
+		System.out.println(this.x);//Step 6===>100
+	}
+	A(){//Step 2
+		this(100);//Step 3
+	}
+	public static void main(String[] args) {
+	   A a1 = new A();//Step 1
+	}
+	
+	
+}
+
+Constructor Chaining
+---------------------
+-> When we call one constructor from another constructor it will form chain like flow structure. This is called as constructor chaining
+-> This can be achieved by using this() keyword or Creating Object in another constructor
+
+Example 1:
+----------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		this();
+	}
+	public static void main(String[] args) {
+		A a1 = new A(100);
+	}
+}
+
+Example 2:
+-----------
+public class A {
+	A(){
+		System.out.println("A");
+	}
+	A(int x){
+		A a2 = new A();
+	}
+	public static void main(String[] args) {
+		A a1 = new A(100);
+	}
+}
+
+###############################
+Important Shortcuts in eclipse
+################################
+1. Ctrl + Space
+⚡ Content Assist — suggests code completions.
+
+Example: 
+a. syso  (do control+ space bar)
+b. main (do control+ space bar)
+
+2. Ctrl + 1
+💡 Quick fix — suggests solutions for errors or warnings.
+
+Example: String x = 100; (Press control + 1 to get solutions to fix problem) 
+
+3. Ctrl + O
+🧭 Quick outline — shows methods/fields of the current class.
+
+Example:
+public class Animal {
+
+    private String name;
+    private int age;
+   
+    public Animal(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+
+    public void sleep() {
+    	
+        System.out.println(name + " is sleeping.");
+    }
+
+    private void breathe() {
+    	System.out.println(name + " is breathing.");
+    }
+}
+
+-> in the above file when pressed Control + O we will get soo all  content of like like shown below:
+
+Animal 
+-> name
+-> age
+-> Animal(String name, int age)
+-> eat()
+-> sleep() etc.....
+
+4. F3
+🔄 Go to the declaration of a variable, method, or class.
+
+Example: 
+public class Animal {
+
+    private String name;// Will show this step, as variable is declared here
+    private int age;
+   
+    public Animal(String name, int age) {
+        this.name = name; // When placed cusor on this.name, and pressed f3
+        this.age = age;
+    }
+
+    public void eat() {
+        System.out.println(name + " is eating.");
+    }
+
+    public void sleep() {
+    	
+        System.out.println(name + " is sleeping.");
+    }
+
+    private void breathe() {
+    	System.out.println(name + " is breathing.");
+    }
+}
+
+5. Ctrl + .
+➡️ Jump to the next error or warning in the file.
+public class Dog {
+	
+	int x//This is your first error. When pressed control + .
+	
+	public static void main(String[] args) {
+		int y//It will take you to this error
+	}
+
+}
+##########################
+Packages in java
+###########################
+a. Packages are folders created in java to store programs in organized manner
+b. This will make maintainance of the project easy
+c. Naming Convention for packages
+-> Package name cannot be keyword like - new , static, public , in etc...
+-> Donot start package name with capital letters
+-> Package name not to be given as java
+
+d. When you create a class inside package, we have to define package keyword in our program as shown below:
+
+Example:
+package p1;
+public class A {
+
+}
+
+e. Create 2 classes in same package and perform inheritance. Import is not required
+Example:
+package p1;
+public class A {
+
+}
+
+package p1;
+public class B extends A {
+
+}
+f. Create 2 classes in different package and perform inheritance. "Import required"
+
+Example:
+package p1;
+public class A {
+
+}
+
+package p2;
+import p1.A;
+public class C extends A{
+
+}
+
+Example :
+package p1;
+public class A {
+
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+	}
+}
+
+Example:
+package p1;
+public class A {
+
+}
+
+package p1;
+public class B {
+	
+}
+
+package p2;
+import p1.*;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();
+		B b1 = new B();
+	}
+}
+
+Example:
+package p1;
+public class A {
+
+}
+
+package p2;
+public class A {
+	
+}
+
+package p3;
+public class B {
+	public static void main(String[] args) {
+		p1.A a1 = new p1.A();//---> p2
+		p2.A a2 = new p2.A();//---> p1
+	}
+}
+
+---------------------------------------
+Example:
+
+package p1;
+public class A {
+
+}
+
+package p2;
+public class A {
+	
+}
+
+package p3;
+import p2.A;
+public class B {
+	public static void main(String[] args) {
+		p1.A a1 = new p1.A();//---> p2
+		A a2 = new A();//---> p1
+	}
+}
+
+Example
+--------
+package com.tcs.service;
+
+public class EmailService {
+	public void sendEmail() {
+		System.out.println("Sending Email....");
+	}
+}
+package com.tcs.auth;
+
+import com.tcs.service.EmailService;
+
+public class MainClass {
+	public static void main(String[] args) {
+		EmailService es = new EmailService();
+		es.sendEmail();
+	}
+}
+Output:
+Sending Email....
+
+#######################################
+Object Oriented Programming -  Pillars
+########################################
+
+a. inheritance
+b. polymorphism
+c. encapsulation
+d. abstraction
 
 
+a. inheritance
+######################
+-> Here we inherit the members of parent class to child class so that we can re-use those members
+Example 1:
+---------
+package app_java_1;
+public class Animal {
+	public void eat() {
+		System.out.println("Eating");
+	}
+	public void sleep() {
+		System.out.println("sleeping");
+	}
+}
 
+package app_java_1;
+public class Dog extends Animal{
+	public static void main(String[] args) {
+		Dog d = new Dog();
+		d.eat();
+		d.sleep();
+	}
+}
+Output:
+------
+Eating
+sleeping
+
+Example 2:
+package app_java_1;
+public class Animal {
+	public void eat() {
+		System.out.println("Eating");
+	}
+	public void sleep() {
+		System.out.println("sleeping");
+	}
+}
+Animal.java
+
+package app_java_1;
+public class Dog extends Animal{
+	//eat(),sleep()--->Animal
+}
+Dog.java
+
+package app_java_1;
+public class Cat extends Animal{
+	//eat(),sleep()--->Animal
+}
+Cat.java
+
+package app_java_1;
+public class Cow extends Animal{
+	//eat(),sleep()--->Animal
+}
+Cow.java
+
+package app_java_1;
+public class Root {
+	public static void main(String[] args) {
+		Dog d = new Dog();
+		d.eat();
+		d.sleep();
+		System.out.println("_______");
+		Cat cat = new Cat();
+		cat.eat();
+		cat.sleep();
+		System.out.println("_______");
+		Cow cow = new Cow();
+		cow.eat();
+		cow.sleep();
+	}
+}
+Root.java
+
+Example 3: Multilevel inheritance
+-----------------------------------
+
+package app_java_1;
+public class A {
+	public void test1() {
+		System.out.println(1);
+	}
+}
+
+package app_java_1;
+//test1, test2
+public class B extends A{
+	public void test2() {
+		System.out.println(2);
+	}
+}
+package app_java_1;
+
+public class C extends B{
+	public static void main(String[] args) {
+		C c1 = new C();
+		c1.test1();
+		c1.test2();
+	}
+}
+output:
+1
+2
+
+################################################################################################
+What is mulitlpe inheritance?
+Answer: When a child class has more than one parent class, it is called as mulitple inheritance
+#################################################################################################
+
+Note: Java classes does not support mulitple inheritance because of diamond problem
+diamond problem: Suppose we inherit a method from A->B->D  and Same method is inherited from A->C->D, then confusion from which parent class method is inherited to child class D. This is called as DIAMOND PROBLEM. Hence in java classes does not support multiple inheritance
+
+Note: We can do mulitple inheritance on interface. But will explain this during interfaces concept
+
+Example 4:Mulitple inheritance error
+------------------------------------------
+package app_java_1;
+public class A {
+	
+}
+
+package app_java_1;
+public class B{
+	
+}
+package app_java_1;
+public class C extends A,B{//Error
+	
+}
+
+Example 4: Inheritance between classes present inside different packages
+----------------------------------------
+package p1;
+public class A {
+	public void test() {
+		System.out.println(1);
+	}
+}
+package p2;
+import p1.A;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		b1.test();
+	}
+}
+
+Example on non sub class: When in your project we have two class and no inheritance is happening between them then it is called as non-sub class
+--------------------------------------------------------------------------------------------------------
+
+Example on non sub class: When in your project we have two class and no inheritance is happening between them then it is called as non-sub class
+--------------------------------------------------------------------------------------------------------
+package p1;
+public class A {
+	public void test() {
+		System.out.println(1);
+	}
+}
+package p2;
+import p1.A;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		a1.test();
+	}
+}
+------------------------------------------------------------
+Output: 1
+
+###############################
+Access Specifiers in java
+###############################
+--------------------------------------------------------------------
+Questions:
+1. What happens when a variable is  private/default/protected/public
+2. What happens when a constructor is  private/default/protected/public
+3. What happens when a class is  private/default/protected/public
+4. What happens when a interface is  private/default/protected/public
+----------------------------------------------------------------------
+
+
+-> They define the visibility of variables, methods, class & interface.
+
+------------------------------------------------------------------------------
+a. private: When a variable / method is made private then we can access that in same class but not outside class
+----------------------------------------------------------------------------------
+
+Example 1:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+Output:
+10
+1
+
+Example 2:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+}
+package p1;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		System.out.println(b1.x);//Error
+		b1.test();//Error
+	}
+}
+
+Example 3:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//Error
+		a1.test();//Error
+	}
+}
+
+Example 4:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C extends A {
+	public static void main(String[] args) {
+		C c1 = new C();
+		System.out.println(c1.x);//-->Error
+		c1.test();//-->Error
+	}
+}
+Example 5:
+package p1;
+public class A {
+	private int x=10;
+	private void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C  {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//-->Error
+		a1.test();//-->Error
+	}
+}
+
+------------------------------------------------------------------------
+b. default: A variable/method with default access specifier can work only inside same class or same package, but cannot be accessed in different package
+Example 1:
+------------
+
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+	
+}
+Example 2:
+---------------------------------------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+public class B extends A{
+	public static void main(String[] args) {
+		B b1 = new B();
+		System.out.println(b1.x);
+		b1.test();
+	}
+}
+Output:
+10
+1
+
+-----------------------------------------------------------------------
+Example 3:
+------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p1;
+public class B {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);
+		a1.test();
+	}
+}
+
+-----------------------------------------------------------------
+Example 4:
+------------------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C  extends A{
+	public static void main(String[] args) {
+		C c1 = new C();
+		System.out.println(c1.x);//-->Error
+		c1.test();//-->Error
+	}
+}
+
+--------------------------------------------------------
+Example 5:
+----------------
+package p1;
+public class A {
+	int x=10;
+	void test() {
+		System.out.println(1);
+	}
+	
+}
+package p2;
+import p1.A;
+public class C {
+	public static void main(String[] args) {
+		A a1 = new A();
+		System.out.println(a1.x);//--->Error
+		a1.test();//--->Error
+	}
+}
+
+c. protected: We can access variables/methods in same class/same package and inside different package only when inheritance is done
 
 
 
