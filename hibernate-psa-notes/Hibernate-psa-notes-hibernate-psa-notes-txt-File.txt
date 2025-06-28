@@ -1746,3 +1746,111 @@ repository
     }
 Unit Test
 -------------------------------------------------------------
+
+##################################
+One-to-One Bidirectional Mapping 
+#################################
+
+-> Bidirectional: Both entities know about each other.
+-> Use @OneToOne on both sides.
+-> Use mappedBy on the non-owning side to avoid creating two foreign keys.
+-> Owning side uses @JoinColumn.
+
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id")  // FK in User table
+    private Profile profile;
+
+    // getters and setters
+}
+User.java
+---------------------------------------------
+
+@Entity
+public class Profile {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String bio;
+
+    @OneToOne(mappedBy = "profile")
+    private User user;
+
+    // getters and setters
+}
+Profile.java
+--------------------------------------------------------------------------
+
+public interface UserRepository extends JpaRepository<User, Long> {}
+public interface ProfileRepository extends JpaRepository<Profile, Long> {}
+
+Repository
+--------------------------------------------------------------------------
+
+Profile profile = new Profile();
+        profile.setBio("Full Stack Developer");
+
+        User user = new User();
+        user.setName("Pankaj");
+        user.setProfile(profile);
+
+        userRepo.save(user); // saves both due to CascadeType.ALL
+
+Unit Test
+---------------------------------------------------------------------
+
+Note: Default Fetch Type
+-----
+@OneToOne(fetch = FetchType.EAGER)
+@ManyToOne(fetch = FetchType.EAGER)
+@OneToMany(fetch = FetchType.LAZY)
+@ManyToMany(fetch = FetchType.LAZY)
+#################
+Hibernate Cache 
+#################
+
+Hibernate Cache is a mechanism in Hibernate ORM to reduce database access by storing frequently used data in memory.
+Note: Hibernate Cache = In-Memory (Temporary) Storage in RAM
+
+It helps improve performance by:
+a. Avoiding repetitive SQL queries
+b. Reducing latency
+c. Minimizing DB load
+
+Types of Hibernate Caching
+1. First-Level Cache (Enabled by default)
+Scope: Per Hibernate Session. In a typical web application, each user request (such as a login) gets its own Hibernate Session
+Behavior: Same object is never queried twice in a single session
+
+Example:
+
+Session session = sessionFactory.openSession();
+User user1 = session.get(User.class, 1L); // hits DB
+User user2 = session.get(User.class, 1L); // served from cache
+This is always enabled and cannot be disabled.
+
+2. Second-Level Cache (Optional)
+Scope: Across multiple Sessions (shared globally)
+Requires configuration
+Stores entities between sessions
+Uses cache providers like:
+Ehcache
+Caffeine
+Infinispan
+Redis
+
+Example:
+---------------------
+Shared Caching Works Like This:
+-> If User A logs in and loads user profile with ID 1:
+-> First DB hit → stores in second-level cache.
+-> If User B logs in and loads user with ID 1:
+-> No DB hit — served from cache!
