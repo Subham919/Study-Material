@@ -1,0 +1,145 @@
+###############################
+What is Spring boot
+################################
+
+Spring Boot is an open-source Java-based framework used to create stand-alone applications quickly and easily with minimal configuration.
+
+
+Spring Boot Stand-Alone Application:
+-------------------------------------------
+-> You just run a main() method like any regular Java program.
+-> It includes an embedded server (e.g., Tomcat) in the application itself.
+-> No need to install or configure any external server separately.
+
+
+
+Example:
+@SpringBootApplication
+public class MyApp {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApp.class, args);  // Starts embedded server
+    }
+}
+
+When you run above program
+	a. Starts up the embedded server.
+	b. Deploys your app on it.
+	c. Listens to HTTP requests (like a web server).
+
+Note: Since Spring boot is stand alone application, we package the application as jar file
+
+
+##########################
+What is Spring MVC?
+##########################
+-> Spring MVC stands for Spring Model-View-Controller.
+—> It's a web framework in the Spring used to build web applications using the MVC design pattern.
+
+How Spring MVC Works:
+--------------------------
+a. User sends a request (/home) or from html form.
+b. DispatcherServlet (front controller) catches the request.
+c. Finds the matching controller method using annotations like @GetMapping.
+d. Executes logic and prepares data (Model).
+c. Returns a view.
+
+
+Spring Boot Annotations
+---------------------------
+1. What is @RequestMapping?
+
+a. It’s a Spring MVC annotation used to map HTTP requests to handler methods or classes in your controller.
+b. It tells Spring which URL (path) a particular method or class should handle.
+
+
+2. What is @RequestParam?
+
+a. It’s an annotation used in controller method parameters.
+b. It binds HTTP request parameters (query parameters or form data) to method arguments.
+c. It extracts values from the URL or form and passes them into your controller method.
+
+3. What is @Service?
+
+a. @Service is a Spring stereotype annotation.
+b. It marks a class as a Service component in the Service Layer of your application.
+c. Spring will detect it during component scanning and create an instance (bean) of that class in the Spring IOC container
+d. It makes your class eligible for dependency injection.
+
+
+4. What is @Component?
+
+a. @Component is a generic Spring annotation to mark a class as a Spring-managed bean.
+b. When you annotate a class with @Component, Spring will detect it during component scanning and create an instance (bean) of that class in the Spring IOC container.
+c. It makes your class eligible for dependency injection.
+
+5. What is @Controller?
+
+a. @Controller is a Spring MVC stereotype annotation used to mark a class as a web controller.
+b. Acts as mediator layer in MVC Architecture 
+
+6. What is Model?
+
+a. It's part of the MVC (Model-View-Controller) pattern.
+b. It allows the controller to send data (attributes) to the view.
+c. The view can then access and display that data.
+d. Model in Spring is an interface, not a class
+
+7. What is ModelMap in Spring MVC?
+
+a. ModelMap is a special object provided by Spring MVC to pass data from your controller to the view layer (like JSP, Thymeleaf, etc.).
+b. It behaves like a Map (key-value pairs)
+
+
+######################################
+Example - Create JSP page inside /src/webapp/WEB-INF/views/ and call that from controller layer 
+###################################
+Step 1:
+----------
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Register</title>
+</head>
+<body>
+	<h2>Register here......</h2>
+</body>
+</html>
+registration.jsp
+--------------------------------------------------------------------------------
+Step 2:
+-------
+spring.application.name=app
+
+spring.mvc.view.prefix=/WEB-INF/views/
+spring.mvc.view.suffix=.jsp
+application.properties
+-----------------------------------------------------------------------------------
+Step 3: Add dependency
+-----------
+<dependency>
+		    <groupId>org.apache.tomcat.embed</groupId>
+		    <artifactId>tomcat-embed-jasper</artifactId>
+</dependency>
+------------------------------------------------------------------------------------
+Step 4: Developer Controller Layer
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class EmployeeController {
+	
+	@RequestMapping("/view")
+	public String viewRegisterEmp() {
+		return "register";
+	}
+
+}
+
+######################################
+Example - Submit data from .jsp file and read that in Controller layer
+###################################
+
