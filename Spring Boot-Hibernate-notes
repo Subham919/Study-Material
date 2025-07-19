@@ -1145,8 +1145,582 @@ public class EmailSender {
 	}
 }
 
+What are web service/ API / Restful service?
+
+1. Integration-Friendly
+→ Helps integrate heterogeneous (different tech stacks) or homogeneous (same stack) applications seamlessly.
+
+2. Accelerates Development
+→ Reduces development time by enabling third-party integrations (e.g., payment gateways, social logins, SMS/email services).
+
+3. Cross-Platform Scalability
+→ Easily supports multiple front-end clients like Android, iOS, Web browsers, or even IoT devices via standard HTTP/JSON communication.
+
+What is JSON (Javascript Object Notation)?
+##########################################
+-> Format: Key-Value pairs
+-> Language-independent (used with Java, Python, JS, etc.)
+-> Supports:
+a. Strings
+b. Numbers
+c. Booleans
+d. Arrays
+e. Objects
+f. null
+
+Example 
+##########
+
+{
+  "name": "John",
+  "age": 30,
+  "isEmployee": true,
+  "skills": ["Java", "Spring Boot", "REST"],
+  "address": {
+    "city": "Bangalore",
+    "pincode": 560001
+  }
+}
+
+Types of web services
+#####################
+1. SOAP web services
+-> Simple Object Access Protocol
+-> Will exchange data between applications using XML
+-> Difficult to implement
+
+2. Restful webservices
+-> Data exchange between application will be done using JSON (We can also use xml)
+-> Easy to implement
+
+Note: Spring boot makes restful webservice implementation easy
+
+#############################
+Example to Create Employee Record using Rest api
+#############################
+
+Step 1: Create APIResponse dto, to send response in standard format
+
+public class APIResponse<T> {
+
+	private String message;
+	private int status;
+	private T data;
+	
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public T getData() {
+		return data;
+	}
+	public void setData(T data) {
+		this.data = data;
+	}
+	
+}
+
+Step 2: Create EmployeeControllerAPI class
+
+package com.app.api;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.dto.APIResponse;
+import com.app.dto.EmployeeDto;
+import com.app.service.EmployeeService;
+
+@RestController
+@RequestMapping("/api/v1/employee")
+public class EmployeeControllerAPI {
+	// http://localhost:8080/api/v1/employee/add
+	
+	@Autowired
+	private EmployeeService employeeService;
+	
+	@PostMapping("/add")
+	public ResponseEntity<APIResponse<EmployeeDto>> createEmployeeRegistration(@RequestBody EmployeeDto employeeDto) {
+		EmployeeDto dto = employeeService.saveEmployeeDetails(employeeDto);
+		
+		APIResponse<EmployeeDto> response = new APIResponse<>();
+		response.setMessage("Employee Registered");
+		response.setStatus(201);
+		response.setData(dto);
+		
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+}
+
+Step 3: Create EmployeeService.java
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
+	
+	public EmployeeDto saveEmployeeDetails(EmployeeDto employeeDto) {
+		Employee emp = new Employee();
+		BeanUtils.copyProperties(employeeDto,emp);
+		Employee employeeSaved = employeeRepository.save(emp);
+		
+		Address address = new Address();
+		BeanUtils.copyProperties(employeeDto,address);
+		Address addredSaved = addressRepository.save(address);
+		
+		EmployeeDto dto = new EmployeeDto();
+		BeanUtils.copyProperties(employeeSaved, dto);
+		BeanUtils.copyProperties(addredSaved, dto);
+		
+		return dto;
+	}
 
 
 
+
+
+###################
+Definitions
+###############
+a. ResponseEntity helps us send both the required HTTP status code and response data (usually in JSON format).
+b. @RequestBody is an annotation in Spring used to bind the HTTP request body (usually in JSON format) to a Java object.
+c. @RestController It is used to create RESTful web services that return data in JSON format
+d. @PostMapping is a Spring MVC annotation used to handle HTTP POST requests.
+It is typically used when you want to submit or create new data, such as inserting a record into the database.
+e. Status Code: 201 Created is an HTTP response status code indicating that a resource has been successfully created as a result of a POST request.
+
+##########################
+Delete API - Delete Employee by Id
+#########################
+
+Step 1:  http://localhost:8080/api/v1/employee/delete?id=4
+Use above url with delete option in postman
+
+Step 2: Create a method in EmployeeController.java
+
+// http://localhost:8080/api/v1/employee/delete?id=3
+	@DeleteMapping("/delete")
+	public ResponseEntity<APIResponse<String>> deleteEmployeeById(
+			@RequestParam long id
+			){
+		employeeService.deleteEmployeeById(id);
+		APIResponse<String> response = new APIResponse<>();
+		response.setMessage("Delete....");
+		response.setStatus(200);
+		response.setData("Emplyee is deleted");
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+Step 4: Create Following method inside EmployeeService.java
+
+public void deleteEmployeeById(long id) {
+		employeeRepository.deleteById(id);
+	}
+
+#####################
+Fetch all employees from database using API
+###################
+Step 1: http://localhost:8080/api/v1/employee
+Use this url in postman with get option
+
+Step 2:EmployeeCOntroller.java create following method
+
+@GetMapping
+	public ResponseEntity<APIResponse<List<Employee>>> fetchAllRegistrations(){
+		List<Employee> employees = employeeService.getRegistrations();
+		APIResponse<List<Employee>> response = new APIResponse<>();
+		response.setMessage("Delete....");
+		response.setStatus(200);
+		response.setData(employees);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+Step 3: Create following method inside EmployeeService.java
+
+public List<Employee> getRegistrations() {
+		List<Employee> employees = employeeRepository.findAll();
+		return employees;
+		
+	}
+
+#########################################
+Udpdate Employee API
+################################
+
+Step 1: http://localhost:8080/api/v1/employee
+Use the above url with thew JSON mentioned below:
+{
+    "id":1,
+    "firstName":"stallin",
+    "lastName":"a",
+    "email":"abc@gmail.com",
+    "mobile":"9631215511"
+}
+
+Step 2: Create following method in EmployeeController.java
+@PutMapping
+	public ResponseEntity<APIResponse<String>> UpdateRegistrations(
+				@RequestBody EmployeeDto dto
+			){
+		employeeService.updateRegistrationById(dto);
+		
+		APIResponse<String> response = new APIResponse<>();
+		response.setMessage("Updated....");
+		response.setStatus(200);
+		response.setData("Employee Record is udpdated");
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+Step 3: Create following method inside EmployeeService.java
+public void updateRegistrationById(EmployeeDto employeeDto) {
+		Employee emp = new Employee();
+		BeanUtils.copyProperties(employeeDto, emp);
+		employeeRepository.save(emp);
+	}
+
+####################################
+Pagination & Sorting in Spring boot - JPARepository
+###################################
+
+
+Pagination
+---------
+
+Step 1: Use the mentioned url in postman with option get
+
+//http://localhost:8080/api/v1/employee?pageSize=3
+
+Step 2: Create following method inside EmployeeControllerAPI class
+	@GetMapping
+	public ResponseEntity<APIResponse<List<Employee>>> fetchAllRegistrations(
+				@RequestParam(value = "pageNo",  defaultValue = "0", required = false) int pageNo,
+				@RequestParam(value = "pageSize",  defaultValue = "5", required = false) int pageSize
+			
+			){
+		List<Employee> employees = employeeService.getRegistrations(pageNo,pageSize);
+		APIResponse<List<Employee>> response = new APIResponse<>();
+		response.setMessage("Employee Records");
+		response.setStatus(200);
+		response.setData(employees);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+
+Step 3: Create a method inside EmployeeService.java
+	
+	public List<Employee> getRegistrations(int pageNo, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		Page<Employee> page = employeeRepository.findAll(pageable);
+		List<Employee> employees = page.getContent();
+		return employees;
+		
+	}
+
+#######################
+Sorting 
+###################
+Step 1: Use the mentioned url in postman with option get
+http://localhost:8080/api/v1/employee?pageNo=0&pageSize=5&sortBy=email&sortDir=desc
+
+Step 2: Create a method inside EmployeeControllerApi class
+@GetMapping
+	public ResponseEntity<APIResponse<List<Employee>>> fetchAllRegistrations(
+				@RequestParam(value = "pageNo",  defaultValue = "0", required = false) int pageNo,
+				@RequestParam(value = "pageSize",  defaultValue = "5", required = false) int pageSize,
+				@RequestParam(value = "sortBy",  defaultValue = "id", required = false) String sortBy,
+				@RequestParam(value = "sortDir",  defaultValue = "asc", required = false) String sortDir
+			){
+		List<Employee> employees = employeeService.getRegistrations(pageNo,pageSize,sortBy,sortDir);
+		APIResponse<List<Employee>> response = new APIResponse<>();
+		response.setMessage("Employee Records");
+		response.setStatus(200);
+		response.setData(employees);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+Step 3: Create a method inside EmployeeService.java class
+public List<Employee> getRegistrations(int pageNo, int pageSize, String sortBy, String sortDir) {
+		Sort sort = null;
+
+//Sort sort = null;
+//		sort = sortDir.equalsIgnoreCase("asc")?Sort.by(Direction.ASC,sortBy):Sort.by(Direction.DESC,sortBy);
+			
+		if(sortDir.equalsIgnoreCase("asc")) {
+			sort = Sort.by(Direction.ASC, sortBy);
+		}else {
+			sort = Sort.by(Direction.DESC, sortBy);
+		}
+		
+		Pageable pageable = PageRequest.of(pageNo, pageSize,sort);
+		Page<Employee> page = employeeRepository.findAll(pageable);
+		List<Employee> employees = page.getContent();
+
+
+public List<Employee> getRegistrations(int pageNo, int pageSize, String sortBy, String sortDir) {
+		Sort sort = null;
+		sort = sortDir.equalsIgnoreCase("asc")?Sort.by(Direction.ASC, sortBy):Sort.by(Direction.DESC, sortBy);
+			
+		Pageable pageable = PageRequest.of(pageNo, pageSize,sort);
+		Page<Employee> page = employeeRepository.findAll(pageable);
+		List<Employee> employees = page.getContent();
+		
+		System.out.println(page.getNumber());
+		System.out.println(page.getSize());
+		System.out.println(page.getTotalPages());
+		System.out.println(page.getTotalElements());
+		System.out.println(pageable.getPageNumber());
+		System.out.println(pageable.getPageSize());
+		
+		return employees;
+		
+	}
+		return employees;
+		
+	}
+
+Note:
+
+
+✅ page.getNumber()
+What it returns: Current page number (0-based index).
+
+Example: If you're on the first page, it returns 0.
+
+✅ page.getSize()
+What it returns: The size of the page — i.e., how many records per page were requested.
+
+Example: If PageRequest.of(0, 10) → returns 10.
+
+✅ page.getTotalPages()
+What it returns: Total number of pages based on total elements and page size.
+
+Example: If there are 50 elements and page size is 10 → returns 5.
+
+✅ page.getTotalElements()
+What it returns: Total number of records (rows) in the entire result set (not just the current page).
+
+Example: 123, even if you're on a page showing just 10.
+
+✅ pageable.getPageNumber()
+What it returns: The page number in the Pageable request.
+
+Same as page.getNumber() (they are effectively equal).
+
+Why used separately? – You might use this before executing the query, as it's directly from the request.
+
+✅ pageable.getPageSize()
+What it returns: Page size from the Pageable request.
+
+Same as page.getSize(), but again taken from the request object.
+
+#####################################
+Spring Validation - Validates Use inputs
+####################################
+
+Step 1: Add the following dependency
+<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+
+Step 2: Create a dto with validation annotations
+package com.app.dto;
+
+import java.time.LocalDate;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public class UserRequestDTO {
+	//@NotNull
+	@NotBlank(message = "Name is mandatory")
+	@Size(min = 2, message = "Atleast 2 characters to be given")
+    private String name;
+
+	@Email
+    private String email;
+
+	@Size(min=10, max = 10, message = "Mobile number should be 10 digit")
+    private String mobile;
+
+	@Future(message = "Appointment date must be in the future")
+    private LocalDate appointmentDate;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public LocalDate getAppointmentDate() {
+		return appointmentDate;
+	}
+
+	public void setAppointmentDate(LocalDate appointmentDate) {
+		this.appointmentDate = appointmentDate;
+	}
+    
+    
+    
+}
+
+Step 3: Create Controller Layer
+-------------------------------
+package com.app.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.app.dto.UserRequestDTO;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+	//http://localhost:8080/api/users/register
+	@PostMapping("/register")
+    public ResponseEntity<String> registerUser(
+    		@Valid @RequestBody UserRequestDTO userRequestDTO,
+    		BindingResult result
+    		){
+		
+				if(result.hasErrors()) {
+					return new ResponseEntity<>(result.getFieldErrors().toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+				return new ResponseEntity<>("User Saved",HttpStatus.CREATED);
+		
+	}
+}
+
+Step 4: Go postman perform testing
+url - http://localhost:8080/api/users/register
+JSON Sample:
+{
+  "name": "J",
+  "email": "john",
+  "mobile": "98765432",
+  "appointmentDate": "2025-03-01"
+}
+
+###############################
+Exception handling in Spring boot
+############################
+
+Step 1:  Create a method inside EmployeeControllerAPI
+
+@GetMapping("/getReg")
+	public ResponseEntity<APIResponse<Employee>> getRegById(
+			@RequestParam long id
+			) {
+		Employee employee = employeeService.getRegistrationById(id);
+		APIResponse<Employee> response = new APIResponse<>();
+		response.setMessage("Employee Details");
+		response.setStatus(200);
+		response.setData(employee);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
+
+Step 2: Create an Exception class ResourceNotFound
+package com.app.exception;
+
+public class ResourceNotFound extends RuntimeException {
+	
+	public ResourceNotFound(String msg) {
+		super(msg);
+	}
+}
+
+Step 3: Create GlobalExceptionHandler.java class (Use @ControllerAdvice)
+
+package com.app.exception;
+
+import java.util.Date;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import com.app.dto.ErrorDetails;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+	
+	
+	
+	//Exception Handler Method acts like catch block
+	
+	@ExceptionHandler(ResourceNotFound.class)
+	public ResponseEntity<ErrorDetails> handleResourceNotFound(
+			ResourceNotFound r,
+			WebRequest request
+			){
+		
+		ErrorDetails errorDetails = new ErrorDetails(r.getMessage(), new Date(), request.getDescription(false));
+		return  new ResponseEntity<>(errorDetails,HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+
+}
+
+Step 4: Update service layer EmployeeService.java
+public Employee getRegistrationById(long id) {
+		
+		Employee employee = employeeRepository.findById(id).orElseThrow(
+				  ()->new ResourceNotFound("Employee does not exist")
+				);
+		return employee;
+	}
+
+Step 5: Perform testing in postman
+url - http://localhost:8080/api/v1/employee/getReg?id=100
 
 
