@@ -3475,9 +3475,1386 @@ Output:
 100
 From test1
 
+Exception and Exception Handling In Java
+-------------------------------
+-> Unexpected events are called exceptions.
+-> Exceptions will hault your program execution.
+-> Exceptions will Occur when bad user input is given
+
+Example 1:
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int x = 10;
+		int y = 0;
+		int z = x / y;//Stop Program Here
+		System.out.println(z);
+		System.out.println("Welcome");
+	}
+}
+Output:
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+	at app_java_1/p1.A.main(A.java:7)
+
+#######################
+Exception handling
+#######################
+-> To handle exception we will use "try & catch" block in java
+-> When exception occurs in try block, it will create exception object and that object's address is given to catch block. Catch block will suppress that exception and further code will continue to execute
+
+#######################
+Exception handling
+#######################
+-> To handle exception we will use "try & catch" block in java
+-> When exception occurs in try block, it will create exception object and that object's address is given to catch block. Catch block will suppress that exception and further code will continue to execute
+
+Example :
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		try {
+			int x = 10;
+			int y = 0;
+			int z = x/y;
+			System.out.println(z);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+
+Types of Exception in java
+##########################
+
+There are two types of exception in java
+
+a. Compiletime / Checked Exception - These Exception will occur when .java file is compiled to .class file. That is during compilation we will get this exception
+
+b. Runtime / Unchecked Exception - These Exception will occur when we run .class file. That is during runtime
+
+Runtime / unchecked Exceptions
+###############################
+
+1. ArithmeticException: This exception will occur when invalid mathematical operations are performed
+
+public static void main(String[] args) {
+		try {
+			int x = 10;
+			int y = 0;
+			int z = x/y;
+			System.out.println(z);
+		} catch (ArithmeticException a) {
+			a.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+Output:
+java.lang.ArithmeticException: / by zero
+	at app_java_1/p1.A.main(A.java:7)
+Welcome
+
+Example 2: %ZERO
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		try {
+			int x = 11;
+			int y = 0;
+			int z = x%y;
+			System.out.println(z);
+		} catch (ArithmeticException a) {
+			a.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+
+Output:
+-------
+java.lang.ArithmeticException: / by zero
+	at app_java_1/p1.A.main(A.java:7)
+Welcome
+
+2. Null PointerException: This exception will occur when with null reference variable we try to access non static members of the class
+Example:
+--------
+
+Example:
+--------
+package p1;
+public class A {
+	int x = 10;
+	public static void main(String[] args) {
+		try {
+			A a1 = null;
+			System.out.println(a1.x);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+Output:
+java.lang.NullPointerException: Cannot read field "x" because "a1" is null
+	at app_java_1/p1.A.main(A.java:7)
+Welcome
+
+Example 
+----------
+package p1;
+public class A {
+	static int x = 10;
+	public static void main(String[] args) {
+		try {
+			A a1 = null;
+			System.out.println(a1.x);//A.x
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+Output:
+10
+Welcome
+
+Assignment 1 (Unary Operators): https://www.youtube.com/playlist?list=PLQVUMrcSsQIRZOM2vZoh8bPG1nq6X-nTe
+Assignment 2(Data types & Type Casting): https://www.youtube.com/watch?v=h3TxueBRxnE
+
+Note:
+
+Primitive    Wrapper Class
+byte		Byte
+short		Short
+int		Integer
+long		Long
+float		Float
+double		Double
+char		Character
+
+Example 1: I want to convert String to Integer
+
+public class A {
+	public static void main(String[] args) {
+		String x = "100";
+		int  y = Integer.parseInt(x);
+		System.out.println(y);
+	}
+}
+Output
+100
+
+Example 3:I want to convert String to Double
+
+public class A {
+	public static void main(String[] args) {
+		String x = "10.3";
+		double  y = Double.parseDouble(x);
+		System.out.println(y);
+		
+	}
+}
+
+Example 4:
+-----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			String x = "10.3dasdsd";
+			double  y = Double.parseDouble(x);
+			System.out.println(y);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+		
+	}
+}
+Output:
+java.lang.NumberFormatException: For input string: "10.3dasdsd"
+	at java.base/jdk.internal.math.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:2054)
+	at java.base/jdk.internal.math.FloatingDecimal.parseDouble(FloatingDecimal.java:110)
+	at java.base/java.lang.Double.parseDouble(Double.java:792)
+	at app_java_1/p1.A.main(A.java:7)
+Welcome
+
+######################
+What is class upcasting?
+########################
+-> Here we store child class object address into parent class reference variable, so that reference variable becomes re-usable
+
+Example: Reusing reference variable
+
+public class A {
+	
+}
+
+public class B extends A{
+
+}
+
+public class C extends A{
+	public static void main(String[] args) {
+		A a1 = new B();
+		System.out.println(a1);
+		a1 = new C();
+		System.out.println(a1);
+	}
+}
+
+Example 2: How we can implement polymorphism for multiple child classes by using same reference variable
+
+public class A {
+	void display() {
+        System.out.println("Inside class A");
+    }
+}
+
+public class B extends A{
+	 @Override
+	    void display() {
+	        System.out.println("Inside class B");
+	    }
+}
+
+public class C extends A{
+	  @Override
+	    void display() {
+	        System.out.println("Inside class C");
+	    }
+	public static void main(String[] args) {
+				
+		A a1 = new B();
+		a1.display();    // Calls B's version => "Inside class B"
+		a1 = new C();
+		a1.display();    // Calls C's version => "Inside class C"
+	}
+}
+
+
+Note:
+
+🧠 Why do we do it?
+1. To reuse the parent class reference for multiple child class objects.
+2. To enable polymorphism on mulitple child classes.
+3. To write generic, flexible code that works with different subclasses.
+
+Note:
+instanceof - It will check which class object address is present inside the reference variable
+
+
+Note:
+instanceof - It will check which class object address is present inside the reference variable
+
+Example:
+
+public class A {
+	
+}
+
+public class B extends A{
+	
+}
+
+public class C extends A{
+	 
+	public static void main(String[] args) {
+				
+	  A a1 = new B();
+	  System.out.println(a1 instanceof B);
+	}
+}
+
+Output:
+true
+
+What is class downcasting?
+##########################
+-> Here we store parent class object address into child class reference variable
+-> To perform downcasting, firstly do upcasting and then perform downcasting
+Example:
+---------
+public class A {
+	
+}
+public class B extends A{
+	
+}
+public class C extends A{
+	 
+	public static void main(String[] args) {
+		
+		A a1 = new B();
+		if(a1 instanceof B) {
+			B b1 = (B)a1;
+			System.out.println("Downcasting successful!");
+		}
+	}
+}
+
+Example:
+--------
+public class A {
+	public void display() {
+		System.out.println("Inside class A");
+	}
+}
+public class B extends A{
+	public void showB() {
+        System.out.println("Inside class B");
+        }
+}
+public class C extends A {
+	public void showC() {
+		System.out.println("Inside class C");
+	}
+}
+public class MainClass {
+	public static void processObject(A obj) {
+        if (obj instanceof B) {
+            B b = (B) obj;  // Downcasting to B
+            b.showB();
+        } else if (obj instanceof C) {
+            C c = (C) obj;  // Downcasting to C
+            c.showC();
+        } else {
+            obj.display();
+        }
+    }
+    public static void main(String[] args) {
+    	processObject(new B());
+	}
+}
+
+Note:
+-Using upcasting we can access only parent class members, you cannot access child class members
+-After upcating to access child class members we have to perform downcasting
+
+Example:
+---------
+package p1;
+
+public class A {
+	public void display() {
+		System.out.println("Inside class A");
+	}
+}
+public class B extends A{
+	public void showB() {
+       	 System.out.println("Inside class B");
+        }
+	public static void main(String[] args) {
+		A a1 = new B();
+		if(a1 instanceof B) {
+			B b1 = (B)a1;
+			b1.showB();
+		}
+		
+	}
+}
+
+Arrays in java:
+###############
+-> In java arrays holds collection of value
+-> Anything that holds colection of values is called as a data struture
+-> Array in java is treated as an object
+-> Arrays starts with index zero
+-> To store and read values we use this formula in arrays - start_address + index*memory_size
+-> Memory allocation happens to be in sequence(Continuous).
+
+Example 1:
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[4];
+		age[0] = 90;
+		age[1] = 89;
+		age[2] = 67;
+		age[3] = 97;
+	
+		System.out.println(age[0]);
+		System.out.println(age[1]);
+		System.out.println(age[2]);
+		System.out.println(age[3]);
+	} 
+	
+}
+
+-> To find size of an array dynamically we will use  public final field "length". When array is created this variable will get initiliazed
+Example : age.length
+
+Example 2:
+----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[40];
+		System.out.println(age.length);
+	} 
+	
+}
+Ouput: 40
+
+##########################
+Unary Operators in java
+##############################
+
+Types:
+1. Increment Operator
+   1.1 Post Increment
+   1.2 Pre Increment
+
+2. Decrement Operator
+   2.1 Post Decrement
+   2.2 Pre Decrement
+
+1.1 Post Increment -  Increment the value of the variable next time you see the same variable
+
+Example 1:
+----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=0;
+		int j = i++;
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Output:
+1
+0
+
+Example 2:
+----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+		int j = i++ + i++ + i++;
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Ouput:
+13
+33
+
+Example 3:
+----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+				
+		int j = i++ + i++ + i++ + i++ + i++;
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Ouput:
+15
+60
+
+ 1.2 Pre Increment - Increment the value of variable in same step
+
+Example 1:
+-----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+				
+		int j = ++i;
+		
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Ouput:
+11
+11
+
+Example 2:
+----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+				
+		int j = ++i + ++i + ++i;
+		
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Ouput:
+13
+36
+
+Example 3:
+---------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+				
+		int j = ++i + i++ + ++i + i++ + ++i;
+		
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Output:
+15
+63
+
+ 2.1 Post Decrement - Here we decrement the value of i by 1 when we next time see the same variable:
+
+Example 1:
+---------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+				
+		int j = i-- + i--;
+		
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Output:
+------
+8
+19
+
+Example 2:
+-----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+				
+		int j = i-- + i++ + i-- + i--;
+		
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+Output:
+8
+38
+
+ 2.2 Pre Decrement -  Here we decrement the value of the variable in same step by 1
+
+Example 1:
+----------
+package p1;
+
+public class A {
+	public static void main(String[] args) {
+		int i=10;
+				
+		int j = --i + --i;
+		
+		System.out.println(i);
+		System.out.println(j);
+	} 
+	
+}
+
+#################
+Scanner class - Is used to provide user input
+################
+
+Example 1:
+----------
+package p1;
+import java.util.Scanner;
+public class A {
+	public static void main(String[] args) {
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your name:");
+		String name = scan.next();//Can read one String word only
+		System.out.println("Your name is "+name);
+		System.out.println("Enter your age:");
+		int age = scan.nextInt();//Can read on Integer value only
+		System.out.println("Your age is "+age);
+		System.out.println("Enter your weight:");
+		float weight = scan.nextFloat();//Can read on float values
+		System.out.println("Your weight is "+weight);
+		System.out.println("Enter your Answer:");
+		boolean ans = scan.nextBoolean();//Can read on float values
+		System.out.println("Your ans is "+ans);
+		scan.close();
+		
+	} 
+	
+}
+Output:
+Enter your name:
+mike
+Your name is mike
+Enter your age:
+100
+Your age is 100
+Enter your weight:
+98.34
+Your weight is 98.34
+Enter your Answer:
+true
+Your ans is true
+
+Example 2: How to read multiple String words using nextLine() method
+--------------------------------------------------------------------------
+package p1;
+import java.util.Scanner;
+public class A {
+	public static void main(String[] args) {
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter your name:");
+		String name = scan.nextLine();//Can read Multiple String words
+		System.out.println(name);
+		scan.close();
+	} 
+	
+}
+
+Assignment 3 (IIB): https://www.youtube.com/watch?v=_3O2bPWckoI&list=PLbLiFkJgsmq6j_fFlZuy0xIs6upvrML26&index=11
+Assignment 4 (SIB): https://www.youtube.com/watch?v=tQmvABQgi8k&list=PLbLiFkJgsmq6j_fFlZuy0xIs6upvrML26&index=12
+Assignment 5 (Super keyword): https://www.youtube.com/watch?v=KETJakbA6tw&list=PLbLiFkJgsmq6j_fFlZuy0xIs6upvrML26&index=14
+
+##############
+Loops in java
+##############
+1. for loop
+Example 1;
+---------
+public class A {
+	public static void main(String[] args) {
+		
+		for (int i = 0; i < 4; i++) {//0 to 3
+			System.out.println(i);
+		}
+	} 
+	
+}
+
+Example 2:
+a. User will enter the pin number 1234
+b. If the entered pin number is valid , then program should print welcome and stop
+c. If pin number is invalid, user can attempt to enter pin maximum 3 times.
+d. If All 3 times pin number is invalid then card blocked message we should get
+
+Code:
+package p1;
+import java.util.Scanner;
+//break
+//1. Can be used only inside loops and switch case statements
+//2. It stops the for loop execution
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		
+		for(int i=0;i<3;i++) {//0 to 2
+			System.out.println("Enter the pin number");
+			int pinNumber = scan.nextInt();
+			if(pinNumber==1234) {
+				System.out.println("Welcome");
+				break;
+			}else {
+				System.out.println("Invalid Pin number");
+				if(i==2) {
+					System.out.println("Card is blocked");
+				}
+			}
+		}
+		scan.close();
+	} 
+	
+}
+
+2. while loop
+Example 1:
+----------
+
+2. while loop
+Example 1:
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int i=0;
+		while(i<3) {//If condition true will enter while loop
+			System.out.println(i);
+			i++;
+		}
+	}
+	
+}
+
+Example 2:
+--------
+a. Enter the amount, and we should get message please collect cash
+b. Then prompt a message do you want to continue(yes or no)
+c. If yes, then again enter the amount and we should get message please collect cash
+d. If you enter no, then program should stop
+
+Code
+___________
+public class A {
+	public static void main(String[] args) {
+		Scanner scan  = new Scanner(System.in);
+		String cdn = "yes";
+		while(cdn.equals("yes")) {
+			System.out.println("Enter the amount");
+			int amount = scan.nextInt();
+			System.out.println("Please collect rs. "+amount);
+			System.out.println("Do you want to continue(yes/no)?");
+			cdn = scan.next();
+			
+			if(!cdn.equals("yes")) {
+				System.out.println("Thank you. Visit again");
+			}
+		}
+	}
+}
+
+3. do while loop -  Will run first time without condition check. For second iteration condition will be evaluated
+
+Example 1:
+---------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int i=100;
+		do {
+			System.out.println(i);
+			i++;
+		}while(i<3);
+	}
+	
+}
+
+Example 2:
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int i=0;
+		do {
+			System.out.println(i);
+			i++;
+		}while(i<3);
+	}
+	
+}
+
+4. for each loop - 
+-> Works only with data structure
+-> Can only read value of data structure one by one
+-> Loop will run until all values reading is not completed in the given data structure
+
+
+Example:
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[3];
+		age[0] = 100;
+		age[1] = 101;
+		age[2] = 120;
+		
+		for(int x:age) {
+			System.out.println(x);
+		}
+	}
+	
+}
+
+####################
+Continuation of Arrays:
+######################
+
+Example 1:
+----------
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int[] age = new int[3];
+		age[0] = 100;
+		age[1] = 101;
+		age[2] = 120;
+		
+		for (int i = 0; i < age.length; i++) {//0 to 2
+			System.out.println(age[i]);
+		}
+	}
+	
+}
+
+Example
+--------
+public class A {
+	public static void main(String[] args) {
+		try {
+			int[] age = new int[3];
+			age[0] = 100;
+			age[1] = 101;
+			age[2] = 120;
+			age[3] = 103;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Welcome");
+	}
+}
+
+Output:
+java.lang.ArrayIndexOutOfBoundsException: Index 3 out of bounds for length 3
+	at app_java_1/p1.A.main(A.java:9)
+Welcome
+
+####################
+Continue Keyword in java
+#####################
+
+The continue keyword is used inside loops (for, while, or do-while) to skip the current iteration and jump to the next one.
+
+package p1;
+public class A {
+	public static void main(String[] args) {
+		for (int i = 0; i < 5; i++) {
+			
+			if(i==3) {
+				continue;
+			}
+			System.out.println(i);//0 1 2 4
+		}
+		
+	}
+	
+}
+Output:
+0
+1
+2
+4
+
+######################
+else-if ladder statement
+######################
+-> If the user enters yes, it should print pass
+-> If the user enters no, it should print fail
+-> If the user enters something else, it should print invalid input
+
+Example:
+-------------
+package p1;
+
+import java.util.Scanner;
+
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter the input(yes/no)");
+		String value = scan.next();
+		if(value.equals("yes")) {
+			System.out.println("Pass");
+		} else if(value.equals("no")) {
+			System.out.println("Fail");
+		} else {
+			System.out.println("Invalid Input");
+		}
+	}
+	
+}
+
+Operators in java Example
+---------------------------
+package p1;
+
+//Operators in java
+
+public class A {
+	public static void main(String[] args) {
+		System.out.println(2==3);
+		System.out.println(2>1);
+		System.out.println(2<1);
+		System.out.println(2>=2);
+		System.out.println(2<=2);
+		System.out.println(2!=3);
+		
+	}
+}
+
+
+############################
+Switch Case
+############################
+
+package p1;
+
+import java.util.Scanner;
+
+public class A {
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Enter the floor number");
+		int key=scan.nextInt();
+		switch (key) {
+		case 1:
+			System.out.println("1st Floor");
+			break;
+		case 2:
+			System.out.println("2nd Floor");
+			break;
+		case 3:
+			System.out.println("3rd Floor");
+			break;
+		default:
+			System.out.println("Invalid input");
+			break;
+		}
+	}
+	
+}
+
+###########################################
+Removing Duplicate elements from an array
+###########################################
+-> For the below logic array should be sorted
+
+Steps
+------
+1. Create a temp array which same size as that of x
+int[] x = {3,3,4,5,6,6,7};
+int[] temp = new int[x.length];
+
+2. Compare i with i+1 of array x, if not equal copy the value from x[i] to temp[j] and increment j by 1
+
+3. When you reach last index of array x, copy that value directly to temp[j];
+
+Code:
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int[] x = {3,3,4,5,6,6};
+		int[] temp = new int[x.length];
+		int j=0;
+		for(int i=0;i<x.length-1;i++) {//i=5
+			if(x[i]!=x[i+1]) {//with index 5 to 6
+				temp[j] = x[i];
+				j++;
+			}
+		}
+		temp[j] = x[x.length-1];
+		
+		for(int arr:temp) {
+			System.out.println(arr);
+		}
+	}
+	
+}
+##########################
+Logic For Swapping
+##########################
+##########################
+Logic For Swapping
+##########################
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int x = 10;
+		int y = 20;
+		int temp;
+		
+		temp=y;
+		y=x;
+		x=temp;
+		
+		System.out.println(x);
+		System.out.println(y);
+	}
+	
+}
 
 
 
 
+######################################
+Array Sorting
+###################################
+
+-> Compare x[i] > x[i+1], if true swap the element
+-> End of first round of comparision heavy element will go to the botton of the array
+-> Compare x[i] > x[i+1], array length-1 times maximum
+
+Code:
+----
+package p1;
+public class A {
+	public static void main(String[] args) {
+		int[] x = {35,21,22,14};
+		//x[i]->x
+		//x[i+1]-> y
+		int temp;
+		for(int j=0;j<x.length-1;j++) {//j=0, 1, 2
+			for(int i=0;i<x.length-1;i++) {//i=0 1 2 , 0 1 2, 0 1 2
+				if(x[i]>x[i+1]) {
+					temp = x[i+1];
+					x[i+1] = x[i];
+					x[i]= temp;
+				}
+			}
+		}
+		
+		for(int arr:x) {
+			System.out.println(arr);
+		}
+	}
+	
+}
+
+#################
+1. Sort and remove duplicate elements
+2. Get Highest & Lowest Value in an array
+#################
+
+######################
+File Handling in Java
+#######################
+
+Note: Special Characters
+               System.out.print(200);
+		System.out.print("\n");
+		System.out.print(300);
+		System.out.print("\n");
+		System.out.print(200);
+		System.out.print("\t");
+		System.out.print(300);
+
+a. File
+-----------
+Example 1:It holds the given path in variable "f" without check the file exist
+----------------------------------------------------
+package p1;
+import java.io.File;
+public class A {
+	public static void main(String[] args) {
+		File f = new File("E:\\april\\t1.txt");
+		System.out.println(f);
+	}
+}
+
+1. exists() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is boolean
+c. It checks whether the file exists in the given path.
+d. If file exists, it will return true or else false
+
+Example:
+---------
+package p1;
+import java.io.File;
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G:\\april\\t100.txt");
+		boolean val = f.exists();
+		System.out.println(val);
+	}
+}
+
+2. delete() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is boolean
+c. It deletes the file exists in the given path.
+d. If file is deleted, it will return true or else false
+
+Example:
+--------
+package p1;
+import java.io.File;
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G:\\april\\t1.txt");
+		boolean val = f.delete();
+		System.out.println(val);
+	}
+}
+
+3.mkdir() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is boolean
+c. It creates folder  in the given path.
+d. If folder is created, it will return true or else false
+e. It will not replace existing folder
+
+Example:
+-------
+package p1;
+import java.io.File;
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G:\\april\\p2");
+		boolean val = f.mkdir();
+		System.out.println(val);
+	}
+}
+Example: To delete Folder using delete() method
+------------------------------------------------
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G:\\april\\p2");
+		boolean val = f.delete();
+		System.out.println(val);
+	}
+}
+
+Note: delete() method can delete folder/file both
+
+4.length() - 
+------------
+a. It is a non static method present inside File class
+b. Return type of this method is long
+c. It counts characters with white spaces in the given file.
+
+Example- Pankaj Sir academy->18 chars
+
+Example:
+--------
+package p1;
+import java.io.File;
+public class A {
+	public static void main(String[] args) {
+		File f = new File("G:\\april\\t1.txt");
+		long val = f.length();
+		System.out.println(val);
+	}
+}
+
+Note:
+Compiletime Exception/ Checked Exception
+_____________________________________________
+-> These exceptions will occur even when the program is correct/Incorrect
+-> Handling exception becomes mandatory when it is compile time
+
+5. createNewFile()-
+-------------------
+a. It is non static method present inside File Class
+b. It's return type is boolean
+c. It Throws Compiletime exception. So should be handled before executing the program
+d. If file is created, it will return true or else false
+e. Will not replace exisiting file
+
+
+Example:
+------
+package p1;
+import java.io.File;
+import java.io.IOException;
+public class A {
+	public static void main(String[] args) {
+		try {
+			File f = new File("G:\\april\\t1.txt");
+			boolean val = f.createNewFile();
+			System.out.println(val);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+	}
+}
+
+##################
+IOException in Java
+############
+The IOException is a checked exception in Java, part of the java.io package. It is thrown when an Input/Output operation fails or is interrupted.
+
+Scenario			Example
+File not found			Reading a file that doesn't exist
+File not readable		Permission denied or locked file
+Network I/O failure		Socket disconnected unexpectedly
+Stream closed unexpectedly	Trying to read from a closed stream
+Writing to a full disk		OutputStream write failure
+
+6. list()-
+-------------------
+a. It is non static method present inside File Class
+b. It's return type is String[] array
+c. It gets all files/folders names from a given path
+
+Example:
+-------
+package p1;
+import java.io.File;
+public class A {
+	public static void main(String[] args) {
+			File f = new File("G:\\april\\");
+			String[] val = f.list();
+			for(String x: val) {
+				System.out.println(x);
+			}
+			System.out.println(val.length);
+	}
+}
+
+2. FileReader:
+#######################
+-> It can read text file content
+->read(): int
+
+Example 1:
+-----------
+package app_java_3;
+import java.io.FileReader;
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileReader fr = new FileReader("G:\\april\\t1.txt");
+			System.out.println((char)fr.read());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+
+Example 2:
+----------
+
+package app_java_3;
+import java.io.File;
+import java.io.FileReader;
+public class A {
+	public static void main(String[] args) {
+		try {
+			File f = new File("G:\\april\\t1.txt");
+			FileReader fr = new FileReader(f);
+			for (int i = 0; i < f.length(); i++) {//0 to 3
+				System.out.print((char)fr.read());
+			}
+			fr.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+-> read(char[] ch)
+
+Example
+-------
+package app_java_3;
+import java.io.File;
+import java.io.FileReader;
+public class A {
+	public static void main(String[] args) {
+		try {
+			File f = new File("G:\\april\\t1.txt");
+			FileReader fr = new FileReader(f);
+			char[] ch = new char[(int)f.length()];
+			fr.read(ch);
+			
+			for(char c:ch) {
+				System.out.print(c);
+			}
+			
+			fr.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+#####################
+FileWriter class
+#####################
+1. It will write content to text file
+2. If File is not present in given path, it will create a new file
+3. If the file is present in the given path, then it will replace the existing file by default
+4. During FileWriter object creation if true is given, then it will not replace existing content of the file. But will create new file if file was not present in given path
+Example: FileWriter fw = new FileWriter("G:\\april\\t4.txt",true);
+5. During FileWriter object creation if false / no boolean value is given, then it will replace existing content of the file and  will create new file if file was not present in given path
+Example: FileWriter fw = new FileWriter("G:\\april\\t4.txt",false);
+Example: FileWriter fw = new FileWriter("G:\\april\\t4.txt");
+
+
+Example:
+---------
+package app_java_3;
+
+import java.io.FileWriter;
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G:\\april\\t4.txt",false);
+			fw.write(97);//write(int x)
+			fw.write("100");//write(String x)
+			
+			char[] ch = {'a','b','c'};
+			fw.write(ch);//write(char[] x)
+			
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+Example 2:
+----------
+package app_java_3;
+
+import java.io.FileWriter;
+
+public class A {
+	public static void main(String[] args) {
+		try {
+			FileWriter fw = new FileWriter("G://april//t1.txt");
+			fw.write("mike");
+			fw.write("\n");
+			fw.write("stallin");
+			fw.write("\n");
+			fw.write("adam");
+			fw.close();//Save the file content and closes the file
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
 
 
