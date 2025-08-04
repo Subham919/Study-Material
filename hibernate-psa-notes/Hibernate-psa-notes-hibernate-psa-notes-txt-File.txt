@@ -499,8 +499,8 @@ spring.datasource.password=test
 #It will drop existing table and create a new one every time we star the project
 #spring.jpa.hibernate.ddl-auto=create
 
-#It will create new table is table doesnot exist and is table is already present then will use the same table
-spring.jpa.hibernate.ddl-auto=upate
+#It will create new table if table doesnot exist and if table is already present then will use the same table
+spring.jpa.hibernate.ddl-auto=update
 
 ----------------------------
 Step 2: Create Entity Class
