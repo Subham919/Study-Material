@@ -1,0 +1,921 @@
+#####################
+What is Junit
+####################
+
+-> JUnit is a Java testing framework that helps you write and run unit tests — small, focused tests that verify the correctness of individual pieces of code (like a method or class) in isolation.
+
+-> It’s lightweight, fast, and integrates easily with build tools like Maven and Gradle.
+
+-> Versions: Latest major version is JUnit 5, which is more flexible and modular than JUnit 4.
+
+-> Assertions: Offers methods check expected outcome with actual outcome
+
+######################
+What is JaCoCo
+######################
+
+-> JaCoCo tells you how much of your code was actually executed when you ran your tests.
+-> It works as plugin with Junit
+-> Often required for CI/CD quality gates (e.g., "Fail build if coverage < 80%").
+
+######################
+Why use Mockito?
+######################
+
+-> In real applications, a class often depends on other components — like databases, web services, or other classes.
+-> When testing, you don’t want to call the real database or real API. Instead, you create mocks that simulate their behavior
+
+
+Example 1
+###############
+package com.app.model;
+
+public class Calculator {
+
+	public int add(int x,int y) {
+		return x+y;
+	}
+	
+	public int mul(int x,int y) {
+		return x*y;
+	}
+}
+
+package com.app;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.app.model.Calculator;
+
+@SpringBootTest
+public class CalculatorTest {
+	
+	@Test
+	public void testAdd() {
+		Calculator cal = new Calculator();
+		int actualValue = cal.add(10, 20);
+		int expectedValue = 30;
+		
+		Assertions.assertEquals(expectedValue, actualValue);
+	}
+}
+
+
+Integrate Jacoco
+#################
+
+
+<plugin>
+	<groupId>org.jacoco</groupId>
+	<artifactId>jacoco-maven-plugin</artifactId>
+	<version>0.8.11</version>
+	<configuration>
+		<excludes>
+		<exclude>com/app/Unit**</exclude>
+		</excludes>
+	</configuration>
+	<executions>
+		<execution>
+			<goals>
+				<goal>prepare-agent</goal>
+			</goals>
+		</execution>
+		<execution>
+			<id>report</id>
+			<phase>test</phase>
+			<goals>
+				<goal>report</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+
+
+
+###############################
+Example 2
+
+package com.mvc.entity;
+
+public class User {
+    private int id;
+    private String name;
+
+    // Constructor
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Getters
+    public int getId() { return id; }
+    public String getName() { return name; }
+}
+----------------------------------------------
+package com.mvc.repository;
+
+import java.util.Optional;
+
+import com.mvc.entity.User;
+
+public interface UserRepository {
+    Optional<User> findById(int id);
+}
+---------------------------------------------
+package com.mvc.service;
+
+import java.util.Optional;
+
+import com.mvc.entity.User;
+import com.mvc.repository.UserRepository;
+
+public class UserService {
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
+
+    public String getUserName(int id) {
+        Optional<User> user = repository.findById(id);
+        if (user.isPresent()) {
+            return user.get().getName();
+        } else {
+            return "Unknown User";
+        }
+    }
+}
+------------------------------------------------
+package com.mvc.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.mvc.service.UserService;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    private final UserService service;
+
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/{id}")
+    public String getUserName(@PathVariable int id) {
+        return service.getUserName(id);
+    }
+}
+------------------------------------------------
+package com.mvc;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.mvc.controller.UserController;
+import com.mvc.service.UserService;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+class UserControllerTest {
+	
+	@Mock
+    private UserService mockService;
+
+    @InjectMocks
+    private UserController controller;
+
+    @Test
+    void testGetUserName_Found() {
+        // Mock the service
+      //  UserService mockService = mock(UserService.class);
+        when(mockService.getUserName(1)).thenReturn("Alice");
+
+        // Inject into controller
+        UserController controller = new UserController(mockService);
+
+        // Call method & assert
+        assertEquals("Alice", controller.getUserName(1));
+
+        // Verify interaction
+        verify(mockService, times(1)).getUserName(1);
+        
+//        Why we use verify()?
+//       In unit testing, verification ensures that your code:
+//       1.  Calls the right methods
+//       2.  With the right parameters
+//       3.  And the correct number of times
+    }
+
+    @Test
+    void testGetUserName_NotFound() {
+        UserService mockService = mock(UserService.class);
+        when(mockService.getUserName(2)).thenReturn("Unknown User");
+
+        UserController controller = new UserController(mockService);
+
+        assertEquals("Unknown User", controller.getUserName(2));
+
+        verify(mockService, times(1)).getUserName(2);
+    }
+}
+
+
+//@ExtendWith(MockitoExtension.class)
+//class UserControllerTest {
+//@ExtendWith(MockitoExtension.class) tells JUnit 5 to enable Mockito features for this test class.
+//
+//It automatically initializes all @Mock and @InjectMocks fields before each test runs — so you don’t have to manually call MockitoAnnotations.openMocks(this).
+//
+//Mock and injection setup
+
+//@Mock
+//private UserService mockService;
+//
+//@InjectMocks
+//private UserController controller;
+//@Mock → Creates a mock object of UserService.
+//
+//@InjectMocks → Creates an instance of UserController and injects the mockService into it.
+//
+//Injection is done via constructor, setter, or field — Mockito figures it out automatically.
+---------------------------------------------------------
+
+import com.mvc.entity.User;
+import com.mvc.repository.UserRepository;
+import com.mvc.service.UserService;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class) // Enables Mockito in JUnit 5
+class UserServiceTest {
+
+    @Mock
+    private UserRepository repository; // Mock dependency
+
+    @InjectMocks
+    private UserService service; // The class we're testing
+
+    @Test
+    void testGetUserName_Found() {
+        // Arrange
+        when(repository.findById(1)).thenReturn(Optional.of(new User(1, "Alice")));
+
+        // Act
+        String name = service.getUserName(1);
+
+        // Assert
+        assertEquals("Alice", name);
+
+        // Verify that repository.findById() was called exactly once with argument 1
+        verify(repository, times(1)).findById(1);
+    }
+
+    @Test
+    void testGetUserName_NotFound() {
+        // Arrange
+        when(repository.findById(2)).thenReturn(Optional.empty());
+
+        // Act
+        String name = service.getUserName(2);
+
+        // Assert
+        assertEquals("Unknown User", name);
+
+        // Verify that repository.findById() was called exactly once with argument 2
+        verify(repository, times(1)).findById(2);
+    }
+}
+
+##################################################
+
+What is being tested?
+You are testing the UserController in isolation.
+
+How is it isolated?
+
+The real UserService is not being used.
+
+Instead, you provide a mock (@Mock) of UserService.
+
+So the controller’s logic is tested without depending on database, repository, or Spring context.
+
+Key signs this is Unit Test:
+
+@ExtendWith(MockitoExtension.class) → No Spring context is started.
+
+Dependencies (UserService) are mocked.
+
+Fast execution (just JUnit + Mockito).
+
+Test verifies controller–service interaction, not the whole system.
+
+✅ Summary
+
+This is a Unit Test for UserController.
+
+It checks behavior in isolation, using Mockito mocks.
+
+Not an integration test because the full application context, repository, or DB are not loaded.
+
+👉 If you used @SpringBootTest (with real beans, configs, repo), that would become an Integration Test.
+
+
+1. @WebMvcTest (MVC Annotation)
+
+Designed only for controller layer testing.
+
+Loads Spring’s web layer: controller, @ControllerAdvice, MVC config, JSON converters, etc.
+
+Other beans (like Service, Repository) are not loaded → you must mock them with @MockBean.
+
+Allows testing:
+
+HTTP endpoints (/users/1, /login, etc.)
+
+Status codes (200 OK, 404 Not Found, etc.)
+
+Response body (JSON, text, etc.)
+###############################################
+
+2. @ExtendWith(MockitoExtension.class)
+
+Designed for pure unit testing (no Spring context, faster).
+
+Ideal for testing service classes, repositories, or utilities in isolation.
+
+Lets you create @Mock dependencies and inject them with @InjectMocks.
+
+Does not test HTTP status codes or endpoint behavior, since there’s no web layer.
+#################################################
+
+Example 3: Junit Test
+
+spring.application.name=mvc_unit_test
+
+spring.datasource.url=jdbc:mysql://localhost:3306/your_db
+spring.datasource.username=root
+spring.datasource.password=test
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+------------------------------------------
+package com.mvc.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class User {
+	@Id
+    private int id;
+    private String name;
+
+    public User() {} // Needed for JSON (deserialization)
+
+    public User(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Getters & Setters (for JSON)
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}
+
+-----------------------------------------------------
+package com.mvc.repository;
+
+import com.mvc.entity.User;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+
+public interface UserRepository extends JpaRepository<User, Integer> {
+    Optional<User> findById(int id);
+    User save(User user);
+    void deleteById(int id);
+	List<User> findAll();
+}
+
+---------------------------------------------------
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Optional;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+//import org.springframework.boot.test.mock.mockito.MockBean; Deprecated
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.mvc.controller.UserController;
+import com.mvc.entity.User;
+import com.mvc.service.UserService;
+
+@WebMvcTest(UserController.class) // loads only web layer (controller + MVC infra)
+public class UserControllerWebMvcTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean //MockitoBean, Deprecated in 3.2+ Spring version
+    private UserService service; // mocked dependency
+
+    //mvn -Dtest=UserControllerWebMvcTest#getUser_found_returns200 test
+    
+    @Test
+    void getUser_found_returns200() throws Exception {
+        when(service.getUserName(1)).thenReturn("Alice");
+
+        mockMvc.perform(get("/users/1"))
+               .andExpect(status().isOk())
+               .andExpect(content().string("Alice"));
+    }
+
+    @Test
+    void getUser_notFound_returns404() throws Exception {
+        when(service.getUserName(99)).thenReturn("Unknown User");
+
+        mockMvc.perform(get("/users/99"))
+               .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void createUser_returns201_and_body() throws Exception {
+        when(service.createUser(any(User.class))).thenReturn(new User(10, "Bob"));
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":10,\"name\":\"Bob\"}"))
+               .andExpect(status().isCreated())
+               .andExpect(jsonPath("$.id").value(10))
+               .andExpect(jsonPath("$.name").value("Bob"));
+    }
+
+    @Test
+    void updateUser_found_returns200() throws Exception {
+        when(service.updateUser(eq(5), any(User.class)))
+                .thenReturn(Optional.of(new User(5, "Charlie")));
+
+        mockMvc.perform(put("/users/5")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":5,\"name\":\"Charlie\"}"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.id").value(5))
+               .andExpect(jsonPath("$.name").value("Charlie"));
+    }
+
+    @Test
+    void updateUser_notFound_returns404() throws Exception {
+        when(service.updateUser(eq(6), any(User.class)))
+                .thenReturn(Optional.empty());
+
+        mockMvc.perform(put("/users/6")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":6,\"name\":\"X\"}"))
+               .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void deleteUser_returns204_whenDeleted() throws Exception {
+        when(service.deleteUser(12)).thenReturn(true);
+
+        mockMvc.perform(delete("/users/12"))
+               .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteUser_returns404_whenMissing() throws Exception {
+        when(service.deleteUser(13)).thenReturn(false);
+
+        mockMvc.perform(delete("/users/13"))
+               .andExpect(status().isNotFound());
+    }
+    
+    @Test
+    void testGetAllUsers_ReturnsUsers() throws Exception {
+        when(service.findAllUsers())
+            .thenReturn(Arrays.asList(new User(1, "Alice"), new User(2, "Bob")));
+
+        mockMvc.perform(get("/users"))
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$[0].name").value("Alice"))
+               .andExpect(jsonPath("$[1].name").value("Bob"));
+    }
+
+    @Test
+    void testGetAllUsers_NoContent() throws Exception {
+        when(service.findAllUsers()).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/users"))
+               .andExpect(status().isNoContent());
+    }
+}
+--------------------------------------------------------------------------------
+package com.mvc;
+
+import com.mvc.entity.User;
+import com.mvc.repository.UserRepository;
+import com.mvc.service.UserService;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class) // enable Mockito for JUnit 5
+class UserServiceTest {
+
+    @Mock
+    private UserRepository repository;
+
+    @InjectMocks
+    private UserService service; // repository mock injected via constructor
+
+    @Test
+    void getUserName_found() {
+        when(repository.findById(1)).thenReturn(Optional.of(new User(1, "Alice")));
+
+        String result = service.getUserName(1);
+
+        assertEquals("Alice", result);
+        verify(repository, times(1)).findById(1);
+    }
+
+    @Test
+    void getUserName_notFound() {
+        when(repository.findById(99)).thenReturn(Optional.empty());
+
+        String result = service.getUserName(99);
+
+        assertEquals("Unknown User", result);
+        verify(repository, times(1)).findById(99);
+    }
+
+    @Test
+    void createUser_saves() {
+        User input = new User(10, "Bob");
+        when(repository.save(any(User.class))).thenReturn(input);
+
+        User saved = service.createUser(input);
+
+        assertEquals("Bob", saved.getName());
+        verify(repository).save(input);
+    }
+
+    @Test
+    void updateUser_found_updates() {
+        when(repository.findById(5)).thenReturn(Optional.of(new User(5, "Old")));
+        when(repository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        User body = new User(0, "New"); // id is overridden by service
+        User updated = service.updateUser(5, body).orElseThrow();
+
+        assertEquals(5, updated.getId());
+        assertEquals("New", updated.getName());
+        verify(repository).findById(5);
+        verify(repository).save(any(User.class));
+    }
+
+    @Test
+    void updateUser_notFound() {
+        when(repository.findById(6)).thenReturn(Optional.empty());
+
+        var result = service.updateUser(6, new User(6, "X"));
+
+        assertEquals(false, result.isPresent());
+        verify(repository).findById(6);
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void deleteUser_found_returnsTrue() {
+        when(repository.findById(7)).thenReturn(Optional.of(new User(7, "Y")));
+
+        boolean deleted = service.deleteUser(7);
+
+        assertEquals(true, deleted);
+        verify(repository).findById(7);
+        verify(repository).deleteById(7);
+    }
+
+    @Test
+    void deleteUser_notFound_returnsFalse() {
+        when(repository.findById(8)).thenReturn(Optional.empty());
+
+        boolean deleted = service.deleteUser(8);
+
+        assertEquals(false, deleted);
+        verify(repository).findById(8);
+        verify(repository, never()).deleteById(anyInt());
+    }
+    @Test
+    void testFindAllUsers() {
+        // given
+        List<User> users = Arrays.asList(
+            new User(1, "Alice"),
+            new User(2, "Bob")
+        );
+
+        when(repository.findAll()).thenReturn(users);
+
+        // when
+        List<User> result = service.findAllUsers();
+
+        // then
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getName()).isEqualTo("Alice");
+        verify(repository, times(1)).findAll();
+    }
+}
+--------------------------------------------------------------------
+
+
+package com.mvc.service;
+
+import com.mvc.entity.User;
+import com.mvc.repository.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+    private final UserRepository repository;
+
+    public UserService(UserRepository repository) { // constructor-based DI
+        this.repository = repository;
+    }
+
+    public String getUserName(int id) {
+        return repository.findById(id).map(User::getName).orElse("Unknown User");
+    }
+
+    public User createUser(User user) {
+        return repository.save(user);
+    }
+
+    public Optional<User> updateUser(int id, User user) {
+        return repository.findById(id).map(existing -> repository.save(new User(id, user.getName())));
+    }
+
+    public boolean deleteUser(int id) {
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+    
+    public List<User> findAllUsers() {
+        return repository.findAll();
+    }
+    
+}
+--------------------------------------------------------
+package com.mvc.controller;
+
+import com.mvc.entity.User;
+import com.mvc.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    private final UserService service;
+
+    public UserController(UserService service) { // constructor-based DI
+        this.service = service;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getUserName(@PathVariable int id) {
+        String name = service.getUserName(id);
+        if ("Unknown User".equals(name)) {
+            return ResponseEntity.notFound().build();      // 404
+        }
+        return ResponseEntity.ok(name);                    // 200
+    }
+
+    @PostMapping
+    public ResponseEntity<User> create(@RequestBody User user) {
+        User created = service.createUser(user);
+        return ResponseEntity.status(201).body(created);   // 201
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> update(@PathVariable int id, @RequestBody User user) {
+        Optional<User> updated = service.updateUser(id, user);
+        return updated.map(ResponseEntity::ok)              // 200
+                      .orElseGet(() -> ResponseEntity.notFound().build()); // 404
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable int id) {
+        boolean deleted = service.deleteUser(id);
+        return deleted ? ResponseEntity.noContent().build() // 204
+                       : ResponseEntity.notFound().build(); // 404
+    }
+    
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = service.findAllUsers();
+
+        if (users.isEmpty()) {
+            // Return HTTP 204 No Content
+            return ResponseEntity.noContent().build();
+        }
+
+        // Return HTTP 200 OK with the list
+        return ResponseEntity.ok(users);
+    }
+}
+
+-----------------------------------------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.5.4</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.mvc</groupId>
+	<artifactId>mvc_unit_test</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>mvc_unit_test</name>
+	<description>MVC Unit Testing</description>
+	<url />
+	<licenses>
+		<license />
+	</licenses>
+	<developers>
+		<developer />
+	</developers>
+	<scm>
+		<connection />
+		<developerConnection />
+		<tag />
+		<url />
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Explicit JUnit 5 (Jupiter) engine -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<useModulePath>false</useModulePath>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
+
+
+
+
+-------------------------------------------------------------
+
+Note:
+######
+Breaking down $.id
+
+$ → means the root of the JSON object (top-level).
+
+.id → means the property named id inside that root.
+
+So if your response JSON looks like:
+
+{
+  "id": 10,
+  "name": "Bob"
+}
+
+
+$.id → points to 10
+
+$.name → points to "Bob"
+
+More Examples:
+
+Given this JSON:
+
+{
+  "id": 5,
+  "user": {
+    "name": "Alice",
+    "roles": ["ADMIN", "USER"]
+  }
+}
+
+
+$.id → 5
+
+$.user.name → "Alice"
+
+$.user.roles[0] → "ADMIN"
+
+$.user.roles[1] → "USER"
+
+
+
+
+
+
+
+
+
+
