@@ -2727,7 +2727,7 @@ interfaces in java - abstraction
 -> Interfaces are like contract that a class follows, and the class has to implements these methods
 -> An Object of interface cannot be created. Because objects cannot have incomplete methods in it
 -> loosely coupled
--> It forces all the implementation classes to have same method same resulting in good design
+-> It forces all the implementation classes to have same method name resulting in good design
 
 Example 1:
 ---------
@@ -3075,7 +3075,7 @@ public interface A {
 	public static void test2();//-------> Error
 }
 
-Note: In an interface a method can only be public/default, it cannot be private/proptected
+Note: In an interface a method can only be public/default, it cannot be private/protected
 Example
 --------
 package p1;
@@ -3439,6 +3439,20 @@ Output:
 10
 100
 
+Example :
+-----------
+package p1;
+
+public interface A {
+	public void test1();
+}
+
+public abstract class B implements A{
+	abstract public void test2();
+}
+
+
+
 package p1;
 public class C extends B{
 	@Override
@@ -3456,6 +3470,9 @@ public class C extends B{
 	}
 
 }
+Output:
+From test1
+From test2
 
 #############################################################################
 Note:In java 8 we can develop complete static methods & main method in an interface
@@ -3504,11 +3521,7 @@ Exception handling
 -> To handle exception we will use "try & catch" block in java
 -> When exception occurs in try block, it will create exception object and that object's address is given to catch block. Catch block will suppress that exception and further code will continue to execute
 
-#######################
-Exception handling
-#######################
--> To handle exception we will use "try & catch" block in java
--> When exception occurs in try block, it will create exception object and that object's address is given to catch block. Catch block will suppress that exception and further code will continue to execute
+
 
 Example :
 ----------
@@ -5472,6 +5485,7 @@ public class B {
 		System.out.println(a1.getX());
 	}
 }
+
 
 
 
