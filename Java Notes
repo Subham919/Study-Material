@@ -3640,6 +3640,43 @@ Welcome
 Assignment 1 (Unary Operators): https://www.youtube.com/playlist?list=PLQVUMrcSsQIRZOM2vZoh8bPG1nq6X-nTe
 Assignment 2(Data types & Type Casting): https://www.youtube.com/watch?v=h3TxueBRxnE
 
+Note: Default Constructors in java?
+During compilation automatically empty body ZERO args constructor is added to .class file when developer doesnot creates a constructor explicitly
+
+Example 1:
+package p1;
+public class A {
+	
+	public static void main(String[] args) {
+		A a1  = new A();
+	}
+}
+//No Error because default constructor will get created
+
+Example 2:
+package p1;
+public class A {
+	
+	public static void main(String[] args) {
+		A a1  = new A(100);
+	}
+}
+//Error because default constructor will not get created for constructor with arguments 
+
+Example 3:
+---------
+package p1;
+public class A {
+	A(int x){
+		
+	}
+	public static void main(String[] args) {
+		A a1  = new A(100);
+		A a2 = new A();
+	}
+}
+//Error because default constructor will not get created when object with and without args are created in same program
+
 Note:
 
 Primitive    Wrapper Class
@@ -5485,6 +5522,7 @@ public class B {
 		System.out.println(a1.getX());
 	}
 }
+
 
 
 
